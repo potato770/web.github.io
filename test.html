@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>來電模擬對話</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    #popup, #resultPopup {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      z-index: 9999;
+    }
+
+    #resultPopup p {
+      font-size: 18px;
+      text-align: center;
+    }
+
+    #resultPopup button {
+      margin-top: 20px;
+      padding: 10px 20px;
+    }
+
+    #popup button {
+      margin: 10px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.5);
+      z-index: 9998;
+    }
+
+    #chat {
+      display: none;
+      padding: 20px;
+    }
+
+    .message-left {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease;
+    text-align: left;
+    max-width: 70%;         /* 設置最大寬度，讓文字可以根據容器寬度換行 */
+    }
+
+    .message-right {
+      background: #dcf8c6;
+      border-radius: 10px;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      margin-left: auto;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      animation: fadeIn 0.5s ease;
+      text-align: right;
+      max-width: 70%;  
+      
+    }
+
+    .options {
+      margin-top: 20px;
+    }
+
+    .options button {
+      margin: 5px;
+      padding: 10px 15px;
+      cursor: pointer;
+      border-radius: 6px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="overlay"></div>
+
+<!-- 來電彈窗 -->
+<div id="popup">
+  <p>來電通話</p>
+  <p>+886 912345678</p>
+  <button onclick="handleResponse('接')">接</button>
+  <button onclick="handleResponse('不接')">不接</button>
+</div>
+
+<!-- 對話區 -->
+<div id="chat"></div>
+
+<!-- 結果彈窗 -->
+<div id="resultPopup">
+  <p id="resultText"></p>
+  <button onclick="closeResult()">關閉</button>
+</div>
+
+<script>
+const messages = [
+  { sender: "user", text: "喂，請問哪裡？" },
+  { sender: "scammer", text: "您好，我是社會福利局的工作人員，我們最近推出了一項新的養老補助計畫，符合條件的長者可額外領取三萬元補助，您有符合資格哦！" },
+  { sender: "user", text: "真的嗎？可是我怎麼沒聽說過？" },
+  { sender: "scammer", text: "這是最新的計畫，政府還在推行中，很多人還不知道。" },
+  { sender: "scammer", text: "我們現在只需要您的提款卡號和金融驗證碼，就能直接把補助款匯入您的帳戶！" }
+];
+
+window.onload = function () {
+  document.getElementById('popup').style.display = 'block';
+  document.getElementById('overlay').style.display = 'block';
+};
+
+function handleResponse(answer) {
+  document.getElementById('popup').style.display = 'none';
+  document.getElementById('overlay').style.display = 'none';
+  if (answer === '接') startChat();
+  else alert('你已拒絕通話。成功預詐騙。一通電話，可能讓你傾家蕩產！');
+}
+
+function startChat() {
+  const chat = document.getElementById('chat');
+  chat.style.display = 'block';
+  let i = 0;
+
+  const interval = setInterval(() => {
+    if (i < messages.length) {
+      const msgData = messages[i];
+      const msg = document.createElement('div');
+      msg.className = msgData.sender === "user" ? 'message-right' : 'message-left';
+      msg.textContent = msgData.text;
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+      i++;
+    } else {
+      clearInterval(interval);
+      showOptions();
+    }
+  }, 1000);
+}
+
+function showOptions() {
+  const chat = document.getElementById('chat');
+  const options = document.createElement('div');
+  options.className = 'options';
+  options.innerHTML = `
+    <p><strong>你會怎麼做？</strong></p>
+    <button onclick="chooseOption('提供卡號與驗證碼')">提供卡號與驗證碼</button>
+    <button onclick="chooseOption('掛掉電話，並通報165反詐騙')">掛掉電話，並通報165反詐騙</button>
+  `;
+  chat.appendChild(options);
+}
+
+function chooseOption(text) {
+  const chat = document.getElementById('chat');
+  const optionsDiv = document.querySelector('.options');
+  if (optionsDiv) optionsDiv.remove();
+
+  if (text.includes("提供卡號")) {
+    const script = [
+      { sender: "user", text: "好，那我該怎麼做？" },
+      { sender: "scammer", text: "請提供您的銀行帳號、信用卡資料，以及手機收到的驗證碼，我們會立刻轉帳給您。" },
+      { sender: "input", text: "請輸入資料" }
+    ];
+    playEndingWithInput(script);
+  } else {
+    const script = [
+      { sender: "user", text: "這聽起來不太對，我還是問一下家人好了。" },
+      { sender: "scammer", text: "這個補助計畫今天就截止，如果不申請就會失去資格哦！" },
+      { sender: "user", text: "沒關係，我先打給政府單位問一下。" },
+      { sender: "scammer", text: "*直接掛電話*" },
+      { sender: "system", text: "[你電話被掛斷後，打給當地社福機構，發現這是詐騙手法]" },
+      { sender: "user", text: "還好我沒上當，現在詐騙真的太猖狂了……" },
+    ];
+    playEnding(script, true);
+  }
+}
+
+function playEnding(script, isSafe) {
+  const chat = document.getElementById('chat');
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i < script.length) {
+      const msgData = script[i];
+      const msg = document.createElement('div');
+
+      if (msgData.sender === "user") msg.className = 'message-right';
+      else if (msgData.sender === "scammer") msg.className = 'message-left';
+      else {
+        msg.className = 'message-left';
+        msg.style.fontStyle = 'italic';
+        msg.style.background = '#eee';
+      }
+
+      msg.textContent = msgData.text;
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+      i++;
+    } else {
+      clearInterval(interval);
+      showResultPopup(isSafe);
+    }
+  }, 1200);
+}
+
+function playEndingWithInput(script) {
+  const chat = document.getElementById('chat');
+  let i = 0;
+
+  const interval = setInterval(() => {
+    if (i < script.length) {
+      const msgData = script[i];
+      if (msgData.sender === "input") {
+        clearInterval(interval);
+        showInputForm();
+        return;
+      }
+
+      const msg = document.createElement('div');
+      msg.className = msgData.sender === "user" ? 'message-right' : 'message-left';
+      msg.textContent = msgData.text;
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+      i++;
+    }
+  }, 1200);
+}
+
+function showInputForm() {
+  const chat = document.getElementById('chat');
+  const formDiv = document.createElement('div');
+  formDiv.className = 'message-right';
+  formDiv.innerHTML = `
+    <p>請輸入您的資料：</p>
+    <input id="bank" placeholder="銀行帳號"><br>
+    <input id="card" placeholder="信用卡號碼"><br>
+    <input id="otp" placeholder="手機驗證碼"><br>
+    <button onclick="submitFakeData()">提交</button>
+  `;
+  chat.appendChild(formDiv);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function submitFakeData() {
+  const bank = document.getElementById('bank').value;
+  const card = document.getElementById('card').value;
+  const otp = document.getElementById('otp').value;
+
+  const chat = document.getElementById('chat');
+  const inputs = document.querySelector('.message-right');
+  if (inputs) inputs.remove();
+
+  const summary = document.createElement('div');
+  summary.className = 'message-right';
+  summary.textContent = `好，我的帳戶是 ${bank}, 信用卡是 ${card}, 驗證碼是 ${otp}`;
+  chat.appendChild(summary);
+
+  const endScript = [
+    { sender: "system", text: "[幾分鐘後，銀行通知大量資金被轉出]" },
+    { sender: "user", text: "怎麼回事？！我的存款被轉走了！" },
+    { sender: "scammer", text: "不好意思，您撥的電話無法接通……" }
+  ];
+
+  playEnding(endScript, false);
+}
+
+function showResultPopup(isSafe) {
+  const popup = document.getElementById('resultPopup');
+  const text = document.getElementById('resultText');
+
+  popup.style.display = 'block';
+  text.textContent = isSafe ? "✅ 防詐成功！請繼續保持警覺。一通電話，可能讓你傾家蕩產！" : "⚠️ 你已上當受騙，請立即聯繫銀行與165反詐騙！一通電話，可能讓你傾家蕩產！";
+}
+
+function closeResult() {
+  document.getElementById('resultPopup').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

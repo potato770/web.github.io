@@ -258,6 +258,7 @@ function showInputForm() {
     <input id="card" placeholder="信用卡號碼"><br>
     <input id="otp" placeholder="手機驗證碼"><br>
     <button onclick="submitFakeData()">提交</button>
+    <button onclick="cancelInput()" style="background-color: #f44336; margin-left: 10px;">發現異常處</button>
   `;
   chat.appendChild(formDiv);
   chat.scrollTop = chat.scrollHeight;
@@ -297,6 +298,26 @@ function showResultPopup(isSafe) {
 function closeResult() {
   document.getElementById('resultPopup').style.display = 'none';
 }
+function cancelInput() {
+  const chat = document.getElementById('chat');
+  const inputs = document.querySelector('.message-right');
+  if (inputs) inputs.remove();
+
+  const msg = document.createElement('div');
+  msg.className = 'message-right';
+  msg.textContent = "這感覺不太對，我還是不要提供好了。";
+  chat.appendChild(msg);
+
+  const endScript = [
+    { sender: "scammer", text: "哎呀，機會難得喔！錯過今天就沒了。" },
+    { sender: "user", text: "沒關係，我會自己查清楚再決定。" },
+    { sender: "scammer", text: "*直接掛電話*" },
+    { sender: "system", text: "[你成功避開了一場詐騙，請繼續保持警覺]" }
+  ];
+
+  playEnding(endScript, true);
+}
+
 </script>
 
 </body>

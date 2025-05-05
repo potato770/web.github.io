@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <link rel=" stylesheet" href="body.css">
+    <div class="chat-container">
+        <div class="sidebar">
+            <div class="header">
+                <img src="DOFA0533.JPEG" alt="用戶頭像">
+                <h2>聊天室</h2>
+            </div>
+            <div class="search-container">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" placeholder="搜尋聯絡人..." id="search-input">
+                </div>
+            </div>
+            <div class="contact-list">
+                <div class="contact active" data-name="王小明" data-status="線上">
+                    <img src="DOFA0533.JPEG" alt="聯絡人1">
+                    <div class="contact-info">
+                        <div class="contact-name">王小明</div>
+                        <div class="contact-preview">你好，明天見面討論專案!</div>
+                    </div>
+                </div>
+                <div class="contact" data-name="李小華" data-status="10分鐘前在線">
+                    <img src="DOFA0533.JPEG" alt="聯絡人2">
+                    <div class="contact-info">
+                        <div class="contact-name">李小華</div>
+                        <div class="contact-preview">已發送檔案</div>
+                    </div>
+                </div>
+                
+            
+                <div class="contact" data-name="張小龍" data-status="線上">
+                    <img src="DOFA0533.JPEG" alt="聯絡人4">
+                    <div class="contact-info">
+                        <div class="contact-name">張小龍</div>
+                        <div class="contact-preview">了解，我會準時到</div>
+                    </div>
+                </div>
+                <div class="contact" data-name="技術支援組" data-status="2人在線">
+                    <img src="DOFA0533.JPEG" alt="聯絡人5">
+                    <div class="contact-info">
+                        <div class="contact-name">技術支援組</div>
+                        <div class="contact-preview">請問有遇到什麼問題嗎？</div>
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+        <div class="chat-area">
+            <div class="chat-header">
+                <div class="chat-header-left">
+                    <img src="DOFA0533.JPEG" alt="聯絡人頭像">
+                    <div>
+                        <h3 id="current-chat-name">王小明</h3>
+                        <small id="current-chat-status">線上</small>
+                    </div>
+                </div>
+                <div class="chat-header-actions">
+                    <span class="header-icon">📞</span>
+                    <span class="header-icon">📹</span>
+                    <span class="header-icon">ℹ️</span>
+                </div>
+            </div>
+            <div class="messages" id="message-container">
+                <div class="message received">
+                    <div class="message-content">
+                        嗨，今天過得怎麼樣？
+                        <div class="message-time">10:15</div>
+                    </div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">
+                        很好啊！正在準備明天的報告。
+                        <div class="message-time">10:16</div>
+                    </div>
+                </div>
+                <div class="message received">
+                    <div class="message-content">
+                        明天的專案討論你準備好了嗎？
+                        <div class="message-time">10:17</div>
+                    </div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">
+                        已經準備好了，我會帶上所有資料。
+                        <div class="message-time">10:18</div>
+                    </div>
+                </div>
+                <div class="message received">
+                    <div class="message-content">
+                        太好了！對了，能幫我帶一下昨天的會議記錄嗎？
+                        <div class="message-time">10:20</div>
+                    </div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">
+                        沒問題，我會記得帶上。還有什麼需要我準備的嗎？
+                        <div class="message-time">10:21</div>
+                    </div>
+                </div>
+                <div class="message received">
+                    <div class="message-content">
+                        暫時沒有了，謝謝你！明天見面聊。
+                        <div class="message-time">10:22</div>
+                    </div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">
+                        好的，明天見！
+                        <div class="message-time">10:23</div>
+                    </div>
+                </div>
+                <div class="message received">
+                    <div class="message-content">
+                        對了，可以在3點之前到會議室嗎？我們先討論一下提案細節。
+                        <div class="message-time">11:05</div>
+                    </div>
+                </div>
+                <div class="message sent">
+                    <div class="message-content">
+                        沒問題，我會提前到達。
+                        <div class="message-time">11:10</div>
+                    </div>
+                </div>
+            </div>
+            <div class="message-input">
+                <button class="emoji-button" id="emoji-btn">😊</button>
+                <button class="attach-button" id="attach-btn">📎</button>
+                <input type="text" placeholder="輸入訊息..." id="message-input">
+                <button class="send-button" id="send-btn">➤</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="emoji-panel" id="emoji-panel">
+        <div class="emoji-item">😊</div>
+        <div class="emoji-item">😂</div>
+        <div class="emoji-item">❤️</div>
+        <div class="emoji-item">👍</div>
+        <div class="emoji-item">🎉</div>
+        <div class="emoji-item">🔥</div>
+        <div class="emoji-item">😍</div>
+        <div class="emoji-item">🤔</div>
+        <div class="emoji-item">👏</div>
+        <div class="emoji-item">🙏</div>
+        <div class="emoji-item">😭</div>
+        <div class="emoji-item">😎</div>
+        <div class="emoji-item">😘</div>
+        <div class="emoji-item">🤣</div>
+        <div class="emoji-item">😒</div>
+        <div class="emoji-item">😢</div>
+        <div class="emoji-item">🥰</div>
+        <div class="emoji-item">😉</div>
+        <div class="emoji-item">👀</div>
+        <div class="emoji-item">🤗</div>
+        <div class="emoji-item">🙄</div>
+        <div class="emoji-item">😩</div>
+        <div class="emoji-item">🤩</div>
+        <div class="emoji-item">😋</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageInput = document.getElementById('message-input');
+            const sendButton = document.getElementById('send-btn');
+            const messageContainer = document.getElementById('message-container');
+            const emojiButton = document.getElementById('emoji-btn');
+            const emojiPanel = document.getElementById('emoji-panel');
+            const emojiItems = document.querySelectorAll('.emoji-item');
+            const contacts = document.querySelectorAll('.contact');
+            const currentChatName = document.getElementById('current-chat-name');
+            const currentChatStatus = document.getElementById('current-chat-status');
+            const searchInput = document.getElementById('search-input');
+            const attachButton = document.getElementById('attach-btn');
+
+            // 發送訊息函數
+            function sendMessage() {
+                const messageText = messageInput.value.trim();
+                if (messageText !== '') {
+                    // 獲取當前時間
+                    const now = new Date();
+                    const hours = now.getHours().toString().padStart(2, '0');
+                    const minutes = now.getMinutes().toString().padStart(2, '0');
+                    const timeString = `${hours}:${minutes}`;
+                    
+                    // 創建訊息元素
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message sent';
+                    
+                    const messageContent = document.createElement('div');
+                    messageContent.className = 'message-content';
+                    messageContent.textContent = messageText;
+                    
+                    const messageTime = document.createElement('div');
+                    messageTime.className = 'message-time';
+                    messageTime.textContent = timeString;
+                    
+                    messageContent.appendChild(messageTime);
+                    messageDiv.appendChild(messageContent);
+                    messageContainer.appendChild(messageDiv);
+                    
+                    // 清空輸入框
+                    messageInput.value = '';
+                    
+                    // 自動滾動到底部
+                    messageContainer.scrollTop = messageContainer.scrollHeight;
+                    
+                    // 自動回复（模擬）
+                    setTimeout(simulateReply, 1000);
+                }
+            }
+
+            // 模擬回复
+            function simulateReply() {
+                // 首先顯示正在輸入指示器
+                const typingIndicator = document.createElement('div');
+                typingIndicator.className = 'typing-indicator';
+                typingIndicator.textContent = currentChatName.textContent + ' 正在輸入...';
+                messageContainer.appendChild(typingIndicator);
+                messageContainer.scrollTop = messageContainer.scrollHeight;
+
+                // 延遲後顯示回复
+                const replyDelay = Math.floor(Math.random() * 2000) + 1000; // 1-3秒延遲
+                
+                setTimeout(() => {
+                    // 移除輸入指示器
+                    typingIndicator.remove();
+
+                    const replies = [
+                        "好的，我明白了！",
+                        "謝謝你的信息。",
+                        "收到，我會處理的。",
+                        "了解！稍後再聊。",
+                        "這個想法很不錯！",
+                        "需要我做什麼嗎？",
+                        "我會盡快回复你的。",
+                        "有什麼我能幫忙的嗎？",
+                        "讓我考慮一下這個問題。",
+                        "我正在處理這件事。"
+                    ];
+                    
+                    const randomReply = replies[Math.floor(Math.random() * replies.length)];
+                    
+                    // 獲取當前時間
+                    const now = new Date();
+                    const hours = now.getHours().toString().padStart(2, '0');
+                    const minutes = now.getMinutes().toString().padStart(2, '0');
+                    const timeString = `${hours}:${minutes}`;
+                    
+                    // 創建回复訊息
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'message received';
+                    
+                    const messageContent = document.createElement('div');
+                    messageContent.className = 'message-content';
+                    messageContent.textContent = randomReply;
+                    
+                    const messageTime = document.createElement('div');
+                    messageTime.className = 'message-time';
+                    messageTime.textContent = timeString;
+                    
+                    messageContent.appendChild(messageTime);
+                    messageDiv.appendChild(messageContent);
+                    messageContainer.appendChild(messageDiv);
+                    
+                    // 自動滾動到底部
+                    messageContainer.scrollTop = messageContainer.scrollHeight;
+                }, replyDelay);
+            }
+
+            // 事件監聽器 - 發送按鈕點擊
+            sendButton.addEventListener('click', sendMessage);
+            
+            // 事件監聽器 - 按Enter鍵發送訊息
+            messageInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // 切換表情面板顯示/隱藏
+            emojiButton.addEventListener('click', function() {
+                emojiPanel.classList.toggle('show');
+            });
+
+            // 點擊表情符號添加到輸入框
+            emojiItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    messageInput.value += item.textContent;
+                    messageInput.focus();
+                    emojiPanel.classList.remove('show');
+                });
+            });
+
+            // 點擊文檔其他位置關閉表情面板
+            document.addEventListener('click', function(e) {
+                if (!emojiButton.contains(e.target) && !emojiPanel.contains(e.target)) {
+                    emojiPanel.classList.remove('show');
+                }
+            });
+
+            // 聯絡人點擊切換聊天
+            contacts.forEach(contact => {
+                contact.addEventListener('click', function() {
+                    // 移除之前活動的聯絡人
+                    document.querySelector('.contact.active').classList.remove('active');
+                    // 設置當前聯絡人為活動狀態
+                    this.classList.add('active');
+                    
+                    // 更新聊天標題
+                    const contactName = this.getAttribute('data-name');
+                    const contactStatus = this.getAttribute('data-status');
+                    currentChatName.textContent = contactName;
+                    currentChatStatus.textContent = contactStatus;
+                    
+                    // 清空聊天記錄，顯示新的聊天開始提示
+                    messageContainer.innerHTML = '';
+                    
+                    // 添加歡迎訊息
+                    const welcomeDiv = document.createElement('div');
+                    welcomeDiv.className = 'message received';
+                    
+                    const welcomeContent = document.createElement('div');
+                    welcomeContent.className = 'message-content';
+                    welcomeContent.textContent = `您好，這是與 ${contactName} 的聊天。`;
+                    
+                    const now = new Date();
+                    const hours = now.getHours().toString().padStart(2, '0');
+                    const minutes = now.getMinutes().toString().padStart(2, '0');
+                    const timeString = `${hours}:${minutes}`;
+                    
+                    const welcomeTime = document.createElement('div');
+                    welcomeTime.className = 'message-time';
+                    welcomeTime.textContent = timeString;
+                    
+                    welcomeContent.appendChild(welcomeTime);
+                    welcomeDiv.appendChild(welcomeContent);
+                    messageContainer.appendChild(welcomeDiv);
+                });
+            });
+
+            // 搜索聯絡人功能
+            searchInput.addEventListener('input', function() {
+                const searchText = this.value.toLowerCase();
+                contacts.forEach(contact => {
+                    const contactName = contact.querySelector('.contact-name').textContent.toLowerCase();
+                    const contactPreview = contact.querySelector('.contact-preview').textContent.toLowerCase();
+                    
+                    if (contactName.includes(searchText) || contactPreview.includes(searchText)) {
+                        contact.style.display = 'flex';
+                    } else {
+                        contact.style.display = 'none';
+                    }
+                });
+            });
+
+            // 附件按鈕點擊
+            attachButton.addEventListener('click', function() {
+                alert('附件功能尚未實現！');
+            });
+
+            // 頭部圖標點擊
+            const headerIcons = document.querySelectorAll('.header-icon');
+            headerIcons.forEach(icon => {
+                icon.addEventListener('click', function() {
+                    const iconText = this.textContent;
+                    if (iconText === '📞') {
+                        alert('發起語音通話...');
+                    } else if (iconText === '📹') {
+                        alert('發起視訊通話...');
+                    } else if (iconText === 'ℹ️') {
+                        alert('查看聯絡人資訊...');
+                    }
+                });
+            });
+
+            // 初始自動滾動到底部
+            messageContainer.scrollTop = messageContainer.scrollHeight;
+        });
+    </script>
+</body>
+</html>

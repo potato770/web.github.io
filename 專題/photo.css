@@ -1,0 +1,738 @@
+/* ===== 手機殼 + 背景 ===== */
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #e9ecf1;
+  font-family: sans-serif;
+}
+
+.mobile-preview {
+  width: 320px;
+  height: 640px;
+  background: #fff;
+  border-radius: 30px;
+  border: 6px solid #222;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.top-bar {
+  height: 24px;
+  background: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.speaker {
+  width: 60px;
+  height: 6px;
+  background: #444;
+  border-radius: 3px;
+}
+
+/* ===== 主畫面區域 ===== */
+.screen {
+  flex: 1;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-grid {
+  display: flex;
+  justify-content: space-around;
+  padding: 1rem;
+}
+
+.app {
+  text-align: center;
+}
+
+.app img {
+  width: 60px;  /* 所有圖示大小統一 */
+  height: 60px;
+}
+
+.app-label {
+  margin-top: 0.4rem;
+  font-size: 13px;
+  color: #333;
+}
+
+/* ===== 顯示控制通用類別 ===== */
+.hidden {
+  display: none !important;
+}
+
+.show {
+  display: block !important;
+}
+
+/* ===== 表單與按鈕 ===== */
+.form-input {
+  width: 100%;
+  padding: 8px;
+  margin: 0.5rem 0;
+  box-sizing: border-box;
+}
+
+.button {
+  width: 100%;
+  padding: 8px;
+  background-color: #6ba078;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.button:hover {
+  background-color: #6ba078;
+}
+
+/* ===== 系統通知 ===== */
+.mobile-notification {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  right: 1rem;
+  background: #000c;
+  color: #fff;
+  padding: 0.6rem;
+  border-radius: 10px;
+  display: none;
+  text-align: center;
+  font-size: 14px;
+}
+
+.mobile-notification.show {
+  display: block;
+}
+
+/* ===== LINE 聊天畫面 ===== */
+.line-chat {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex: 1;
+  display: none;  /* 初始隱藏 */
+  flex-direction: column;
+  background: #e5efff;
+  z-index: 10;
+}
+
+.line-chat.show {
+  display: flex !important;
+}
+
+.chat-header {
+  position: relative; 
+  background: #06c755;
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  text-align: center;
+  font-size: 16px;
+}
+
+.chat-header button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ===== 訊息區域 ===== */
+.chat-messages {
+  background-color: #e6f0ff;
+  padding: 10px;
+  overflow-y: auto;
+  height: 400px;
+}
+
+
+/* ===== 訊息樣式 ===== */
+.message.other {
+  display: flex;
+  align-items: flex-start;
+}
+
+.message.other .avatar {
+  width: 30px;
+  height: 30px;
+  margin-right: 6px;
+  border-radius: 50%;
+}
+
+/* ===== 氣泡共同樣式 ===== */
+.bubble {
+  display: inline-block;
+  padding: 8px 12px;
+  border-radius: 15px;
+  max-width: 80%;         /* ✅ 保持良好顯示效果 */
+  word-wrap: break-word;  /* ✅ 自動換行 */
+  line-height: 1.4;
+  font-size: 14px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  margin: 4px 0;
+}
+
+/* ===== 對方訊息樣式 ===== */
+.message.other {
+  display: flex;
+  align-items: flex-start;
+}
+
+.message.other .bubble {
+  background: #fff;
+}
+
+/* ===== 自己訊息樣式 ===== */
+.message.self {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+
+.message.self .bubble {
+  background: #a0e0a9;
+}
+
+/* ===== 輸入框區塊 ===== */
+.chat-input {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  padding: 10px;
+  background: #fff;
+  border-top: 1px solid #ddd;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  outline: none;
+}
+
+.chat-input button {
+  margin-left: 8px;
+  padding: 6px 12px;
+  background: #06c755;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.chat-input button:hover {
+  background: #05b14e;
+}
+
+/* 存款餘額區塊樣式 */
+.transferSection {
+  background: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1.5rem;
+  max-width: 320px;
+  margin: 1rem auto;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.transferSection h3 {
+  font-size: 1.5rem;
+  color: #004085;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 0.5rem;
+}
+
+.transferSection p {
+  font-size: 1rem;
+  color: #333;
+  margin: 0.5rem 0;
+}
+
+.transferSection strong {
+  font-size: 1.25rem;
+  color: #007bff;
+}
+
+.transferSection button.button {
+  width: 100%;
+  padding: 0.6rem 0;
+  background-color: #6c757d;
+  border: none;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.transferSection button.button:hover {
+  background-color: #5a6268;
+}
+
+
+/* 手機模擬轉帳區域 */
+.mobile-preview .screen {
+  padding: 1rem;
+  background-color: #fdfdfd;
+}
+
+.mobile-preview .screen-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+
+
+.mobile-preview .app {
+  cursor: pointer;
+}
+
+.mobile-preview .app img {
+  width: 60px;  /* 所有圖示大小統一 */
+  height: 60px;
+  border-radius: 15px;
+}
+
+.mobile-preview .app-label {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #333;
+  display: flex;
+  justify-content: center;
+}
+
+/* ===== 調整圖標大小 ===== */
+/* 調整臉書圖示大小 */
+#facebookApp img {
+  width:70px;  
+  height:70px;
+  margin-top: -5px; 
+}
+
+/* 調整轉帳圖示稍微小一點 */
+#transferApp img {
+  width: 60px;  
+  height: 60px;
+}
+
+/* 調整LINE圖示的大小並位置 */
+#lineApp img {
+  width: 65px;  
+  height: 65px;
+  margin-top: -1px;  
+}
+
+.mobile-preview .app-label {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #333;
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-preview .bottom-bar {
+  height: 30px;
+  background: #222;
+  border-bottom-left-radius: 32px;
+  border-bottom-right-radius: 32px;
+  position: relative;
+}
+
+.mobile-preview .bottom-bar .home-button {
+  width: 40px;
+  height: 4px;
+  background: #444;
+  border-radius: 2px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.facebook-ad {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  flex: 1;
+  display: none;
+  flex-direction: column;
+  background: #f9f9f9;
+  z-index: 10;
+}
+
+.facebook-content {
+  padding: 1rem;
+  text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.facebook-content img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.facebook-content h3 {
+  color: #d60000;
+  font-size: 18px;
+  margin-bottom: 0.5rem;
+}
+
+.facebook-content p {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.join-line-btn {
+  background-color: #06c755;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 25px;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.join-line-btn:hover {
+  background-color: #05b14e;
+}
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90%;
+  max-width: 260px;
+  transform: translate(-50%, -50%);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 10;
+  display: none;
+  padding: 1rem;
+}
+
+.modal-content {
+  text-align: center;
+}
+
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem; /* 拉大按鈕間距 */
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.modal .button {
+  flex: 1;
+  min-width: 100px;
+  border-radius: 8px;
+}
+
+.modal .button.cancel {
+  background-color: #ccc;
+  color: #333;
+}
+
+.modal .button.confirm {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+.system-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #d1f7d6;
+  color: #2b7a3b;
+  font-size: 14px;
+  padding: 8px 12px;
+  margin: 10px auto;
+  border-radius: 12px;
+  width: fit-content;
+  max-width: 80%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.status-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+}
+.sender-name {
+  font-size: 12px;       /* 更小的字體 */
+  color: #666;           /* 淺一點的顏色 */
+  margin-bottom: 2px;    /* 跟氣泡有一點間距 */
+}
+.message-options {
+  display: flex;
+  flex-direction: column;     /* 垂直排列 */
+  gap: 0.5rem;
+  padding: 1rem;
+  position: absolute;
+  bottom: 60px;               /* 調整距離底部的位置 */
+  width: 100%;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.option-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  background-color: #06c755;
+  color: white;
+  border-radius: 20px;
+  font-size: 15px;
+  cursor: pointer;
+  width: 80%;                /* 每個按鈕寬度一致 */
+}
+.phone-scene {
+  position: relative; /* 讓子元素的絕對定位參考此容器 */
+  display: inline-block; /* 依內容尺寸自適應 */
+}
+
+.phone-mockup {
+  width: 300px;
+  height: 600px;
+  background: #fff;
+  border-radius: 30px;
+  border: 6px solid #111;
+  position: relative; /* 裡面可有絕對定位子元素 */
+  z-index: 1;
+}
+/* 包裹手機 + 小人物容器，讓手機置中 */
+.phone-wrapper {
+  position: relative;         /* 給子元素絕對定位參考用 */
+  width: fit-content;         /* 自動依內容大小，不撐開 */
+  margin: 0 auto;             /* 讓整體（手機）置中 */
+}
+
+/* 手機本體 */
+.phone-mockup {
+  width: 300px;
+  height: 600px;
+  background: #fff;
+  border-radius: 30px;
+  border: 6px solid #111;
+  position: relative;
+  z-index: 1;
+}
+
+
+/* 對話泡泡浮在人物上方 */
+.speech-bubble {
+  position: absolute;
+  bottom: 100%; /* 對齊人物上緣 */
+  left: 70%;
+  transform: translateX(-50%);
+  margin-bottom: 8px;
+  background: #fff;
+  border: 2px solid #333;
+  border-radius: 15px;
+  padding: 8px 12px;
+  font-size: 14px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  max-width: 200px;
+}
+
+/* 三角形尾端 */
+.speech-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 10px 10px 0 10px;
+  border-style: solid;
+  border-color: #fff transparent transparent transparent;
+}
+
+.black-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgb(255, 255, 255);
+  z-index: 9999;
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  transition: opacity 1s ease;
+}
+
+.black-overlay .character-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+}
+
+.character-container {
+  position: absolute;
+  bottom: 40px;
+  width: 150px;
+  z-index: 1000;
+  text-align: center;
+}
+
+.character-container.happy {
+  right: -200px;
+}
+
+.character-container.eye {
+  right: 400px;
+  bottom: 90px; /* 從 40px 調整為 100px，會往上移 */
+}
+
+/* 圖片共用 */
+.character-img {
+  width: 100%;
+}
+
+.happy-character {
+  border-radius: 12px;
+  border: 3px solid #ffcc00;
+}
+
+/* 如果 eye 圖片特別小，可選擇加上 */
+.eye-character {
+  width: 90px;
+}
+
+.speech-bubble {
+  display: inline-block;
+  max-width:200%;
+  padding: 10px 10px;
+  background-color: #fff;
+  border-radius: 15px;
+  border: 2px solid #000;
+  font-size: 16px;
+  line-height: 1.4;
+  position: relative;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  color: black;
+}
+.phone-screen {
+  background: white;
+  border-radius: 28px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  width: 320px;
+  height: 580px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.balance-view {
+  text-align: center;
+  margin-top: 120px;
+}
+
+.balance-view h2 {
+  font-size: 22px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.amount {
+  font-size: 30px;
+  font-weight: bold;
+  color: #e53935;
+  margin-bottom: 12px;
+}
+
+.warning {
+  color: #d84315;
+  font-size: 14px;
+}
+
+.black-overlay .center-image {
+  max-width: 85%;
+  max-height: 95%;
+  object-fit: contain;
+
+}
+.popup {
+  position: absolute; /* 用 absolute 相對於手機容器 */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  z-index: 1000;
+  background-color: #969696;
+}
+
+
+.popup-content {
+  padding: 20px;
+  text-align: center;
+}
+.popup-content button {
+  margin: 10px;
+}
+#exitConfirmPopup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+  width: 250px; /* 你想要的寬度 */
+
+}
+#exitFacebook {
+  display: none; /* 隱藏叉叉按鈕 */
+}
+
+
+
+

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>手機介面嵌入</title>
+  <link rel="stylesheet" href="photo.css" />
+</head>
+<body>
+<!-- 黑幕 + 小人物對話 -->
+<div id="blackOverlay" class="black-overlay">
+  <img src="0523.png" alt="center image" class="center-image" />
+  <!-- Eye 小人 -->
+  <div class="character-container eye" id="eyeCharacter">
+    <div class="speech-bubble" id="eyeSpeech">最近手頭有點緊，想試試看投資，看能不能一次賺回來......</div>
+    <img src="eye.png" class="character-img" alt="eye character">
+  </div>
+</div>
+
+<div class="phone-wrapper">
+  <div id="mobilePreview" class="mobile-preview">
+    <!-- 上方聽筒 -->
+    <div class="top-bar"><div class="speaker"></div></div>
+
+    <!-- 主畫面 -->
+    <div class="screen">
+      <!-- 退出群組確認彈窗 -->
+      <div id="exitConfirmPopup" class="hidden">
+        <div class="popup-content">
+          <p>是否要退出群組？</p>
+          <button id="confirmExitGroup">退出</button>
+          <button id="cancelExitGroup">取消</button>
+          
+        </div>
+      </div>
+      
+      
+      <!-- 群組提示浮出訊息 -->
+        <div id="groupFeedback" class="group-feedback hidden">
+          <div class="notification">！
+            <img src="line-icon.png" alt="Avatar" class="avatar" />
+          </div>
+        </div>
+
+        <div class="app-grid">
+          <div class="app" id="lineApp">
+            <img src="https://i.imgur.com/SbCsymw.png" alt="LINE">
+            <div class="app-label">LINE</div>
+          </div>
+          <div class="app" id="transferApp">
+            <img src="https://i.imgur.com/j2kjeTK.png" alt="銀行">
+            <div class="app-label">銀行</div>
+          </div>
+          <div class="app" id="facebookApp">
+            <img src="https://imgur.com/POxoxxw.png" alt="Facebook">
+            <div class="app-label">Facebook</div>
+          </div>
+        </div>
+        
+
+
+        <!-- 存款餘額內容 -->
+        <div class="transferSection hidden">
+          <h3>存款餘額</h3>
+          <p>銀行名稱：洋行信託銀行</p>
+          <p>帳號：123-1234-5678-9012</p>
+          <p><strong>目前可用餘額：$<span id="accountBalance">3000</span></strong></p>
+
+          <button class="button" id="backToApps" style="margin-top:1rem; background:#ccc; color:#333;">🔙 返回</button>
+        </div>
+
+
+
+        <!-- 手機內的通知 -->
+        <div id="mobileNotification" class="mobile-notification hidden">
+          <div class="notification-content">
+            <p id="notificationMessage">轉帳處理中...</p>
+          </div>
+        </div>
+
+        
+
+        <!-- LINE 群組聊天室 -->
+        <div class="line-chat" id="lineChat">
+          <div class="chat-header">
+            發大財(20)
+            <button id="exitChat" style="float:right; background:none; border:none; color:white; font-size:14px;">🚪退出</button>
+          </div>
+
+          <div class="chat-messages">
+            <div class="system-message">
+              <span>你已成功加入發大財投資群組</span>
+            </div>
+
+            <div class="message other">
+              <img class="avatar" src="avatar1.png">
+              <div>
+                <div class="sender-name">阿財哥</div>
+                <div class="bubble">歡迎加入!!</div>
+              </div>
+            </div>
+
+            <div class="message other">
+              <img class="avatar" src="avatar1.png">
+              <div>
+                <div class="sender-name">小明</div>
+                <div class="bubble">一起來賺錢了</div>
+              </div>
+            </div>
+
+            <div class="chat-input">
+              <input type="text" id="messageInput" placeholder="輸入訊息..." autofocus>
+              <button id="sendMessageBtn">送出</button>
+            </div>
+
+            <div id="messageOptions" class="message-options">
+              <button class="option-btn">我也想試試！</button>
+              <button class="option-btn">我還是先看看好了</button>
+            </div>
+          </div>
+        </div>
+
+        
+
+        <!-- Facebook 廣告 -->
+        <div id="facebookAd" class="facebook-ad hidden">
+          <div class="chat-header">
+            投資爆賺機會！<button id="exitFacebook">✕</button>
+          </div>
+          <div class="facebook-content">
+            <img src="https://via.placeholder.com/280x160?text=穩賺投資計畫" alt="投資廣告">
+            <h3>日賺萬元不是夢！</h3>
+            <p>加入我們的專屬 LINE 群組，掌握內線消息，快速翻倍資產！</p>
+            <button class="button join-line-btn" id="joinLineBtn">👉 加入 LINE 群組</button>
+          </div>
+        </div>
+
+        <!-- Facebook 離開確認彈窗 -->
+          <div id="exitConfirmModal" class="modal hidden">
+            <div class="modal-content">
+              <p><strong>離開 Facebook？</strong><br>此應用程式即將開啟 LINE 群組連結。</p>
+              <div class="modal-actions">
+                <button id="confirmExit" class="button small confirm">確認</button>
+                <button id="cancelExit" class="button small cancel">取消</button>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+      <!-- Happy 小人 -->
+      <div class="character-container happy" id="happyCharacter">
+        <div class="speech-bubble" id="happySpeech">臉書有投資廣告!！</div>
+        <img src="happy.png" class="character-img" alt="happy character">
+      </div>
+      <div id="scamEndingMessage" style="
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        max-width: 350px;
+        padding: 20px;
+        border: 3px solid red;
+        border-radius: 12px;
+        background-color: #fff0f0;
+        color: #900;
+        font-weight: bold;
+        line-height: 1.5;
+        z-index: 9999;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+        text-align: center;
+      ">
+        📢 <b>畫面彈出結局提示：</b><br><br>
+        🚨「你發現異常，及時收手，成功避免詐騙！」<br><br>
+        🚨 <b>防詐提醒！</b><br>
+        詐騙行為可能導致無法取回的金錢損失。保持警覺，謹慎操作。<br><br>
+        合法投資平台會提供清晰的營運背景、透明的手續費與可追溯的交易紀錄。<br>
+        ❗切勿輕信未經證實的投資資訊。
+        <button id="endGameBtn" style="
+          margin-top: 15px;
+          padding: 10px 25px;
+          font-size: 16px;
+          border: 2px solid red;
+          border-radius: 8px;
+          background-color: #fff0f0;
+          color: #900;
+          cursor: pointer;
+          font-weight: bold;
+        ">結束遊戲</button>
+      </div>
+</div>
+    <script>
+      function showElement(el) {
+        el.classList.remove("hidden");
+        el.style.display = el.classList.contains("line-chat")
+          || el.classList.contains("facebook-ad")
+          || el.classList.contains("app-grid")
+          ? "flex"
+          : "block";
+      }
+
+      function hideElement(el) {
+        el.classList.add("hidden");
+        el.style.display = "none";
+      }
+
+      function resetAppGridLayout() {
+        appGrid.style.display = "flex";
+        appGrid.style.flexDirection = "row";
+        appGrid.style.justifyContent = "space-around";
+      }
+
+      // 取得所有元素
+      const lineApp = document.getElementById("lineApp");
+      const transferApp = document.getElementById("transferApp");
+      const appGrid = document.querySelector(".app-grid");
+      const lineChat = document.getElementById("lineChat");
+      const transferSection = document.querySelector(".transferSection");
+      const backToAppsBtn = document.getElementById("backToApps");
+      const exitChatBtn = document.getElementById("exitChat");
+      const mobileNotification = document.getElementById("mobileNotification");
+      const notificationMessage = document.getElementById("notificationMessage");
+      const facebookApp = document.getElementById("facebookApp");
+      const facebookAd = document.getElementById("facebookAd");
+      const exitFacebookBtn = document.getElementById("exitFacebook");
+      const joinLineBtn = document.getElementById("joinLineBtn");
+      const exitConfirmModal = document.getElementById("exitConfirmModal");
+      const cancelExit = document.getElementById("cancelExit");
+      const confirmExit = document.getElementById("confirmExit");
+
+      function updateCharacterSpeech(text) {
+        document.getElementById("eyeSpeech").textContent = text;
+      }
+
+      window.onload = function () {
+        // 1. 前情提要黑幕 + 小人物
+        setTimeout(() => {
+          const overlay = document.getElementById("blackOverlay");
+          overlay.style.opacity = 0;
+          setTimeout(() => {
+            overlay.style.display = "none";
+          }, 1000); // 與 CSS transition 時間一致
+        }, 1500); // 停留 2 秒
+
+        // 2. 更新角色對話
+        updateCharacterSpeech("最近手頭有點緊，想試試看投資，看能不能一次賺回來......");
+
+        // 顯示 Facebook 畫面
+        hideElement(appGrid);
+        showElement(facebookAd);
+
+        // 3. 綁定主畫面按鈕事件
+        lineApp.addEventListener("click", () => {
+          hideElement(appGrid);
+          showElement(lineChat);
+          initChatSequence(); // 進入LINE聊天室後，開始顯示對話與選項
+        });
+        
+        transferApp.addEventListener("click", () => {
+          hideElement(appGrid);
+          showElement(transferSection);
+        });
+        backToAppsBtn.addEventListener("click", () => {
+          hideElement(transferSection);
+          showElement(appGrid);
+          resetAppGridLayout();
+        });
+        facebookApp.addEventListener("click", () => {
+          hideElement(appGrid);
+          showElement(facebookAd);
+        });
+        exitFacebookBtn.addEventListener("click", () => {
+          hideElement(facebookAd);
+          showElement(appGrid);
+          resetAppGridLayout();
+        });
+        joinLineBtn.addEventListener("click", () => {
+          showElement(exitConfirmModal);
+        });
+        cancelExit.addEventListener("click", () => {
+          hideElement(exitConfirmModal);
+        });
+        confirmExit.addEventListener("click", () => {
+          hideElement(exitConfirmModal);
+          hideElement(facebookAd);
+          showElement(lineChat);
+          initChatSequence(); // 確定退出Facebook，直接進入LINE聊天室並開始對話
+          
+        });
+
+
+        // 4. 聊天輸入 & 自動發送
+        document.getElementById("messageInput").focus();
+        document.getElementById("sendMessageBtn").addEventListener("click", function () {
+          const message = document.getElementById("messageInput").value.trim();
+          if (message) {
+            const chatMessages = document.querySelector(".chat-messages");
+            const newMessage = document.createElement("div");
+            newMessage.classList.add("message", "self");
+            newMessage.innerHTML = `<div class="bubble">${message}</div>`;
+            chatMessages.appendChild(newMessage);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            document.getElementById("messageInput").value = "";
+            document.getElementById("messageInput").focus();
+          }
+        });
+
+        // happy 小人對話框 2秒後消失
+        setTimeout(() => {
+          const happySpeech = document.getElementById("happySpeech");
+          if (happySpeech) {
+            happySpeech.style.display = "none";
+          }
+        }, 4000);
+
+        // 退出 LINE 聊天室的確認彈窗邏輯
+        const exitBtn = document.getElementById('exitChat');
+        const popup = document.getElementById('exitConfirmPopup');
+        const cancelBtn = document.getElementById('cancelExitGroup');
+        const confirmBtn = document.getElementById('confirmExitGroup');
+
+        exitBtn.addEventListener('click', () => {
+          popup.classList.remove('hidden');
+        });
+
+        cancelBtn.addEventListener('click', () => {
+          popup.classList.add('hidden');
+        });
+
+        confirmBtn.addEventListener('click', () => {
+          popup.classList.add('hidden');
+
+          // 顯示結局提示
+          showScamEndingMessage();
+
+          // 離開聊天室回主畫面
+          hideElement(document.getElementById("lineChat"));
+          showElement(document.querySelector(".app-grid"));
+          resetAppGridLayout();
+          clearChatMessages();
+        });
+
+        
+      };
+
+      
+
+      // 清空聊天室訊息（離開聊天室時使用）
+      function clearChatMessages() {
+        const chatMessages = document.querySelector(".chat-messages");
+        chatMessages.innerHTML = "";
+        // 隱藏選項
+        document.getElementById("messageOptions").style.display = "none";
+      }
+
+      // 初始化聊天室的對話流程
+      function initChatSequence() {
+        const chatMessages = document.querySelector(".chat-messages");
+        const messageOptions = document.getElementById("messageOptions");
+        messageOptions.style.display = "none"; // 先隱藏選項
+
+        // 依序顯示小美和阿財哥的訊息
+        addChatMessage("小美", "我最近賺了好多", "avatar2.png", 500)
+          .then(() => addChatMessage("阿財哥", "新加入的成員會先給2000的投資金!!要不要先試試", "avatar1.png", 800))
+          .then(() => {
+            messageOptions.style.display = "flex"; // 顯示選項按鈕
+            bindOptionButtons();
+          });
+
+        // 新增一則訊息到聊天室
+        function addChatMessage(sender, text, avatarSrc, delay) {
+          return new Promise(resolve => {
+            setTimeout(() => {
+              const chatMessages = document.querySelector(".chat-messages");
+              const msgDiv = document.createElement("div");
+              msgDiv.classList.add("message", sender === "self" ? "self" : "other");
+              if (sender !== "self") {
+                msgDiv.innerHTML = `
+                  <img class="avatar" src="${avatarSrc}" alt="${sender}">
+                  <div>
+                    <div class="sender-name">${sender}</div>
+                    <div class="bubble">${text}</div>
+                  </div>`;
+              } else {
+                msgDiv.innerHTML = `<div class="bubble">${text}</div>`;
+              }
+              chatMessages.appendChild(msgDiv);
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+              resolve();
+            }, delay);
+          });
+        }
+
+        // 綁定選項按鈕事件
+        function bindOptionButtons() {
+        const chatMessages = document.querySelector(".chat-messages");
+        const messageOptions = document.getElementById("messageOptions");
+
+        // 動態產生選項按鈕
+        function createOptionButtons(options) {
+          const messageOptions = document.getElementById("messageOptions");
+          messageOptions.innerHTML = "";
+          options.forEach(text => {
+            const btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.textContent = text;
+            messageOptions.appendChild(btn);
+          });
+          messageOptions.style.display = "flex";
+          bindOptionButtons();
+        }
+
+          // 綁定所有選項按鈕點擊事件
+
+            document.querySelectorAll(".option-btn").forEach(button => {
+              button.onclick = async () => {
+                const userText = button.textContent.trim();
+                await addChatMessage("self", userText, null, 0);
+                document.getElementById("messageOptions").style.display = "none";
+                  if (userText === "那我試試看好了" || userText === "我也想試試！") {
+                    await addChatMessage(
+                      "阿財哥",
+                      `這是投資連結<br>
+                      <a href="投資.html" target="_blank" style="color:blue;text-decoration:underline;">投資專頁</a>`,
+                      "avatar1.png",
+                      500
+                    );
+                    } else if (userText === "我還是先看看好了") {
+                    // 新增「我還是先看看好了」的對話
+                    await addChatMessage("阿明", "我又多賺5000了", "avatar3.png", 500);
+                    await addChatMessage("阿寶", "我今天加入看現在已經賺了3000了！好厲害", "avatar4.png", 500);
+
+                    // 再跑一次新選項
+                    createOptionButtons([
+                      "那我試試看好了",
+                      "還是算了...退出群組好了"
+                    ]);
+                    } else if (userText === "還是算了...退出群組好了") {
+                    await addChatMessage("self", userText, null, 0);
+                    document.getElementById("messageOptions").style.display = "none";
+
+                    await addChatMessage("系統", "你已退出群組", null, 500);
+
+                    // 顯示結局提示
+                    showScamEndingMessage();
+
+                    // （可選）關閉聊天室，回主畫面
+                    hideElement(lineChat);
+                    showElement(appGrid);
+                  }
+
+                // 其他條件可繼續擴充
+              };
+            });
+      }
+    }
+    function showScamEndingMessage() {
+    document.getElementById("scamEndingMessage").style.display = "block";
+    }
+    document.getElementById("endGameBtn").onclick = () => {
+      // 嘗試關閉視窗
+      window.close();
+
+      // 若關閉失敗，可以提示用戶手動關閉
+      alert("遊戲結束，將關閉遊戲。");
+    };
+
+    
+  </script>
+
+
+</body>
+</html>

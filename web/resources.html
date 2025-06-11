@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防詐騙資訊網 - 資源幫助</title>
+    <link rel="stylesheet" href="styles2.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>防詐騙資訊網</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">首頁</a>
+                <a href="news.html" class="nav-link">最新消息</a>
+                <a href="games.html" class="nav-link">遊戲區</a>
+                <a href="forum.html" class="nav-link">討論區</a>
+                <a href="scam-types.html" class="nav-link">詐騙類型</a>
+                <a href="resources.html" class="nav-link active">資源幫助</a>
+                <a href="login.html" class="nav-link login-btn">會員登入</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main>
+        <div class="container resources-container">
+            <div class="page-header">
+                <h1>資源與幫助</h1>
+                <p>提供資源和即時協助</p>
+            </div>
+
+            <!-- 工具欄 -->
+            <div class="resources-toolbar">
+                <div class="toolbar-left">
+                    <button class="btn btn-primary" onclick="showNewResourceModal()">
+                        <i class="fas fa-plus"></i> 發布新主題
+                    </button>
+                    <div class="search-box">
+                        <input type="text" placeholder="搜尋關鍵字..." id="resourceSearchInput">
+                        <button onclick="searchResources()"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="toolbar-right">
+                    <select class="filter-select" onchange="filterResources(this.value)">
+                        <option value="all">全部資源</option>
+                        <option value="emergency">緊急求助</option>
+                        <option value="download">下載資源</option>
+                        <option value="tools">線上工具</option>
+                        <option value="contact">聯絡資訊</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 緊急求助區 -->
+            <section class="emergency-section" data-category="emergency">
+                <h2><i class="fas fa-exclamation-triangle"></i> 緊急求助</h2>
+                <div class="emergency-grid">
+                    <div class="emergency-card urgent">
+                        <div class="emergency-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+
+                        <div class="emergency-content">
+                            <h3>165</h3>
+                            <h4>反詐騙諮詢專線</h4>
+                            <p>24小時免費服務，提供詐騙諮詢和案件通報</p>
+                            <button class="emergency-btn" onclick="callEmergency('165')">立即撥打</button>
+                        </div>
+                    </div>
+
+                    <div class="emergency-card police">
+                        <div class="emergency-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="emergency-content">
+                            <h3>110</h3>
+                            <h4>警察報案專線</h4>
+                            <p>緊急案件通報，刑事案件報案</p>
+                            <button class="emergency-btn" onclick="callEmergency('110')">緊急報案</button>
+                        </div>
+                    </div>
+
+                    <div class="emergency-card support">
+                        <div class="emergency-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="emergency-content">
+                            <h3>113</h3>
+                            <h4>婦幼保護專線</h4>
+                            <p>婦女、兒童、老人保護服務</p>
+                            <button class="emergency-btn" onclick="callEmergency('113')">尋求協助</button>
+                        </div>
+                    </div>
+
+                    <div class="emergency-card online">
+                        <div class="emergency-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="emergency-content">
+                            <h3>線上通報</h3>
+                            <h4>網路案件通報</h4>
+                            <p>詳細描述案件，上傳相關證據</p>
+                            <button class="emergency-btn" onclick="showReportModal()">線上通報</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 下載資源區 -->
+            <section class="download-section" data-category="download">
+                <h2><i class="fas fa-download"></i> 下載資源</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h4>防詐騙完整指南</h4>
+                            <p>涵蓋所有常見詐騙類型的完整防範指南</p>
+                            <div class="resource-meta">
+                                <span><i class="fas fa-file"></i> PDF文件</span>
+                                <span><i class="fas fa-download"></i> 2,345 下載</span>
+                                <span><i class="fas fa-weight"></i> 2.5MB</span>
+                            </div>
+                        </div>
+                        <button class="download-btn" onclick="downloadResource('guide.pdf')">
+                            <i class="fas fa-download"></i> 下載
+                        </button>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h4>投資詐騙識別清單</h4>
+                            <p>幫助您識別投資詐騙的檢查清單</p>
+                            <div class="resource-meta">
+                                <span><i class="fas fa-file"></i> PDF文件</span>
+                                <span><i class="fas fa-download"></i> 1,876 下載</span>
+                                <span><i class="fas fa-weight"></i> 1.2MB</span>
+                            </div>
+                        </div>
+                        <button class="download-btn" onclick="downloadResource('investment-checklist.pdf')">
+                            <i class="fas fa-download"></i> 下載
+                        </button>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-route"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h4>緊急應對流程圖</h4>
+                            <p>遭遇詐騙時的緊急應對步驟</p>
+                            <div class="resource-meta">
+                                <span><i class="fas fa-image"></i> 圖片</span>
+                                <span><i class="fas fa-download"></i> 1,234 下載</span>
+                                <span><i class="fas fa-weight"></i> 800KB</span>
+                            </div>
+                        </div>
+                        <button class="download-btn" onclick="downloadResource('emergency-flowchart.png')">
+                            <i class="fas fa-download"></i> 下載
+                        </button>
+                    </div>
+
+                    <div class="resource-card">
+                        <div class="resource-icon">
+                            <i class="fas fa-tools"></i>
+                        </div>
+                        <div class="resource-content">
+                            <h4>網路安全工具包</h4>
+                            <p>保護您網路安全的實用工具集合</p>
+                            <div class="resource-meta">
+                                <span><i class="fas fa-file-archive"></i> 軟體包</span>
+                                <span><i class="fas fa-download"></i> 987 下載</span>
+                                <span><i class="fas fa-weight"></i> 15MB</span>
+                            </div>
+                        </div>
+                        <button class="download-btn" onclick="downloadResource('security-toolkit.zip')">
+                            <i class="fas fa-download"></i> 下載
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 線上工具區 -->
+            <section class="tools-section" data-category="tools">
+                <h2><i class="fas fa-wrench"></i> 線上工具</h2>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="tool-content">
+                            <h4>詐騙網站檢測器</h4>
+                            <p>輸入網址檢測是否為詐騙網站</p>
+                            <div class="tool-input">
+                                <input type="url" placeholder="請輸入網址..." id="urlChecker">
+                                <button onclick="checkUrl()">檢測</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <div class="tool-content">
+                            <h4>投資平台查證</h4>
+                            <p>查證投資平台是否合法註冊</p>
+                            <div class="tool-input">
+                                <input type="text" placeholder="請輸入平台名稱..." id="platformChecker">
+                                <button onclick="checkPlatform()">查證</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="tool-content">
+                            <h4>電話號碼查詢</h4>
+                            <p>查詢可疑電話號碼的詐騙記錄</p>
+                            <div class="tool-input">
+                                <input type="tel" placeholder="請輸入電話號碼..." id="phoneChecker">
+                                <button onclick="checkPhone()">查詢</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tool-card">
+                        <div class="tool-icon">
+                            <i class="fas fa-flag"></i>
+                        </div>
+                        <div class="tool-content">
+                            <h4>案件通報系統</h4>
+                            <p>線上通報詐騙案件</p>
+                            <button class="tool-btn" onclick="showReportModal()">
+                                <i class="fas fa-external-link-alt"></i> 開始通報
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 聯絡資訊區 -->
+            <section class="contact-section" data-category="contact">
+                <h2><i class="fas fa-address-book"></i> 協助中心</h2>
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <div class="contact-header">
+                            <h4>反詐騙諮詢中心</h4>
+                            <div class="contact-status online">24小時服務</div>
+                        </div>
+                        <div class="contact-info">
+                            <div class="info-item">
+                                <i class="fas fa-phone"></i>
+                                <span>165</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>help@antiscam.gov.tw</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>台北市中正區重慶南路一段122號</span>
+                            </div>
+                        </div>
+                        <div class="contact-services">
+                            <span class="service-tag">電話諮詢</span>
+                            <span class="service-tag">案件通報</span>
+                            <span class="service-tag">法律協助</span>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-header">
+                            <h4>金融消費評議中心</h4>
+                            <div class="contact-status business">週一至週五 9:00-17:30</div>
+                        </div>
+                        <div class="contact-info">
+                            <div class="info-item">
+                                <i class="fas fa-phone"></i>
+                                <span>0800-789-885</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>service@foi.org.tw</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>台北市中正區忠孝西路一段4號</span>
+                            </div>
+                        </div>
+                        <div class="contact-services">
+                            <span class="service-tag">金融糾紛</span>
+                            <span class="service-tag">投資諮詢</span>
+                            <span class="service-tag">保險理賠</span>
+                        </div>
+                    </div>
+
+                    <div class="contact-card">
+                        <div class="contact-header">
+                            <h4>消費者保護會</h4>
+                            <div class="contact-status business">週一至週五 8:30-17:30</div>
+                        </div>
+                        <div class="contact-info">
+                            <div class="info-item">
+                                <i class="fas fa-phone"></i>
+                                <span>1950</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-envelope"></i>
+                                <span>cpc@ey.gov.tw</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>台北市中正區忠孝東路一段2號</span>
+                            </div>
+                        </div>
+                        <div class="contact-services">
+                            <span class="service-tag">消費糾紛</span>
+                            <span class="service-tag">商品安全</span>
+                            <span class="service-tag">服務品質</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 發布新主題模態框 -->
+    <div id="newResourceModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>發布新主題</h3>
+                <span class="close" onclick="closeNewResourceModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="login-required">
+                    <div class="login-icon">
+                        <i class="fas fa-user-lock"></i>
+                    </div>
+                    <h4>需要會員登入</h4>
+                    <p>發布新主題需要先登入會員，請先登入您的帳戶</p>
+                    <div class="login-actions">
+                        <button class="btn btn-primary" onclick="redirectToLogin()">
+                            <i class="fas fa-sign-in-alt"></i> 立即登入
+                        </button>
+                        <button class="btn btn-secondary" onclick="closeNewResourceModal()">取消</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 案件通報模態框 -->
+    <div id="reportModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>案件通報</h3>
+                <span class="close" onclick="closeReportModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="reportForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reportType">案件類型</label>
+                            <select id="reportType" required>
+                                <option value="">請選擇案件類型</option>
+                                <option value="investment">投資詐騙</option>
+                                <option value="shopping">購物詐騙</option>
+                                <option value="phone">電話詐騙</option>
+                                <option value="romance">愛情詐騙</option>
+                                <option value="other">其他</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="reportUrgency">緊急程度</label>
+                            <select id="reportUrgency" required>
+                                <option value="">請選擇緊急程度</option>
+                                <option value="urgent">緊急</option>
+                                <option value="normal">一般</option>
+                                <option value="low">不緊急</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reportTitle">案件標題</label>
+                        <input type="text" id="reportTitle" placeholder="請簡述案件內容" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reportDescription">詳細描述</label>
+                        <textarea id="reportDescription" rows="6" placeholder="請詳細描述案件經過、損失金額、相關證據等"
+                            required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reportContact">聯絡方式</label>
+                            <input type="text" id="reportContact" placeholder="電話或Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="reportAmount">損失金額</label>
+                            <input type="number" id="reportAmount" placeholder="請輸入損失金額（元）">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reportEvidence">相關證據</label>
+                        <input type="file" id="reportEvidence" multiple accept="image/*,.pdf,.doc,.docx">
+                        <small>可上傳圖片、PDF或文件檔案</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeReportModal()">取消</button>
+                <button class="btn btn-primary" onclick="submitReport()">提交通報</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 頁腳 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>聯絡我們</h3>
+                    <p><i class="fas fa-phone"></i> 165反詐騙專線</p>
+                    <p><i class="fas fa-envelope"></i> info@antiscam.tw</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 台中市三民區</p>
+                    <p><i class="fas fa-clock"></i> 24小時服務</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>快速連結</h3>
+                    <ul>
+                        <li><a href="scam-types.html">詐騙類型</a></li>
+                        <li><a href="resources.html">求助資源</a></li>
+                        <li><a href="forum.html">討論區</a></li>
+                        <li><a href="games.html">防詐遊戲</a></li>
+                        <li><a href="news.html">最新消息</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>關注我們</h3>
+                    <p>獲取最新防詐資訊</p>
+                    <div class="social-links">
+                        <a href="#" class="facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="line" title="LINE"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到頂部按鈕 -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+
+    <script src="script.js"></script>
+    <script>
+        // 檢查用戶登入狀態
+        let isLoggedIn = false; // 這裡應該從後端獲取真實狀態
+
+        function showNewResourceModal() {
+            document.getElementById('newResourceModal').style.display = 'block';
+        }
+
+        function closeNewResourceModal() {
+            document.getElementById('newResourceModal').style.display = 'none';
+        }
+
+        function redirectToLogin() {
+            window.location.href = 'login.html';
+        }
+
+        function showReportModal() {
+            document.getElementById('reportModal').style.display = 'block';
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').style.display = 'none';
+        }
+
+        function submitReport() {
+            const form = document.getElementById('reportForm');
+            const formData = new FormData(form);
+
+            // 簡單驗證
+            const type = document.getElementById('reportType').value;
+            const title = document.getElementById('reportTitle').value;
+            const description = document.getElementById('reportDescription').value;
+
+            if (!type || !title || !description) {
+                alert('請填寫必要欄位');
+                return;
+            }
+
+            // 這裡應該發送到後端
+            alert('案件通報已提交，我們會盡快處理');
+            closeReportModal();
+            form.reset();
+        }
+
+        function searchResources() {
+            const keyword = document.getElementById('resourceSearchInput').value;
+            if (keyword.trim()) {
+                alert(`搜尋關鍵字：${keyword}`);
+                // 這裡實現搜尋功能
+                filterResourcesByKeyword(keyword);
+            }
+        }
+
+        function filterResources(category) {
+            const sections = document.querySelectorAll('[data-category]');
+
+            sections.forEach(section => {
+                if (category === 'all' || section.dataset.category === category) {
+                    section.style.display = 'block';
+                    section.style.animation = 'fadeInUp 0.5s ease';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        function filterResourcesByKeyword(keyword) {
+            const sections = document.querySelectorAll('[data-category]');
+            const lowerKeyword = keyword.toLowerCase();
+
+            sections.forEach(section => {
+                const text = section.textContent.toLowerCase();
+                if (text.includes(lowerKeyword)) {
+                    section.style.display = 'block';
+                    section.style.animation = 'fadeInUp 0.5s ease';
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+        }
+
+        function callEmergency(number) {
+            if (confirm(`確定要撥打 ${number} 嗎？`)) {
+                window.location.href = `tel:${number}`;
+            }
+        }
+
+        function downloadResource(filename) {
+            alert(`正在下載：${filename}`);
+            // 這裡實現下載功能
+        }
+
+        function checkUrl() {
+            const url = document.getElementById('urlChecker').value;
+            if (url) {
+                alert(`正在檢測網址：${url}`);
+                // 這裡實現URL檢測功能
+            }
+        }
+
+        function checkPlatform() {
+            const platform = document.getElementById('platformChecker').value;
+            if (platform) {
+                alert(`正在查證平台：${platform}`);
+                // 這裡實現平台查證功能
+            }
+        }
+
+        function checkPhone() {
+            const phone = document.getElementById('phoneChecker').value;
+            if (phone) {
+                alert(`正在查詢電話：${phone}`);
+                // 這裡實現電話查詢功能
+            }
+        }
+
+        // 點擊模態框外部關閉
+        window.onclick = function (event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Enter鍵搜尋
+        document.getElementById('resourceSearchInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                searchResources();
+            }
+        });
+    </script>
+</body>
+
+</html>

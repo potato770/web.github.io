@@ -1,149 +1,202 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Modern Business - Start Bootstrap Template</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-        <!-- Bootstrap icons-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/styles.css" rel="stylesheet" />
-    </head>
-    <body class="d-flex flex-column h-100">
-        <main class="flex-shrink-0">
-            <!-- Navigation-->
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <div class="container px-5">
-                    <a class="navbar-brand" href="index.html">Start01 Bootstrap</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                            <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
-                            <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Blog</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
-                                    <li><a class="dropdown-item" href="blog-home.html">Blog Home</a></li>
-                                    <li><a class="dropdown-item" href="blog-post.html">Blog Post</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Portfolio</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
-                                    <li><a class="dropdown-item" href="portfolio-overview.html">Portfolio Overview</a></li>
-                                    <li><a class="dropdown-item" href="portfolio-item.html">Portfolio Item</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+<html lang="zh-TW">
 
-            <!-- Header 最新消息區-->
-            <header class="bg-dark py-5">
-                <div class="bg-primary text-white py-2">
-                    <marquee behavior="scroll" direction="left">我是跑馬燈</marquee>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防詐騙資訊網 - 首頁</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>防詐騙資訊網</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link active">首頁</a>
+                <a href="news.html" class="nav-link">最新消息</a>
+                <a href="games.html" class="nav-link">遊戲區</a>
+                <a href="forum.html" class="nav-link">討論區</a>
+                <a href="scam-types.html" class="nav-link">詐騙類型</a>
+                <a href="resources.html" class="nav-link">資源幫助</a>
+                <a href="login.html" class="nav-link login-btn">會員登入</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main>
+        <!-- 公告輪播區 -->
+        <section class="hero-slider">
+            <div class="slider-container">
+                <div class="slide active">
+                    <img src="pic/carefulpic1.jpg" alt="防詐騙宣導">
                 </div>
-                <div class="container px-5">
-                    <div class="row gx-5 align-items-center justify-content-center">
-                        <div class="col-lg-8 col-xl-7 col-xxl-6">
-                            <div class="my-5 text-center text-xl-start">
-                                <h1 class="display-5 fw-bolder text-white mb-2">最新消息</h1>
-                                <p class="lead fw-normal text-white-50 mb-4">hi!</p>
-                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                                    <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#features">Get Started</a>
-                                    <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center">
-                            <img class="img-fluid rounded-3 my-5" src="https://dummyimage.com/600x400/343a40/6c757d" alt="..." />
-                        </div>
-                    </div>
+                <div class="slide">
+                    <img src="pic/carefulpic2.jpg" alt="最新詐騙警報">
                 </div>
-            </header>
-            
-            
-        <!-- 最新消息&公告 -->
-        <section class="py-5" id="features">
-            <div class="container px-5 my-5">
-                <div class="row gx-5 align-items-center">
-                    <!-- 最新消息區&公告  -->
-                    <div class="col-6 col-lg-4 mb-5 mb-lg-0">
-                        <h2 class="fw-bolder mb-4 section-toggle" data-section="news">最新消息區</h2>
-                    </div>             
+                <div class="slide">
+                    <img src="pic/carefulpic3.jpg" alt="防詐騙遊戲">
                 </div>
-                <!-- 內容 -->
-                <div class="row gx-5 row-cols-1 row-cols-md-2">
-                    <div class="col mb-2">
-                        <h2 class="h5"><a href="https://youtu.be/Yc2YA0iowU8?si=OkKTI1g8TOCh5abH" class="text-decoration-none" target="_blank">No.1</a></h2>
-                        <p>No.1 text</p>
-                    </div>
-                    <div class="col mb-2">
-                        <h2 class="h5"><a href="https://www.youtube.com/watch?v=GqjNGHYFhFs" class="text-decoration-none" target="_blank">No.2</a></h2>
-                        <p>No.2 text</p>
-                    </div>
-                    <div class="col mb-2">
-                        <h2 class="h5"><a href="https://www.youtube.com/watch?v=vhkA-F3qRqs" class="text-decoration-none" target="_blank">No.3</a></h2>
-                        <p>No.3 text</p>
-                    </div>
-                    <div class="col">
-                        <h2 class="h5"><a href="https://www.youtube.com/watch?v=xyAKAcZD9E8" class="text-decoration-none" target="_blank">No.4</a></h2>
-                        <p>No.4 text</p>
-                    </div>
-                </div>
-                
-                
+            </div>
+            <!-- 控制按鈕 -->
+            <button class="slider-btn prev" onclick="changeSlide(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="slider-btn next" onclick="changeSlide(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <!-- 點點 -->
+            <div class="slider-dots">
+                <span class="dot active" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
             </div>
         </section>
-        
 
-        <!-- 網站介紹 -->
-            <div class="py-5 bg-light">
-                <div class="container my-1">
-                    <div class="row gx-5">
-                        <div class="col-lg-10 col-xl-7">
-                            <h1>網站介紹</h1>
-                            <div>
-                                <div class="fs-4 mb-4 fst-italic">"djiokjakdljasdlajdk"</div>
-                            </div>
-                        </div>
+        <!-- 快速連結區 -->
+        <section class="quick-links">
+            <div class="container">
+                <h2>快速連結</h2>
+                <div class="links-grid">
+                    <div class="link-card" onclick="location.href='scam-types.html'">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>詐騙類型</h3>
+                        <p>了解各種詐騙手法</p>
+                    </div>
+                    <div class="link-card" onclick="location.href='games.html'">
+                        <i class="fas fa-gamepad"></i>
+                        <h3>防詐遊戲</h3>
+                        <p>透過遊戲學習防詐</p>
+                    </div>
+                    <div class="link-card" onclick="location.href='forum.html'">
+                        <i class="fas fa-comments"></i>
+                        <h3>討論區</h3>
+                        <p>分享經驗與討論</p>
+                    </div>
+                    <div class="link-card" onclick="location.href='resources.html'">
+                        <i class="fas fa-life-ring"></i>
+                        <h3>求助資源</h3>
+                        <p>獲得專業協助</p>
                     </div>
                 </div>
             </div>
-            
-        </main>
+        </section>
 
-        <!-- 葉偉 -->
-        <footer class="bg-dark py-4 mt-auto">
-            <div class="container px-5">
-                <div class="row align-items-center justify-content-between flex-column flex-sm-row">
-                    <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Your Website 2023</div></div>
-                    <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
+        <!-- 統計數據區 -->
+        <section class="stats-section">
+            <div class="container">
+                <h2>防詐成果</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="15000">0</div>
+                        <div class="stat-label">已幫助人數</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="500">0</div>
+                        <div class="stat-label">防詐案例</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="98">0</div>
+                        <div class="stat-label">成功率 %</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="24">0</div>
+                        <div class="stat-label">服務時數</div>
                     </div>
                 </div>
             </div>
-        </footer>
+        </section>
+
+        <!-- 最新消息預覽 -->
+        <section class="news-preview">
+            <div class="container">
+                <h2>最新消息</h2>
+                <div class="news-grid">
+                    <article class="news-card">
+                        <div class="news-date">2024-01-15</div>
+                        <h3>新型投資詐騙手法警報</h3>
+                        <p>近期出現新型態的投資詐騙，請民眾提高警覺...</p>
+                        <a href="news.html" class="read-more">閱讀更多</a>
+                    </article>
+                    <article class="news-card">
+                        <div class="news-date">2024-01-12</div>
+                        <h3>防詐騙教育講座開放報名</h3>
+                        <p>本月將舉辦防詐騙教育講座，歡迎民眾踴躍參與...</p>
+                        <a href="news.html" class="read-more">閱讀更多</a>
+                    </article>
+                    <article class="news-card">
+                        <div class="news-date">2024-01-10</div>
+                        <h3>網路購物詐騙防範指南</h3>
+                        <p>年末購物季來臨，教您如何安全網購...</p>
+                        <a href="news.html" class="read-more">閱讀更多</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁腳 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>聯絡我們</h3>
+                    <p><i class="fas fa-phone"></i> 165反詐騙專線</p>
+                    <p><i class="fas fa-envelope"></i> info@antiscam.tw</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 台中市三民區</p>
+                    <p><i class="fas fa-clock"></i> 24小時服務</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>快速連結</h3>
+                    <ul>
+                        <li><a href="scam-types.html">詐騙類型</a></li>
+                        <li><a href="resources.html">求助資源</a></li>
+                        <li><a href="forum.html">討論區</a></li>
+                        <li><a href="games.html">防詐遊戲</a></li>
+                        <li><a href="news.html">最新消息</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>關注我們</h3>
+                    <p>獲取最新防詐資訊</p>
+                    <div class="social-links">
+                        <a href="#" class="facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="line" title="LINE"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+            </div>
 
 
 
+            <div class="footer-bottom">
+                <p>&copy; 2025 </p>
+            </div>
+        </div>
+    </footer>
 
+    <!-- 回到頂部按鈕 -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </button>
 
-        <!-- Bootstrap core JS-->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
-    </body>
+</body>
+
 </html>

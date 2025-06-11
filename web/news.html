@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防詐騙資訊網 - 最新消息</title>
+    <link rel="stylesheet" href="styles2.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-shield-alt"></i>
+                <a href="index.html" class="nav-link">防詐騙資訊網</a>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">首頁</a>
+                <a href="news.html" class="nav-link active">最新消息</a>
+                <a href="games.html" class="nav-link">遊戲區</a>
+                <a href="forum.html" class="nav-link">討論區</a>
+                <a href="scam-types.html" class="nav-link">詐騙類型</a>
+                <a href="resources.html" class="nav-link">資源幫助</a>
+                <a href="login.html" class="nav-link login-btn">會員登入</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main>
+        <div class="container news-container">
+            <div class="page-header">
+                <h1>最新消息</h1>
+                <p>掌握最新防詐資訊，保護自身安全</p>
+            </div>
+
+            <!-- 緊急警報區 -->
+            <section class="emergency-alerts">
+                <h2><i class="fas fa-exclamation-triangle"></i> 緊急警報</h2>
+                <div class="alert-grid">
+                    <div class="alert-card urgent">
+                        <div class="alert-badge">緊急</div>
+                        <h3>新型AI語音詐騙激增</h3>
+                        <p>近期出現利用AI技術模仿親友聲音進行詐騙的案例，請民眾提高警覺...</p>
+                        <div class="alert-meta">
+                            <span><i class="fas fa-calendar"></i> 2024-01-15</span>
+                            <span><i class="fas fa-eye"></i> 2,345 瀏覽</span>
+                        </div>
+                    </div>
+                    <div class="alert-card warning">
+                        <div class="alert-badge">警告</div>
+                        <h3>假冒銀行APP詐騙案例</h3>
+                        <p>詐騙集團製作高仿真銀行APP，已有多人受騙，請務必從官方管道下載...</p>
+                        <div class="alert-meta">
+                            <span><i class="fas fa-calendar"></i> 2024-01-12</span>
+                            <span><i class="fas fa-eye"></i> 1,876 瀏覽</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 新聞分類 -->
+            <section class="news-categories">
+                <div class="category-tabs">
+                    <button class="tab-btn active" onclick="filterNews('all')">全部</button>
+                    <button class="tab-btn" onclick="filterNews('investment')">投資詐騙</button>
+                    <button class="tab-btn" onclick="filterNews('shopping')">購物詐騙</button>
+                    <button class="tab-btn" onclick="filterNews('phone')">電話詐騙</button>
+                    <button class="tab-btn" onclick="filterNews('social')">社群詐騙</button>
+                    <button class="tab-btn" onclick="filterNews('policy')">政策公告</button>
+                </div>
+            </section>
+
+            <!-- 新聞列表 -->
+            <section class="news-list">
+                <div class="news-grid">
+                    <article class="news-card" data-category="investment">
+                        <div class="news-image">
+                            <img src="/placeholder.svg?height=200&width=300" alt="投資詐騙新聞">
+                            <div class="news-category investment">投資詐騙</div>
+                        </div>
+                        <div class="news-content">
+                            <h3>虛擬貨幣投資詐騙手法大揭密</h3>
+                            <p>近期虛擬貨幣詐騙案件頻傳，詐騙集團利用高報酬率吸引投資者，實際上是龐氏騙局...</p>
+                            <div class="news-meta">
+                                <span><i class="fas fa-calendar"></i> 2024-01-10</span>
+                                <span><i class="fas fa-eye"></i> 1,234 瀏覽</span>
+                                <span><i class="fas fa-comments"></i> 45 評論</span>
+                            </div>
+                            <a href="#" class="read-more">閱讀全文</a>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-category="shopping">
+                        <div class="news-image">
+                            <img src="/placeholder.svg?height=200&width=300" alt="購物詐騙新聞">
+                            <div class="news-category shopping">購物詐騙</div>
+                        </div>
+                        <div class="news-content">
+                            <h3>一頁式購物網站詐騙防範指南</h3>
+                            <p>年末購物季來臨，一頁式詐騙網站也跟著增加，教您如何識別並避免受騙...</p>
+                            <div class="news-meta">
+                                <span><i class="fas fa-calendar"></i> 2024-01-08</span>
+                                <span><i class="fas fa-eye"></i> 987 瀏覽</span>
+                                <span><i class="fas fa-comments"></i> 32 評論</span>
+                            </div>
+                            <a href="#" class="read-more">閱讀全文</a>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-category="phone">
+                        <div class="news-image">
+                            <img src="/placeholder.svg?height=200&width=300" alt="電話詐騙新聞">
+                            <div class="news-category phone">電話詐騙</div>
+                        </div>
+                        <div class="news-content">
+                            <h3>假冒健保局退費電話詐騙案例分析</h3>
+                            <p>詐騙集團冒充健保局人員，聲稱要退還保費，已有多位民眾受騙上當...</p>
+                            <div class="news-meta">
+                                <span><i class="fas fa-calendar"></i> 2024-01-06</span>
+                                <span><i class="fas fa-eye"></i> 1,567 瀏覽</span>
+                                <span><i class="fas fa-comments"></i> 67 評論</span>
+                            </div>
+                            <a href="#" class="read-more">閱讀全文</a>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-category="social">
+                        <div class="news-image">
+                            <img src="/placeholder.svg?height=200&width=300" alt="社群詐騙新聞">
+                            <div class="news-category social">社群詐騙</div>
+                        </div>
+                        <div class="news-content">
+                            <h3>Facebook假名人投資廣告詐騙警報</h3>
+                            <p>詐騙集團利用深偽技術製作名人投資廣告，在社群媒體大量散布...</p>
+                            <div class="news-meta">
+                                <span><i class="fas fa-calendar"></i> 2024-01-04</span>
+                                <span><i class="fas fa-eye"></i> 2,134 瀏覽</span>
+                                <span><i class="fas fa-comments"></i> 89 評論</span>
+                            </div>
+                            <a href="#" class="read-more">閱讀全文</a>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-category="policy">
+                        <div class="news-image">
+                            <img src="/placeholder.svg?height=200&width=300" alt="政策公告">
+                            <div class="news-category policy">政策公告</div>
+                        </div>
+                        <div class="news-content">
+                            <h3>政府推出全民防詐教育計畫</h3>
+                            <p>教育部與內政部合作推出全民防詐教育計畫，提升民眾防詐意識...</p>
+                            <div class="news-meta">
+                                <span><i class="fas fa-calendar"></i> 2024-01-02</span>
+                                <span><i class="fas fa-eye"></i> 892 瀏覽</span>
+                                <span><i class="fas fa-comments"></i> 23 評論</span>
+                            </div>
+                            <a href="#" class="read-more">閱讀全文</a>
+                        </div>
+                    </article>
+
+                    <article class="news-card" data-category="investment">
+                        <div class="news-image">
+                            <img src="/placeholder.svg?height=200&width=300" alt="投資詐騙新聞">
+                            <div class="news-category investment">投資詐騙</div>
+                        </div>
+                        <div class="news-content">
+                            <h3>外匯保證金交易詐騙手法解析</h3>
+                            <p>外匯保證金交易詐騙案件增加，詐騙集團利用高槓桿吸引投資者...</p>
+                            <div class="news-meta">
+                                <span><i class="fas fa-calendar"></i> 2023-12-30</span>
+                                <span><i class="fas fa-eye"></i> 756 瀏覽</span>
+                                <span><i class="fas fa-comments"></i> 34 評論</span>
+                            </div>
+                            <a href="#" class="read-more">閱讀全文</a>
+                        </div>
+                    </article>
+                </div>
+
+                <!-- 分頁 -->
+                <div class="pagination">
+                    <button class="page-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <button class="page-btn">4</button>
+                    <button class="page-btn">5</button>
+                    <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 頁腳 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>聯絡我們</h3>
+                    <p><i class="fas fa-phone"></i> 165反詐騙專線</p>
+                    <p><i class="fas fa-envelope"></i> info@antiscam.tw</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 台中市三民區</p>
+                    <p><i class="fas fa-clock"></i> 24小時服務</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>快速連結</h3>
+                    <ul>
+                        <li><a href="scam-types.html">詐騙類型</a></li>
+                        <li><a href="resources.html">求助資源</a></li>
+                        <li><a href="forum.html">討論區</a></li>
+                        <li><a href="games.html">防詐遊戲</a></li>
+                        <li><a href="news.html">最新消息</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>關注我們</h3>
+                    <p>獲取最新防詐資訊</p>
+                    <div class="social-links">
+                        <a href="#" class="facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="line" title="LINE"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到頂部按鈕 -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+
+    <script src="script.js"></script>
+    <script>
+        function filterNews(category) {
+            const newsCards = document.querySelectorAll('.news-card');
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            
+            // 更新按鈕狀態
+            tabBtns.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // 過濾新聞
+            newsCards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeInUp 0.5s ease';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

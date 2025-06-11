@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防詐騙資訊網 - 討論區</title>
+    <link rel="stylesheet" href="styles2.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>防詐騙資訊網</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">首頁</a>
+                <a href="news.html" class="nav-link">最新消息</a>
+                <a href="games.html" class="nav-link">遊戲區</a>
+                <a href="forum.html" class="nav-link active">討論區</a>
+                <a href="scam-types.html" class="nav-link">詐騙類型</a>
+                <a href="resources.html" class="nav-link">資源幫助</a>
+                <a href="login.html" class="nav-link login-btn">會員登入</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main>
+        <div class="container forum-container">
+            <div class="page-header">
+                <h1>討論區</h1>
+                <p>分享經驗，互相幫助，共同防詐</p>
+            </div>
+
+            <div class="forum-layout">
+                <!-- 側邊欄 -->
+                <aside class="forum-sidebar">
+                    <div class="sidebar-section">
+                        <h3><i class="fas fa-list"></i> 討論分類</h3>
+                        <ul class="category-list">
+                            <li><a href="#" class="active">全部討論 <span class="count">1,234</span></a></li>
+                            <li><a href="#">詐騙案例分享 <span class="count">456</span></a></li>
+                            <li><a href="#">防詐技巧 <span class="count">234</span></a></li>
+                            <li><a href="#">投資安全 <span class="count">189</span></a></li>
+                            <li><a href="#">網路安全 <span class="count">167</span></a></li>
+                            <li><a href="#">法律諮詢 <span class="count">89</span></a></li>
+                            <li><a href="#">新手問答 <span class="count">99</span></a></li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3><i class="fas fa-fire"></i> 熱門標籤</h3>
+                        <div class="tag-cloud">
+                            <span class="tag">#投資詐騙</span>
+                            <span class="tag">#電話詐騙</span>
+                            <span class="tag">#網購安全</span>
+                            <span class="tag">#AI詐騙</span>
+                            <span class="tag">#釣魚網站</span>
+                            <span class="tag">#假冒APP</span>
+                            <span class="tag">#社群詐騙</span>
+                            <span class="tag">#防詐技巧</span>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3><i class="fas fa-users"></i> 在線用戶</h3>
+                        <div class="online-users">
+                            <div class="user-item">
+                                <div class="user-avatar">A</div>
+                                <span>防詐達人</span>
+                                <div class="status online"></div>
+                            </div>
+                            <div class="user-item">
+                                <div class="user-avatar">B</div>
+                                <span>安全守護者</span>
+                                <div class="status online"></div>
+                            </div>
+                            <div class="user-item">
+                                <div class="user-avatar">C</div>
+                                <span>詐騙剋星</span>
+                                <div class="status away"></div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- 主要內容區 -->
+                <div class="forum-main">
+                    <!-- 工具欄 -->
+                    <div class="forum-toolbar">
+                        <div class="toolbar-left">
+                            <button class="btn btn-primary" onclick="showNewTopicModal()">
+                                <i class="fas fa-plus"></i> 發布新主題
+                            </button>
+                            <div class="search-box">
+                                <input type="text" placeholder="搜尋關鍵字..." id="searchInput">
+                                <button onclick="searchForum()"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>
+                        <div class="toolbar-right">
+                            <select class="sort-select">
+                                <option>最新回覆</option>
+                                <option>最多回覆</option>
+                                <option>最多瀏覽</option>
+                                <option>發布時間</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 置頂主題 -->
+                    <div class="pinned-topics">
+                        <h3><i class="fas fa-thumbtack"></i> 置頂主題</h3>
+                        <div class="topic-item pinned">
+                            <div class="topic-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="topic-content">
+                                <h4><a href="#">【重要】防詐騙討論區使用規則</a></h4>
+                                <div class="topic-meta">
+                                    <span class="author">管理員</span>
+                                    <span class="time">2024-01-01</span>
+                                    <span class="category">公告</span>
+                                </div>
+                            </div>
+                            <div class="topic-stats">
+                                <div class="stat">
+                                    <span class="number">156</span>
+                                    <span class="label">回覆</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="number">2.3K</span>
+                                    <span class="label">瀏覽</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 討論主題列表 -->
+                    <div class="topics-list">
+                        <div class="topic-item hot">
+                            <div class="topic-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <div class="topic-content">
+                                <h4><a href="#">遇到假投資平台詐騙，如何追回損失？</a></h4>
+                                <p>我在某個投資平台投入了50萬，現在發現是詐騙，請問有什麼方法可以追回損失嗎？</p>
+                                <div class="topic-meta">
+                                    <span class="author">受害者小王</span>
+                                    <span class="time">2小時前</span>
+                                    <span class="category">詐騙案例分享</span>
+                                    <div class="tags">
+                                        <span class="tag">#投資詐騙</span>
+                                        <span class="tag">#追討損失</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="topic-stats">
+                                <div class="stat">
+                                    <span class="number">23</span>
+                                    <span class="label">回覆</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="number">567</span>
+                                    <span class="label">瀏覽</span>
+                                </div>
+                            </div>
+                            <div class="last-reply">
+                                <div class="reply-avatar">L</div>
+                                <div class="reply-info">
+                                    <span class="reply-author">法律顧問</span>
+                                    <span class="reply-time">30分鐘前</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="topic-item">
+                            <div class="topic-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <div class="topic-content">
+                                <h4><a href="#">分享：如何識別假冒銀行的釣魚網站</a></h4>
+                                <p>最近發現很多假冒銀行的釣魚網站，教大家幾個識別方法...</p>
+                                <div class="topic-meta">
+                                    <span class="author">資安專家</span>
+                                    <span class="time">4小時前</span>
+                                    <span class="category">防詐技巧</span>
+                                    <div class="tags">
+                                        <span class="tag">#釣魚網站</span>
+                                        <span class="tag">#銀行安全</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="topic-stats">
+                                <div class="stat">
+                                    <span class="number">18</span>
+                                    <span class="label">回覆</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="number">432</span>
+                                    <span class="label">瀏覽</span>
+                                </div>
+                            </div>
+                            <div class="last-reply">
+                                <div class="reply-avatar">S</div>
+                                <div class="reply-info">
+                                    <span class="reply-author">安全守護者</span>
+                                    <span class="reply-time">1小時前</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="topic-item">
+                            <div class="topic-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="topic-content">
+                                <h4><a href="#">電話詐騙新手法：假冒健保局要求退費</a></h4>
+                                <p>今天接到自稱健保局的電話，說要退還保費，差點就被騙了...</p>
+                                <div class="topic-meta">
+                                    <span class="author">防詐志工</span>
+                                    <span class="time">6小時前</span>
+                                    <span class="category">詐騙案例分享</span>
+                                    <div class="tags">
+                                        <span class="tag">#電話詐騙</span>
+                                        <span class="tag">#健保局</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="topic-stats">
+                                <div class="stat">
+                                    <span class="number">31</span>
+                                    <span class="label">回覆</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="number">678</span>
+                                    <span class="label">瀏覽</span>
+                                </div>
+                            </div>
+                            <div class="last-reply">
+                                <div class="reply-avatar">V</div>
+                                <div class="reply-info">
+                                    <span class="reply-author">防詐志工</span>
+                                    <span class="reply-time">2小時前</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="topic-item">
+                            <div class="topic-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="topic-content">
+                                <h4><a href="#">網購詐騙：一頁式購物網站的特徵</a></h4>
+                                <p>整理了一些一頁式詐騙網站的共同特徵，希望對大家有幫助...</p>
+                                <div class="topic-meta">
+                                    <span class="author">消費達人</span>
+                                    <span class="time">8小時前</span>
+                                    <span class="category">網路安全</span>
+                                    <div class="tags">
+                                        <span class="tag">#網購安全</span>
+                                        <span class="tag">#一頁式詐騙</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="topic-stats">
+                                <div class="stat">
+                                    <span class="number">15</span>
+                                    <span class="label">回覆</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="number">289</span>
+                                    <span class="label">瀏覽</span>
+                                </div>
+                            </div>
+                            <div class="last-reply">
+                                <div class="reply-avatar">C</div>
+                                <div class="reply-info">
+                                    <span class="reply-author">詐騙剋星</span>
+                                    <span class="reply-time">3小時前</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="topic-item">
+                            <div class="topic-icon">
+                                <i class="fas fa-gavel"></i>
+                            </div>
+                            <div class="topic-content">
+                                <h4><a href="#">被詐騙後的法律救濟途徑有哪些？</a></h4>
+                                <p>很多人被詐騙後不知道該怎麼辦，這裡提供一些法律途徑...</p>
+                                <div class="topic-meta">
+                                    <span class="author">法律顧問</span>
+                                    <span class="time">1天前</span>
+                                    <span class="category">法律諮詢</span>
+                                    <div class="tags">
+                                        <span class="tag">#法律救濟</span>
+                                        <span class="tag">#報案流程</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="topic-stats">
+                                <div class="stat">
+                                    <span class="number">12</span>
+                                    <span class="label">回覆</span>
+                                </div>
+                                <div class="stat">
+                                    <span class="number">234</span>
+                                    <span class="label">瀏覽</span>
+                                </div>
+                            </div>
+                            <div class="last-reply">
+                                <div class="reply-avatar">L</div>
+                                <div class="reply-info">
+                                    <span class="reply-author">法律顧問</span>
+                                    <span class="reply-time">5小時前</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 分頁 -->
+                    <div class="pagination">
+                        <button class="page-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn">4</button>
+                        <button class="page-btn">5</button>
+                        <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 發布新主題模態框 -->
+    <div id="newTopicModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>發布新主題</h3>
+                <span class="close" onclick="closeNewTopicModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="topicTitle">主題標題</label>
+                    <input type="text" id="topicTitle" placeholder="請輸入主題標題">
+                </div>
+                <div class="form-group">
+                    <label for="topicCategory">分類</label>
+                    <select id="topicCategory">
+                        <option>詐騙案例分享</option>
+                        <option>防詐技巧</option>
+                        <option>投資安全</option>
+                        <option>網路安全</option>
+                        <option>法律諮詢</option>
+                        <option>新手問答</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="topicTags">標籤</label>
+                    <input type="text" id="topicTags" placeholder="請輸入標籤，用逗號分隔">
+                </div>
+                <div class="form-group">
+                    <label for="topicContent">內容</label>
+                    <textarea id="topicContent" rows="8" placeholder="請輸入主題內容"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeNewTopicModal()">取消</button>
+                <button class="btn btn-primary" onclick="submitNewTopic()">發布</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 頁腳 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>聯絡我們</h3>
+                    <p><i class="fas fa-phone"></i> 165反詐騙專線</p>
+                    <p><i class="fas fa-envelope"></i> info@antiscam.tw</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 台中市三民區</p>
+                    <p><i class="fas fa-clock"></i> 24小時服務</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>快速連結</h3>
+                    <ul>
+                        <li><a href="scam-types.html">詐騙類型</a></li>
+                        <li><a href="resources.html">求助資源</a></li>
+                        <li><a href="forum.html">討論區</a></li>
+                        <li><a href="games.html">防詐遊戲</a></li>
+                        <li><a href="news.html">最新消息</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>關注我們</h3>
+                    <p>獲取最新防詐資訊</p>
+                    <div class="social-links">
+                        <a href="#" class="facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="line" title="LINE"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到頂部按鈕 -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+
+    <script src="script.js"></script>
+    <script>
+        // 檢查用戶登入狀態
+        let isLoggedIn = false; // 這裡應該從後端獲取真實狀態
+
+        function showNewTopicModal() {
+            if (!isLoggedIn) {
+                alert('請先登入會員才能發布新主題');
+                window.location.href = 'login.html';
+                return;
+            }
+            document.getElementById('newTopicModal').style.display = 'block';
+        }
+
+        function closeNewTopicModal() {
+            document.getElementById('newTopicModal').style.display = 'none';
+        }
+
+        function submitNewTopic() {
+            const title = document.getElementById('topicTitle').value;
+            const category = document.getElementById('topicCategory').value;
+            const tags = document.getElementById('topicTags').value;
+            const content = document.getElementById('topicContent').value;
+
+            if (!title || !content) {
+                alert('請填寫標題和內容');
+                return;
+            }
+
+            // 這裡應該發送到後端
+            alert('主題發布成功！');
+            closeNewTopicModal();
+        }
+
+        function searchForum() {
+            const keyword = document.getElementById('searchInput').value;
+            if (keyword.trim()) {
+                alert(`搜尋關鍵字：${keyword}`);
+                // 這裡實現搜尋功能
+            }
+        }
+
+        // 點擊模態框外部關閉
+        window.onclick = function(event) {
+            const modal = document.getElementById('newTopicModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

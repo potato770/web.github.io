@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防詐騙資訊網 - 詐騙類型</title>
+    <link rel="stylesheet" href="styles2.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>防詐騙資訊網</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">首頁</a>
+                <a href="news.html" class="nav-link">最新消息</a>
+                <a href="games.html" class="nav-link">遊戲區</a>
+                <a href="forum.html" class="nav-link">討論區</a>
+                <a href="scam-types.html" class="nav-link active">詐騙類型</a>
+                <a href="resources.html" class="nav-link">資源幫助</a>
+                <a href="login.html" class="nav-link login-btn">會員登入</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main>
+        <div class="container scam-types-container">
+            <div class="page-header">
+                <h1>詐騙類型大全</h1>
+                <p>了解各種詐騙手法，提高防範意識</p>
+            </div>
+
+            <!-- 統計概覽 -->
+            <section class="stats-overview">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-number">6</div>
+                        <div class="stat-label">主要類型</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-number">3,456</div>
+                        <div class="stat-label">案例數量</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-number">95%</div>
+                        <div class="stat-label">可預防率</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-number">24/7</div>
+                        <div class="stat-label">防護服務</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 詐騙類型列表 -->
+            <section class="scam-types-grid">
+                <!-- 投資詐騙 -->
+                <div class="scam-type-card investment" onclick="showScamDetails('investment')">
+                    <div class="card-header">
+                        <div class="scam-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="risk-level high">高風險</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>投資詐騙</h3>
+                        <p>以高報酬率吸引投資者，實際上是龐氏騙局或假投資平台</p>
+                        <div class="case-count">案例數：<span>1,234</span></div>
+                        <div class="common-methods">
+                            <span class="method-tag">假投資平台</span>
+                            <span class="method-tag">虛擬貨幣詐騙</span>
+                            <span class="method-tag">股票投資群組</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="learn-more-btn">了解更多</button>
+                    </div>
+                </div>
+
+                <!-- 購物詐騙 -->
+                <div class="scam-type-card shopping" onclick="showScamDetails('shopping')">
+                    <div class="card-header">
+                        <div class="scam-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="risk-level medium">中風險</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>購物詐騙</h3>
+                        <p>透過假購物網站或一頁式廣告販售不存在的商品</p>
+                        <div class="case-count">案例數：<span>987</span></div>
+                        <div class="common-methods">
+                            <span class="method-tag">一頁式網站</span>
+                            <span class="method-tag">假冒品牌</span>
+                            <span class="method-tag">超低價商品</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="learn-more-btn">了解更多</button>
+                    </div>
+                </div>
+
+                <!-- 假冒公家機關 -->
+                <div class="scam-type-card government" onclick="showScamDetails('government')">
+                    <div class="card-header">
+                        <div class="scam-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="risk-level high">高風險</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>假冒公家機關</h3>
+                        <p>冒充政府機關、警察、法院等進行詐騙</p>
+                        <div class="case-count">案例數：<span>756</span></div>
+                        <div class="common-methods">
+                            <span class="method-tag">假冒警察</span>
+                            <span class="method-tag">法院傳票</span>
+                            <span class="method-tag">健保局退費</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="learn-more-btn">了解更多</button>
+                    </div>
+                </div>
+
+                <!-- 假帳單 -->
+                <div class="scam-type-card billing" onclick="showScamDetails('billing')">
+                    <div class="card-header">
+                        <div class="scam-icon">
+                            <i class="fas fa-file-invoice"></i>
+                        </div>
+                        <div class="risk-level medium">中風險</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>假帳單</h3>
+                        <p>發送假的帳單或繳費通知進行詐騙</p>
+                        <div class="case-count">案例數：<span>543</span></div>
+                        <div class="common-methods">
+                            <span class="method-tag">假電費單</span>
+                            <span class="method-tag">假信用卡帳單</span>
+                            <span class="method-tag">假罰單</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="learn-more-btn">了解更多</button>
+                    </div>
+                </div>
+
+                <!-- 交友愛情詐騙 -->
+                <div class="scam-type-card romance" onclick="showScamDetails('romance')">
+                    <div class="card-header">
+                        <div class="scam-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="risk-level high">高風險</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>交友愛情詐騙</h3>
+                        <p>透過交友軟體或社群媒體建立感情關係後進行詐騙</p>
+                        <div class="case-count">案例數：<span>432</span></div>
+                        <div class="common-methods">
+                            <span class="method-tag">假身份</span>
+                            <span class="method-tag">急需用錢</span>
+                            <span class="method-tag">投資邀請</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="learn-more-btn">了解更多</button>
+                    </div>
+                </div>
+
+                <!-- 中獎通知詐騙 -->
+                <div class="scam-type-card lottery" onclick="showScamDetails('lottery')">
+                    <div class="card-header">
+                        <div class="scam-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <div class="risk-level low">低風險</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>中獎通知詐騙</h3>
+                        <p>發送假的中獎通知，要求先付手續費或稅金</p>
+                        <div class="case-count">案例數：<span>321</span></div>
+                        <div class="common-methods">
+                            <span class="method-tag">假中獎簡訊</span>
+                            <span class="method-tag">手續費詐騙</span>
+                            <span class="method-tag">假抽獎活動</span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button class="learn-more-btn">了解更多</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 緊急求助區 -->
+            <section class="emergency-help">
+                <div class="emergency-card">
+                    <div class="emergency-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="emergency-content">
+                        <h3>緊急求助</h3>
+                        <p>如果您正在遭受詐騙或需要緊急協助，請立即聯繫</p>
+                        <div class="emergency-numbers">
+                            <div class="number-item">
+                                <span class="number">165</span>
+                                <span class="label">反詐騙諮詢專線</span>
+                            </div>
+                            <div class="number-item">
+                                <span class="number">110</span>
+                                <span class="label">警察局報案專線</span>
+                            </div>
+                            <div class="number-item">
+                                <span class="number">113</span>
+                                <span class="label">婦幼保護專線</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- 詐騙詳情模態框 -->
+    <div id="scamDetailsModal" class="modal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="modalTitle">詐騙類型詳情</h3>
+                <span class="close" onclick="closeScamDetails()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="modalContent">
+                    <!-- 動態內容將在這裡顯示 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 頁腳 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>聯絡我們</h3>
+                    <p><i class="fas fa-phone"></i> 165反詐騙專線</p>
+                    <p><i class="fas fa-envelope"></i> info@antiscam.tw</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 台中市三民區</p>
+                    <p><i class="fas fa-clock"></i> 24小時服務</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>快速連結</h3>
+                    <ul>
+                        <li><a href="scam-types.html">詐騙類型</a></li>
+                        <li><a href="resources.html">求助資源</a></li>
+                        <li><a href="forum.html">討論區</a></li>
+                        <li><a href="games.html">防詐遊戲</a></li>
+                        <li><a href="news.html">最新消息</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>關注我們</h3>
+                    <p>獲取最新防詐資訊</p>
+                    <div class="social-links">
+                        <a href="#" class="facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="line" title="LINE"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到頂部按鈕 -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+
+    <script src="script.js"></script>
+    <script>
+        const scamDetails = {
+            investment: {
+                title: '投資詐騙',
+                icon: 'fas fa-chart-line',
+                description: '投資詐騙是最常見且損失最大的詐騙類型之一，詐騙集團利用人們對高報酬的渴望進行詐騙。',
+                methods: [
+                    '假投資平台：建立虛假的投資網站，聲稱有高報酬率',
+                    '虛擬貨幣詐騙：利用虛擬貨幣的複雜性進行詐騙',
+                    '股票投資群組：建立假的投資群組，分享假的獲利截圖',
+                    '外匯保證金：聲稱可以透過外匯交易獲得高報酬'
+                ],
+                prevention: [
+                    '查證投資平台是否合法註冊',
+                    '不相信過高的報酬率承諾',
+                    '小額測試投資平台的提領功能',
+                    '諮詢專業的金融顧問',
+                    '避免在社群媒體上的投資廣告'
+                ],
+                cases: '1,234',
+                riskLevel: '極高'
+            },
+            shopping: {
+                title: '購物詐騙',
+                icon: 'fas fa-shopping-cart',
+                description: '購物詐騙主要透過假的購物網站或一頁式廣告，販售不存在或劣質的商品。',
+                methods: [
+                    '一頁式購物網站：只有一個頁面的購物網站',
+                    '假冒知名品牌：冒充知名品牌販售假貨',
+                    '超低價商品：以不合理的低價吸引消費者',
+                    '限時搶購：營造緊迫感促使消費者下單'
+                ],
+                prevention: [
+                    '選擇知名且有信譽的購物平台',
+                    '查看賣家評價和商品評論',
+                    '使用安全的付款方式',
+                    '比較不同平台的價格',
+                    '注意網站的安全憑證'
+                ],
+                cases: '987',
+                riskLevel: '中高'
+            },
+            government: {
+                title: '假冒公家機關',
+                icon: 'fas fa-university',
+                description: '詐騙集團冒充政府機關、警察、法院等公家機關進行詐騙，利用民眾對權威的敬畏心理。',
+                methods: [
+                    '假冒警察：聲稱涉及刑事案件需要配合調查',
+                    '法院傳票：發送假的法院傳票要求出庭',
+                    '健保局退費：聲稱健保費多繳需要退還',
+                    '稅務局補稅：聲稱需要補繳稅款'
+                ],
+                prevention: [
+                    '掛斷電話後主動回撥官方電話確認',
+                    '不透露個人資訊和銀行帳號',
+                    '向相關機關查證',
+                    '保持冷靜，不要被威嚇',
+                    '了解公家機關的正常作業流程'
+                ],
+                cases: '756',
+                riskLevel: '極高'
+            },
+            billing: {
+                title: '假帳單',
+                icon: 'fas fa-file-invoice',
+                description: '詐騙集團發送假的帳單或繳費通知，誘騙民眾付款到詐騙帳戶。',
+                methods: [
+                    '假電費單：發送假的電費繳費通知',
+                    '假信用卡帳單：冒充銀行發送假帳單',
+                    '假罰單：發送假的交通違規罰單',
+                    '假保險費：聲稱保險費到期需要續繳'
+                ],
+                prevention: [
+                    '核對帳單上的資訊是否正確',
+                    '透過官方管道查證帳單真偽',
+                    '注意繳費帳戶是否為官方帳戶',
+                    '保留所有繳費收據',
+                    '定期檢查銀行帳戶明細'
+                ],
+                cases: '543',
+                riskLevel: '中等'
+            },
+            romance: {
+                title: '交友愛情詐騙',
+                icon: 'fas fa-heart',
+                description: '詐騙集團透過交友軟體或社群媒體建立虛假的感情關係，再以各種理由要求金錢。',
+                methods: [
+                    '假身份：使用他人照片建立虛假身份',
+                    '急需用錢：聲稱遇到緊急狀況需要金錢幫助',
+                    '投資邀請：邀請一起投資賺錢',
+                    '見面費用：聲稱需要旅費來見面'
+                ],
+                prevention: [
+                    '謹慎對待網路上的感情關係',
+                    '要求視訊通話確認身份',
+                    '不要輕易匯款給網友',
+                    '與親友討論交友狀況',
+                    '保持理性，不被感情沖昏頭'
+                ],
+                cases: '432',
+                riskLevel: '高'
+            },
+            lottery: {
+                title: '中獎通知詐騙',
+                icon: 'fas fa-gift',
+                description: '詐騙集團發送假的中獎通知，要求先付手續費、稅金或保證金才能領獎。',
+                methods: [
+                    '假中獎簡訊：發送假的中獎通知簡訊',
+                    '手續費詐騙：要求先付手續費才能領獎',
+                    '假抽獎活動：建立假的抽獎活動網站',
+                    '稅金詐騙：聲稱需要先繳稅金才能領獎'
+                ],
+                prevention: [
+                    '記住「天下沒有白吃的午餐」',
+                    '查證抽獎活動的真實性',
+                    '不要為了領獎而先付錢',
+                    '向主辦單位確認中獎資訊',
+                    '小心個人資訊的洩露'
+                ],
+                cases: '321',
+                riskLevel: '低'
+            }
+        };
+
+        function showScamDetails(type) {
+            const details = scamDetails[type];
+            const modal = document.getElementById('scamDetailsModal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
+
+            title.textContent = details.title;
+            
+            content.innerHTML = `
+                <div class="scam-detail-content">
+                    <div class="detail-header">
+                        <div class="detail-icon">
+                            <i class="${details.icon}"></i>
+                        </div>
+                        <div class="detail-info">
+                            <h4>${details.title}</h4>
+                            <p>${details.description}</p>
+                            <div class="detail-stats">
+                                <span class="stat">案例數：${details.cases}</span>
+                                <span class="stat risk-${details.riskLevel.includes('極') ? 'extreme' : details.riskLevel.includes('高') ? 'high' : details.riskLevel.includes('中') ? 'medium' : 'low'}">風險等級：${details.riskLevel}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-sections">
+                        <div class="detail-section">
+                            <h5><i class="fas fa-exclamation-triangle"></i> 常見手法</h5>
+                            <ul>
+                                ${details.methods.map(method => `<li>${method}</li>`).join('')}
+                            </ul>
+                        </div>
+                        
+                        <div class="detail-section">
+                            <h5><i class="fas fa-shield-alt"></i> 防範方法</h5>
+                            <ul>
+                                ${details.prevention.map(tip => `<li>${tip}</li>`).join('')}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-actions">
+                        <button class="btn btn-primary" onclick="window.open('forum.html', '_blank')">
+                            <i class="fas fa-comments"></i> 討論此類詐騙
+                        </button>
+                        <button class="btn btn-secondary" onclick="window.open('resources.html', '_blank')">
+                            <i class="fas fa-life-ring"></i> 尋求幫助
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            modal.style.display = 'block';
+        }
+
+        function closeScamDetails() {
+            document.getElementById('scamDetailsModal').style.display = 'none';
+        }
+
+        // 點擊模態框外部關閉
+        window.onclick = function(event) {
+            const modal = document.getElementById('scamDetailsModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防詐騙資訊網 - 遊戲區</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .games-container {
+            padding: 2rem 0;
+            min-height: calc(100vh - 160px);
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .game-card:hover::before {
+            left: 100%;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .game-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            display: block;
+            text-align: center;
+        }
+
+        .game-card.scam-detection .game-icon {
+            color: #ff6b6b;
+        }
+
+        .game-card.quiz .game-icon {
+            color: #4ecdc4;
+        }
+
+        .game-card.scenario .game-icon {
+            color: #45b7d1;
+        }
+
+        .game-card.memory .game-icon {
+            color: #96ceb4;
+        }
+
+        .game-card.puzzle .game-icon {
+            color: #feca57;
+        }
+
+        .game-card.simulation .game-icon {
+            color: #ff9ff3;
+        }
+
+        .game-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #333;
+            text-align: center;
+        }
+
+        .game-description {
+            color: #666;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .play-button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .difficulty-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .difficulty-easy {
+            background-color: #2ecc71;
+        }
+
+        .difficulty-medium {
+            background-color: #f39c12;
+        }
+
+        .difficulty-hard {
+            background-color: #e74c3c;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-shield-alt"></i>
+                <span>防詐騙資訊網</span>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">首頁</a>
+                <a href="news.html" class="nav-link">最新消息</a>
+                <a href="games.html" class="nav-link active">遊戲區</a>
+                <a href="forum.html" class="nav-link">討論區</a>
+                <a href="scam-types.html" class="nav-link">詐騙類型</a>
+                <a href="resources.html" class="nav-link">資源幫助</a>
+                <a href="login.html" class="nav-link login-btn">會員登入</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main>
+        <div class="container games-container">
+            <div class="page-header">
+                <h1>防詐騙遊戲區</h1>
+                <p>透過有趣的互動遊戲學習防詐騙知識，提升識別詐騙的能力</p>
+            </div>
+            <div class="games-grid">
+
+                <!-- 遊戲1: 詐騙偵探 -->
+                <div class="game-card scam-detection">
+                    <i class="fas fa-search game-icon"></i>
+                    <h3 class="game-title">遊戲1</h3>
+                    <p class="game-description">
+                        介紹
+                    </p>
+                    <a href="call.html" target="_blank">
+                        <button class="play-button">開始遊戲</button>
+                    </a>
+                </div>
+
+                <!-- 遊戲2: 防詐問答王 -->
+                <div class="game-card quiz">
+                    <i class="fas fa-question-circle game-icon"></i>
+                    <h3 class="game-title">遊戲2</h3>
+                    <p class="game-description">
+                        介紹
+                    </p>
+                    <a href="index.html">
+                        <button class="play-button">開始遊戲</button>
+                    </a>
+                </div>
+
+                <!-- 遊戲3: 情境模擬 -->
+                <div class="game-card scenario">
+                    <i class="fas fa-theater-masks game-icon"></i>
+                    <h3 class="game-title">遊戲3</h3>
+                    <p class="game-description">
+                        介紹
+                    </p>
+                    <a href="index.html">
+                        <button class="play-button">開始遊戲</button>
+                    </a>
+                </div>
+
+                <!-- 遊戲4: 記憶大師 -->
+                <div class="game-card memory">
+                    <i class="fas fa-brain game-icon"></i>
+                    <h3 class="game-title">遊戲4</h3>
+                    <p class="game-description">
+                        介紹
+                    </p>
+                    <a href="index.html">
+                        <button class="play-button">開始遊戲</button>
+                    </a>
+                </div>
+
+                <!-- 遊戲5: 拼圖挑戰 -->
+                <div class="game-card puzzle">
+                    <i class="fas fa-puzzle-piece game-icon"></i>
+                    <h3 class="game-title">遊戲5</h3>
+                    <p class="game-description">
+                        介紹
+                    </p>
+                    <a href="index.html">
+                        <button class="play-button">開始遊戲</button>
+                    </a>
+                </div>
+
+                <!-- 遊戲6: 虛擬實境體驗 -->
+                <div class="game-card simulation">
+                    <i class="fas fa-vr-cardboard game-icon"></i>
+                    <h3 class="game-title">遊戲6</h3>
+                    <p class="game-description">
+                        介紹
+                    </p>
+                    <a href="index.html">
+                        <button class="play-button">開始遊戲</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- 頁腳 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>聯絡我們</h3>
+                    <p><i class="fas fa-phone"></i> 165反詐騙專線</p>
+                    <p><i class="fas fa-envelope"></i> info@antiscam.tw</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 台中市三民區</p>
+                    <p><i class="fas fa-clock"></i> 24小時服務</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>快速連結</h3>
+                    <ul>
+                        <li><a href="scam-types.html">詐騙類型</a></li>
+                        <li><a href="resources.html">求助資源</a></li>
+                        <li><a href="forum.html">討論區</a></li>
+                        <li><a href="games.html">防詐遊戲</a></li>
+                        <li><a href="news.html">最新消息</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>關注我們</h3>
+                    <p>獲取最新防詐資訊</p>
+                    <div class="social-links">
+                        <a href="#" class="facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="line" title="LINE"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到頂部按鈕 -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+
+    <script src="script.js"></script>
+    <script>
+        function startGame(gameType) {
+            // 遊戲啟動邏輯
+            alert(`正在啟動 ${getGameName(gameType)} 遊戲...`);
+
+            // 這裡可以導向具體的遊戲頁面或開啟遊戲模態框
+            switch (gameType) {
+                case 'scam-detection':
+                    // 啟動詐騙偵探遊戲
+                    break;
+                case 'quiz':
+                    // 啟動問答遊戲
+                    break;
+                case 'scenario':
+                    // 啟動情境模擬
+                    break;
+                case 'memory':
+                    // 啟動記憶遊戲
+                    break;
+                case 'puzzle':
+                    // 啟動拼圖遊戲
+                    break;
+                case 'simulation':
+                    // 啟動VR體驗
+                    break;
+            }
+        }
+
+        function getGameName(gameType) {
+            const gameNames = {
+                'scam-detection': '詐騙偵探',
+                'quiz': '防詐問答王',
+                'scenario': '情境模擬',
+                'memory': '記憶大師',
+                'puzzle': '拼圖挑戰',
+                'simulation': '虛擬實境體驗'
+            };
+            return gameNames[gameType] || '未知遊戲';
+        }
+    </script>
+</body>
+
+</html>

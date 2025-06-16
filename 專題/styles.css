@@ -166,61 +166,110 @@ select {
   margin-top: 15px;
 }
 
+/* 顯示訊息區塊 */
 .group-feedback {
   position: fixed;
   bottom: 80px;
- left: 20px;
-  background-color: #000;
+  left: 20px;
+  background-color: rgba(30, 30, 30, 0.8); /* 深灰色，帶有透明效果 (類似手機通知) */
   color: white;
   padding: 12px 16px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  transform: translateY(100%);
-  opacity: 0;
-  transition: all 0.4s ease;
-  z-index: 9999;
-}
-
-.group-feedback.show-banner {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.group-feedback .avatar {
-  width: 42px;
-  height: 42px;
   border-radius: 8px;
+  display: flex;
+  align-items: center; /* 垂直居中對齊內容 */
+  gap: 12px; /* 讓圖片與文字間距一致 */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(100%); /* 初始隱藏 */
+  opacity: 0; /* 初始透明度 */
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  z-index: 9999;
+  max-width: 250px; /* 限制框的最大寬度 */
+  width: auto; /* 自動適應內容 */
+  font-size: 14px; /* 字體大小較小 */
 }
 
+/* 顯示提示框（滑動顯示效果） */
+.group-feedback.show-banner {
+  transform: translateY(0); /* 顯示時滑動回來 */
+  opacity: 1; /* 顯示 */
+}
+
+/* 頭像圖片樣式 */
+.group-feedback .avatar {
+  width: 35px; /* 調整頭像大小 */
+  height: 35px;
+  border-radius: 50%; /* 圓形頭像 */
+  object-fit: cover; /* 保持比例 */
+  flex-shrink: 0; /* 頭像不會壓縮 */
+}
+
+/* 文字內容區域 */
 .group-feedback .text-content {
   display: flex;
   flex-direction: column;
+  align-items: flex-start; /* 文字左對齊 */
+  justify-content: center; /* 垂直置中 */
+  gap: 4px; /* 文字與標題之間有些間距 */
 }
 
+/* 應用名稱樣式 */
 .group-feedback .app-name {
-  font-size: 12px;
-  opacity: 0.7;
-}
-
-.group-feedback .message {
   font-size: 14px;
+  opacity: 0.8; /* 減少應用名稱的透明度 */
+  font-weight: bold;
+  color: #ffffff; /* 輕微灰色 */
+}
+
+/* 訊息內容樣式 */
+.group-feedback .message {
+  font-size: 13px; /* 調整字型大小 */
   font-weight: 500;
+  color: #ffffff;  /* 保持白色 */
+  word-wrap: break-word;  /* 防止長單字換行 */
+  max-width: 220px;  /* 設定最大寬度，避免文字過長 */
 }
 
+/* 顯示訊息時的動畫效果 */
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
 
+.group-feedback.show-banner {
+  animation: fadeIn 0.5s ease-out;
+}
 
+/* 隱藏訊息 */
 .group-feedback.hidden {
-  display: none;
+  display: none; /* 完全隱藏 */
 }
 
-
-
+/* 滑動消失效果 */
 .group-feedback.slide-up {
-  transform: translate(-50%, -100%);
+  transform: translateY(-100%); /* 消失到螢幕上方 */
   opacity: 0;
+}
+
+/* 顯示通知框時的設置 */
+.group-feedback.show-banner {
+  display: flex;
+  flex-direction: row; /* 調整為並排顯示 */
+  background-color: rgba(30, 30, 30, 0.8); /* 深灰色微透明背景 */
+  border: 1px solid #ccc;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  animation: fadeInOut 4s forwards;
+  font-size: 15px;
+  max-width: 300px; /* 限制寬度，避免太寬 */
+  gap: 12px; /* 讓圖片與文字間距一致 */
+}
+
+/* 設定通知框的最大寬度，讓其不會顯得過大 */
+.group-feedback.show-banner {
+  max-width: 280px;
+  font-size: 14px;
 }
 
 
@@ -286,10 +335,6 @@ select {
 
 /* 如果有過渡動畫，可以使用這種方法確保隱藏 */
 
-
-.hidden {
-  display: none;
-}
 .custom-alert {
   position: fixed;
   top: 20%;
@@ -366,9 +411,8 @@ select {
 }
 
 .mobile-preview .screen {
-  height: calc(100% - 60px);
+  height: calc(100% - 30px);
   overflow-y: auto;
-  padding: 1rem;
   background-color: #fdfdfd;
   text-align: center;
 }
@@ -379,7 +423,7 @@ select {
   margin-bottom: 1rem;
 }
 
-.mobile-preview .app-grid {
+.mobile-preview .app-grid,.appGrid {
   display: flex;
   gap: 1rem;
   justify-content: flex-start; /* ← 關鍵，避免居中 */
@@ -418,6 +462,57 @@ select {
   top: 50%;
   transform: translate(-50%, -50%);
 }
+/* 轉帳頁面按鈕 */
+.transfer-screen {
+  padding: 1rem;
+  max-width: 100%;
+}
+
+.transfer-screen h3 {
+  margin-bottom: .5rem;
+  text-align: center;
+}
+
+.transfer-screen label {
+  display: block;
+  margin-top: 1rem;
+}
+
+.transfer-screen .form-input {
+  width: 100%;
+  padding: .5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-top: .5rem;
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.btn-confirm-transfer,
+.btn-back {
+  width: 80%;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  border: none;
+  margin: 0 auto;       /* 水平置中 */
+}
+
+.btn-confirm-transfer {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.btn-back {
+  background-color: #ccc;
+  color: #333;
+}
 
 /* 手機模擬按鈕 */
 .mobile-toggle {
@@ -430,7 +525,6 @@ select {
   cursor: pointer;
   font-size: 2rem; /* 調大 emoji */
 }
-/* 如果你還沒有 .form-input, .button 的樣式可以參考前面的 CSS */
 
 .transfer-screen {
   padding: 1rem;
@@ -496,7 +590,7 @@ group-feedback-container {
   left: 0;
   width: 100%;
   height: 100%;
-  background: black;
+  background-color: #000000; /* 設置純黑背景 */
   color: #fff;
   display: flex;
   align-items: center;
@@ -520,10 +614,35 @@ group-feedback-container {
   pointer-events: none;
 }
 
+#notificationOverlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background-color: #000000; /* 設置純黑背景 */
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: bold;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.5s ease;
+  z-index: 9999;
+}
+
+#notificationOverlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#notificationOverlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
 
 #subtitleBox {
   color: white;
-  font-size: 24px;
+  font-size: 30px;
   background: rgba(0, 0, 0, 0.8);
   padding: 20px 40px;
   border-radius: 10px;
@@ -561,7 +680,7 @@ group-feedback-container {
   transform: translateX(-50%);
   max-width: 80%;
   padding: 12px 20px;
-  background: rgba(0, 0, 0, 0.6); /* 半透明灰黑底 */
+  background: rgba(38, 38, 38, 0.6); /* 半透明灰黑底 */
   color: #fff;
   font-size: 20px;
   font-weight: bold;
@@ -579,6 +698,85 @@ group-feedback-container {
 #userFeeling.hidden {
   opacity: 0;
 }
+
+#userFeeling2 {
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 80%;
+  padding: 12px 20px;
+  background: rgba(38, 38, 38, 0.6); /* 半透明灰黑底 */
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 10px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  z-index: 1001;
+}
+
+#userFeeling2.show {
+  opacity: 1;
+}
+
+#userFeeling2.hidden {
+  opacity: 0;
+}
+
+#userFeeling3 {
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 80%;
+  padding: 12px 20px;
+  background: rgba(38, 38, 38, 0.6); /* 半透明灰黑底 */
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 10px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  z-index: 1001;
+}
+
+#userFeeling4 {
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 80%;
+  padding: 12px 20px;
+  background: rgba(38, 38, 38, 0.6); /* 半透明灰黑底 */
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 10px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  z-index: 1001;
+}
+
+#userFeeling4.show {
+  opacity: 1;
+}
+
+#userFeeling4.hidden {
+  opacity: 0;
+}
+
+#userFeeling3.show {
+  opacity: 1;
+}
+
+#userFeeling3.hidden {
+  opacity: 0;
+}
+
 #mobileNotification {
   position: fixed;
   bottom: 10px;
@@ -728,135 +926,360 @@ group-feedback-container {
   width: 60px;  /* 所有圖示大小統一 */
   height: 60px;
 }
-.line-chat {
-  background: #e6f0ff;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  font-family: sans-serif;
+.screen {
+  width: 100%;
+  height: 100vh; /* ✅ 用視窗高度限制整體 */
+  overflow: hidden;
+  position: relative;
+  height: 100%;  /* ✅ 加這行 */
 }
 
+
+.line-chat {
+  position: absolute;
+  inset: 0; /* 等同 top: 0; left: 0; right: 0; bottom: 0; */
+  display: flex;
+  flex-direction: column;
+  background: #e5efff;
+  z-index: 10;
+}
+
+
+.line-chat.show {
+  display: flex !important;
+}
 .chat-header {
+  position: relative; 
   background: #06c755;
   color: white;
-  padding: 0.75rem 1rem;
+  padding: 10px;
   font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  text-align: center;
+  font-size: 16px;
 }
 
 .chat-title {
   font-size: 1rem;
+  margin-right: 20px;
+  text-align: left;  /* 文字靠左 */
 }
 
+
+/* ✅ 讓退出鈕靠右浮動 */
 .chat-back {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
   background: none;
   border: none;
   color: white;
-  font-size: 1rem;
+  font-size: 14px;
   cursor: pointer;
 }
 
+
 .chat-messages {
-  flex: 1;
-  padding: 1rem;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    background-color: #e6f0ff;
+    padding: 10px;
+    overflow-y: auto;
+    padding-bottom: 70px;
+    height: 400px;
+
+    /* 隱藏滾輪樣式 */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer / Edge */
+
+    /* Chrome / Safari / Edge (WebKit) */
 }
+.chat-messages::-webkit-scrollbar {
+    display: none;
+}
+
+
 
 .chat-system-msg {
   align-self: center;
-  background: #e0e0e0;
-  padding: 0.4rem 1rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
+  background: #c5f1c9;
   color: #333;
-  margin-bottom: 0.5rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  margin: 0.5rem 0;
+  max-width: 70%; /* ✅ 控制訊息寬度 */
+  text-align: center; /* ✅ 讓文字置中更像系統訊息 */
+  margin-left: 25px;
 }
 
 /* 普通訊息排版（靠左） */
 .chat-msg {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
-  max-width: 80%;
+  max-width: 100%;
+  gap: 0.2rem;
 }
 
+/* 頭像尺寸正常化、不要留白 */
 .chat-msg .avatar {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0; /* 不會壓縮導致偏移 */
+  margin: 0;
+}
+
+/* 名稱靠左，移除多餘間距 */
+.chat-name {
+  font-size: 0.75rem;
+  color: #666;
+  margin-left: 0;     /* 讓名字靠齊泡泡左邊 */
+  margin-bottom: 0.2rem;
+  text-align: left;
 }
 
 .chat-msg .chat-name {
-  font-size: 0.75rem;
-  color: #888;
-  margin-bottom: 0.2rem;
+  font-size: 0.7rem;
+  color: #666;
+  margin-left: 10px;      /* 與頭像對齊縮排 */
+  margin-bottom: 0.2rem;  /* 分隔名稱與氣泡 */
 }
+
 
 /* 包裹名稱 + 泡泡 */
 .chat-msg > div {
   display: flex;
   flex-direction: column;
+  
 }
 
-/* 氣泡樣式 */
 .chat-bubble {
   background: white;
   padding: 0.5rem 0.75rem;
-  border-radius: 15px;
-  word-break: break-word;
+  border-radius: 16px;
   font-size: 0.95rem;
   line-height: 1.4;
-  max-width: 100%;
+  max-width: 75%;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+  text-align: left;
+  direction: ltr;
+
+  /* ✅ 正確換行配置 */
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word; /* ✅ 這個才真正防止「超長單字」撐爆，並保護數字不被亂拆 */
+  word-spacing: 0.05em;
+  margin-right: 6px;
+  margin-left: 6px;
 }
 
-/* 自己的訊息靠右，綠色背景，無頭像與名字 */
+/* 可選 - 當你用 JS 加上 `.long` 類別時 */
+.chat-bubble.long {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  word-spacing: 0.05em;
+}
+
+
 .chat-msg.self {
-  align-self: flex-end;
+  display: flex;
   justify-content: flex-end;
+  align-items: flex-start;
+  
 }
 
 .chat-msg.self .chat-bubble {
-  background: #dcf8c6;
-  align-self: flex-end;
+  background: #c5f1c9;
+  max-width: 70%;
+  margin-top: 0.5rem; /* ✅ 加一點上方間距 */
 }
 
-/* 輸入框區域 */
+/* ===== 輸入框區塊 ===== */
 .chat-input {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
-  padding: 0.75rem;
-  background: white;
-  border-top: 1px solid #ccc;
+  padding: 5px 15px 15px 10px;
+  background: #fff;
+  border-top: 1px solid #ddd;
+
 }
 
 .chat-input input {
-  flex: 1;
-  border: none;
-  padding: 0.5rem;
+  flex: 1 1 auto;         /* 仍可撐開，但允許收縮 */
+  max-width: 65%;         /* 最寬不超過 70%，避免壓到按鈕 */
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
   border-radius: 20px;
-  background: #f0f0f0;
   outline: none;
+  
 }
+
 
 .chat-input button {
+  padding: 6px 12px;
   background: #06c755;
-  border: none;
   color: white;
-  padding: 0 1rem;
-  margin-left: 0.5rem;
+  border: none;
   border-radius: 20px;
   cursor: pointer;
+  margin-left: 6px; /* ✅ 控制靠近 input 的距離 */
+  
 }
 
+.chat-input button:hover {
+  background: #05b14e;
+}
+ dialog {
+      border: none;
+      border-radius: 15px;
+      padding: 20px 30px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      font-family: "Segoe UI", sans-serif;
+      max-width: 400px;
+      width: 90%;
+    }
+.welcome-message {
+  display: none; /* 初始隱藏 */
+  background-color:rgb(237, 237, 237); /* 淺藍色背景 */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: left; /* 讓文字靠左 */
+  font-size: 20px;
+  color: #333;
+  font-weight: bold; /* 設定所有文字為粗體 */
+  position: fixed; /* 固定顯示於畫面上 */
+  top: 35%; /* 預設顯示在畫面中間稍上 */
+  left: 50%;
+  transform: translateX(-50%); /* 水平居中 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* 確保它在其他元素之上 */
+  width: 80%; /* 設置寬度 */
+  max-width: 500px; /* 最大寬度 */
+}
 
+.welcome-message p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #555;
+}
 
+.welcome-message .game-tip {
+  color: red; /* 設定「遊戲提示」為紅色 */
+}
+.withdraw-notice {
+  position: fixed;
+  top: 50%; /* 垂直置中 */
+  left: 50%; /* 水平置中 */
+  transform: translate(-50%, -50%); /* 完全置中 */
+  background-color: #7dbd8d;
+  color: white;
+  min-width: 320px;         /* 增加最小寬度 */
+  min-height: 120px;        /* 增加最小高度 */
+  padding: 24px 32px;       /* 更大的內距 */
+  border-radius: 12px;      /* 更圓潤的邊角 */
+  font-size: 1.5rem;        /* 字體稍微放大 */
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25); /* 更強的陰影 */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+  z-index: 9999;
+  text-align: center;
+  line-height: 1.6;
+  font-weight: 700;  /* 加粗 */
+}
 
+.withdraw-notice.show {
+  display: block;          /* <- 顯示時改回 block */
+  opacity: 1;
+  pointer-events: auto;
+}
 
+.withdraw-notice.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+#transferPage {
+  max-width: 75%;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
 
+.notification-content {
+  display: flex;
+  flex-direction: column;
+}
 
+.notification-content .app-name {
+  font-weight: bold;
+  font-size: 17px;
+  margin-bottom: 6px;
+  color: #060606; /* 設定字體顏色 */
+}
 
+.notification-content div {
+  margin-bottom: 4px;
+  color: #151515; /* 設定字體顏色 */
+}
+
+/* 跳動動畫 */
+@keyframes bounce {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { opacity: 0; }
+}
+#scamEndingMessage {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  max-width: 400px;
+  padding: 20px;
+  border: 3px solid red;
+  border-radius: 12px;
+  background-color: #fff0f0;
+  color: #900;
+  font-weight: bold;
+  line-height: 1.5;
+  z-index: 9999;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+  text-align: center;
+  font-size: 16px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+#scamEndingMessage b {
+  font-size: 18px;
+}
+
+#scamEndingMessage button {
+  margin-top: 15px;
+  padding: 12px 30px;
+  font-size: 18px;
+  border: 2px solid red;
+  border-radius: 8px;
+  background-color: #fff0f0;
+  color: #900;
+  cursor: pointer;
+  font-weight: bold;
+  width: 100%;
+  max-width: 250px;
+}

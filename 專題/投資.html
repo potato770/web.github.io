@@ -8,6 +8,7 @@
 </head>
 <body>
   <div class="container">
+
     <!-- Header -->
     <div class="header">
       <h1>虛擬貨幣投資平台</h1>
@@ -51,8 +52,9 @@
     <div id="purchaseSuccess" class="hidden">購買成功！</div>
 
     <div id="subtitleOverlay" class="hidden">
-      <p>過了幾天....</p>
+      <div id="subtitleBox">過了幾天......</div>
     </div>
+
 
 
     <!-- 投資結果區域 -->
@@ -93,6 +95,7 @@
         </table>
       </div>
     </div>
+    <button class="button" id="backToPreviousPage">返回</button>
   </div>
   
  <!-- 📱 手機模擬按鈕 + 通知容器 -->
@@ -150,57 +153,88 @@
         </div>
 
       <!-- LINE 群組聊天室內容 -->
-        <div id="lineChat" class="line-chat" style="display: none;">
-          <div class="chat-header">
-            <span class="chat-title">發大財(20)</span>
-            <button id="lineBack" class="chat-back">退出</button>
-          </div>
-          <div class="chat-messages" id="chatMessages">
-            <div class="chat-system-msg">你已成功加入發大財投資群組</div>
+      <div id="lineChat" class="line-chat" style="display: none;">
+        <div class="chat-header">
+          <span class="chat-title">發大財(20)</span>
+          <button id="lineBack" class="chat-back">🚪退出</button>
+        </div>
 
-            <div class="chat-msg">
-              <img src="line-icon.png" class="avatar">
-              <div class="chat-bubble">
-                <div class="chat-name">阿財哥</div>
-                <div class="chat-text">歡迎加入!!</div>
-              </div>
-            </div>
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-system-msg">你已成功加入發大財投資群組</div>
 
-            <div class="chat-msg">
-              <img src="line-icon.png" class="avatar">
-              <div class="chat-bubble">
-                <div class="chat-name">小明</div>
-                <div class="chat-text">一起來賺錢了</div>
-              </div>
-            </div>
-
-            <div class="chat-msg">
-              <img src="line-icon.png" class="avatar">
-              <div class="chat-bubble">
-                <div class="chat-name">小美</div>
-                <div class="chat-text">我最近賺了好多</div>
-              </div>
-            </div>
-
-            <div class="chat-msg">
-              <img src="line-icon.png" class="avatar">
-              <div class="chat-bubble">
-                <div class="chat-name">阿財哥</div>
-                <div class="chat-text">新加入的成員會先給2000的投資金!!要不要先試試</div>
-              </div>
-            </div>
-
-            <div class="chat-msg self">
-              <div class="chat-bubble self">
-                我也想試試！
-              </div>
+          <div class="chat-msg">
+            <img src="line-icon.png" class="avatar">
+            <div>
+              <div class="chat-name">阿財哥</div>
+              <div class="chat-bubble">歡迎加入!!</div>
             </div>
           </div>
-          <div class="chat-input">
-            <input type="text" placeholder="輸入訊息...">
-            <button class="send-button">送出</button>
+
+          <div class="chat-msg">
+            <img src="line-icon.png" class="avatar">
+            <div>
+              <div class="chat-name">小明</div>
+              <div class="chat-bubble">一起來賺錢了</div>
+            </div>
+          </div>
+
+          <div class="chat-msg">
+            <img src="line-icon.png" class="avatar">
+            <div>
+              <div class="chat-name">小美</div>
+              <div class="chat-bubble">我最近賺了好多</div>
+            </div>
+          </div>
+
+          <div class="chat-msg">
+            <img src="line-icon.png" class="avatar">
+            <div>
+              <div class="chat-name">阿財哥</div>
+              <div class="chat-bubble">有看到新加入的成員!我們有合作的投資平台，現在註冊會送投資本金2000塊，可以試試看喔</div>
+            </div>
+          </div>
+
+          <div class="chat-msg self">
+            <div class="chat-bubble self">
+              我也想試試！
+            </div>
+          </div>
+
+          <div class="chat-msg">
+            <img src="line-icon.png" class="avatar">
+            <div>
+              <div class="chat-name">阿財哥</div>
+              <div class="chat-bubble">
+                這是投資連結<br>
+                <a href="javascript:void(0);" style="color: #3800d2; text-decoration: underline;">投資網頁</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-msg">
+            <img src="line-icon.png" class="avatar">
+            <div>
+              <div class="chat-name">阿明</div>
+              <div class="chat-bubble">我才剛投而已就增長了500！</div>
+            </div>
+          </div>
+
+          <div class="chat-msg">
+            <img src="line-icon.png" class="avatar">
+            <div>
+              <div class="chat-name">小美</div>
+              <div class="chat-bubble">我賺了好多!</div>
+            </div>
           </div>
         </div>
+
+        <div class="chat-input">
+          <input type="text" placeholder="輸入訊息...">
+          <button class="send-button">送出</button>
+        </div>
+        
+      </div>
+
 
       <!-- 轉帳內容 -->
       <div class="transferSection" style="display:none;">
@@ -209,10 +243,13 @@
         <p><strong>洋行信託(123)1234-5678-9012</strong></p>
 
         <label for="mobileTransferAmount"><strong>轉帳金額</strong></label>
-        <input id="mobileTransferAmount" type="number" class="form-input" placeholder="輸入金額">
+        <input id="mobileTransferAmount" type="number" class="form-input" placeholder="輸入金額" style="width: 90%;">
 
-        <button class="button" id="mobileConfirmTransfer">✅ 確認轉帳</button>
-        <button class="button" id="backToApps" style="margin-top:1rem; background:#ccc; color:#333;">🔙 返回</button>
+        <div class="button-group">
+          <button class="btn-confirm-transfer" id="mobileConfirmTransfer">✅ 確認轉帳</button>
+          <button class="btn-back" id="backToApps">🔙 返回</button>
+        </div>
+
       </div>
 
       <!-- 手機內的通知 -->
@@ -222,7 +259,7 @@
         </div>
       </div>
     </div>
-  </div>
+ 
 
     <!-- 下方 Home 鍵 -->
     <div class="bottom-bar"><div class="home-button"></div></div>
@@ -283,6 +320,31 @@
     font-size: 14px; z-index: 1000; max-width: 90%; text-align: center;">
     </div>
 
+   <div id="notificationOverlay" class="hidden">
+      <div id="notificationBox">過了一星期</div>
+    </div>
+    <div id="userFeeling2" class="hidden">怎麼會這樣!?我為什麼會有這麼多入帳通知!</div>
+    <div id="userFeeling3" class="hidden">還是趕快去群組問問看阿財哥好了</div>
+    <div id="userFeeling4" class="hidden">群組怎麼解散了!?</div>
+
+    <div id="welcomeMessage" class="welcome-message">
+      <p>恭喜註冊成功!</p>
+      <p>已獲得投資金$2000元</p>
+      <p><span class="game-tip">遊戲提示：一開始請使用2000元投資金進行遊戲</span></p>
+    </div>
+
+    <div id="scamEndingMessage">
+      <p><b>📢 結局提示：</b></p>
+      <p>🚨「這是一場詐騙！你的帳戶已被當成人頭帳戶<br>資金已無法取回！」</p>
+      <p>🚨 <b>防詐提醒！</b></p>
+      <p>詐騙行為可能導致無法取回的金錢損失。<br>保持警覺，謹慎操作。</p>
+      <p>合法投資平台會提供清晰的營運背景<br>透明的手續費與可追溯的交易紀錄。</p>
+      <p>❗切勿輕信未經證實的投資資訊。</p>
+
+      <button id="endGameBtn">結束遊戲</button>
+    </div>
+
+
   <script>
     const originalInvestmentHTML = document.getElementById('investmentPanel').innerHTML;
 
@@ -296,14 +358,21 @@
 
     const groupContainer = document.getElementById('group-feedback-container');
     const feedbackMessages = [
-      "阿明：我才剛投已經增長了500！",
-      "小美：我多賺了好多!",
+      "阿明：我才剛投而已就增長了500！",
+      "小美：我賺了好多!",
     ];
 
 
+    document.querySelectorAll('.chat-bubble').forEach(bubble => {
+      const text = bubble.textContent.trim();
+      if (text.length >= 15) { // ✅ 超過15字就換行
+        bubble.classList.add('long');
+      }
+    });
+
     function showGroupFeedback(message) {
       const feedback = document.getElementById('groupFeedback');
-      const messageBox = feedback.querySelector('#notificationMessage');
+      const messageBox = feedback.querySelector('.message');
 
       // 更新訊息內容
       messageBox.textContent = message;
@@ -312,12 +381,13 @@
       feedback.classList.add('show-banner');
       feedback.classList.remove('hidden');
 
-      // 4秒後隱藏通知
+      // 延遲 4 秒後隱藏通知
       setTimeout(() => {
         feedback.classList.remove('show-banner');
         feedback.classList.add('hidden');
-      }, 4000);
+      }, 4000); // 4秒後消失
     }
+
 
     function formatWithPercent(value, percent) {
       return `$${value.toFixed(2)} (+${percent}%)`;
@@ -466,6 +536,7 @@
   }
 }
 
+
   // ✅ 把扣錢邏輯統一成 function
   function executeInvestment(amount) {
     accountBalance -= amount;
@@ -496,6 +567,17 @@
       purchaseSuccess.classList.add('hidden');
     }, 2000); // 2秒後自動關掉
   }
+
+    //通知框+遊戲提示
+    window.onload = function() {
+      const welcomeMessage = document.getElementById('welcomeMessage');
+      welcomeMessage.style.display = 'block'; // 顯示通知
+
+      // 4秒後隱藏通知
+      setTimeout(() => {
+        welcomeMessage.style.display = 'none';
+      }, 4000); // 4000 毫秒 = 4 秒
+    };
 
 
     // 統一扣錢的 function
@@ -573,7 +655,7 @@
           feedback.classList.remove('show-banner');
           feedback.classList.add('hidden');
           index++;
-          setTimeout(showMessage, 1000);
+          setTimeout(showMessage, 1000);  // 延遲顯示下一條消息
         }, 5000);
       }
 
@@ -604,39 +686,32 @@
       const investmentPanel = document.getElementById('investmentPanel');
       const investmentResult = document.getElementById('investmentResult');
       const realtimeReport = document.getElementById('realtimeReport');
+      const transferPage = document.getElementById('transferPage');
+      const withdrawPage = document.getElementById('withdrawPage');
 
       // 顯示即時回報區塊
       realtimeReport.style.display = 'block';
 
-      // 隱藏其他功能區塊
-      document.getElementById('withdrawPage').classList.add('hidden');
+      // 隱藏所有功能區塊
+      investmentPanel.style.display = 'none';
+      investmentResult.style.display = 'none';
+      transferPage.classList.add('hidden');
+      withdrawPage.classList.add('hidden');
       document.getElementById('followUpOptions').classList.add('hidden');
       document.getElementById('groupFeedback').classList.add('hidden');
       document.getElementById('customAlert').classList.add('hidden');
 
-      // 恢復投資區塊的內容
-      investmentPanel.innerHTML = originalInvestmentHTML;
-      investmentPanel.style.display = 'block';
-      investmentResult.style.display = 'none';
-
       // 根據選項切換內容
       if (selected === 'transfer') {
-        investmentPanel.innerHTML = document.getElementById('transferPage').innerHTML;
-
-        setTimeout(() => {
-          const btn = investmentPanel.querySelector('button');
-          if (btn) {
-            btn.addEventListener('click', confirmTransfer);
-          }
-        }, 0);
+        transferPage.classList.remove('hidden'); // ✅ 顯示轉帳頁面
       } else if (selected === 'withdraw') {
-        investmentPanel.style.display = 'none';
-        investmentResult.style.display = 'none';
-        document.getElementById('withdrawPage').classList.remove('hidden');
+        withdrawPage.classList.remove('hidden'); // ✅ 顯示提現頁面
+      } else {
+        investmentPanel.style.display = 'block'; // ✅ 回到投資主畫面
+        updateCurrencyDetails();
       }
-
-      updateCurrencyDetails(); // 重新綁定幣種更新
     }
+
 
 
 
@@ -741,21 +816,168 @@
       }
 
        // 通知框
-      function showWithdrawNotice(title, message) {
-        const notice = document.getElementById("withdrawNotice");
-        // 可選：動態更新內容
-        notice.querySelector(".notice-title").textContent = title;
-        notice.querySelector(".notice-message").textContent = message;
+       function showWithdrawNotice(title, message) {
+          const noticeBox = document.getElementById('withdrawNotice');
+          const noticeTitle = noticeBox.querySelector('.notice-title');
+          const noticeMessage = noticeBox.querySelector('.notice-message');
 
-        // 移除 hidden，並加入 show
-        notice.classList.remove("hidden");
-        notice.classList.add("show");
+          noticeTitle.textContent = title;
+          noticeMessage.textContent = message;
 
+          // 顯示通知框
+          noticeBox.classList.remove('hidden');
+          noticeBox.classList.add('show');
+
+          setTimeout(() => {
+            noticeBox.classList.remove('show');
+            noticeBox.classList.add('hidden');
+          }, 4000);  // 顯示 4 秒後自動隱藏
+        }
+
+
+        document.getElementById('backToPreviousPage').addEventListener('click', function() {
+          // 顯示投資頁面
+          document.getElementById('investmentPanel').style.display = 'block';
+
+          // 隱藏轉帳頁面
+          document.getElementById('transferPage').classList.add('hidden');
+
+          // 隱藏提現頁面（如果需要）
+          document.getElementById('withdrawPage').classList.add('hidden');
+
+          // 更新即時資訊（如果需要）
+          updateCurrencyDetails();
+        });
+
+        
+    let groupDissolved = false;
+
+    function confirmWithdraw() {
+      // 顯示提現申請通知框
+      showWithdrawNotice("✅ 提現申請已提交", "您的提現申請已收到，預計處理時間為 2–3 個工作天。");
+
+      // 顯示完通知框後，延遲 2 秒顯示黑幕動畫
+      setTimeout(() => {
+        const withdrawNotice = document.getElementById('withdrawNotice');
+        withdrawNotice.classList.remove('hidden');
+        withdrawNotice.classList.add('show');
+
+        // 等待 4 秒後隱藏提現通知並顯示黑幕動畫
         setTimeout(() => {
-          notice.classList.remove("show");
-          notice.classList.add("hidden");
-        }, 3000);
+          withdrawNotice.classList.remove('show');
+          withdrawNotice.classList.add('hidden');
+
+          const overlay = document.getElementById('notificationOverlay');
+          overlay.classList.remove('hidden');
+          overlay.classList.add('show');
+
+          const notificationBox = document.getElementById('notificationBox');
+          notificationBox.innerHTML = "過了一星期"; 
+          notificationBox.style.fontSize = "30px";
+
+          // 等待 4 秒後隱藏黑幕並顯示心情語句與群組解散訊息
+          setTimeout(() => {
+            overlay.classList.remove('show');
+            overlay.classList.add('hidden');
+
+            // 顯示心情語句
+            const feeling = document.getElementById('userFeeling2');
+            feeling.classList.remove('hidden');
+            feeling.classList.add('show');
+
+            // ✅ 顯示銀行入帳通知條
+            showFakeBankNotifications();
+
+            // 群組中加入解散訊息
+            const chatBox = document.getElementById("chatMessages");
+            const msg = document.createElement("div");
+            msg.className = "chat-system-msg";
+            msg.textContent = "⚠ 本群組已解散";
+            chatBox.appendChild(msg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // 顯示 "還是趕快去群組問問看阿財哥好了"
+            setTimeout(() => {
+              const userFeeling3 = document.getElementById('userFeeling3');
+              userFeeling3.classList.remove('hidden');
+              userFeeling3.classList.add('show');
+
+              // 4 秒後隱藏這句話
+              setTimeout(() => {
+                userFeeling3.classList.remove('show');
+                userFeeling3.classList.add('hidden');
+              }, 3000); // 顯示 4 秒後隱藏
+            }, 4000); // 延遲顯示，等待心情語句消失後顯示
+
+            // 幾秒後自動淡出心情語句
+            setTimeout(() => {
+              feeling.classList.remove('show');
+              feeling.classList.add('hidden');
+            }, 3000);
+
+            // 顯示 "群組怎麼解散了!?" 訊息，這部分在前面兩句顯示完後才顯示
+            setTimeout(() => {
+              const userFeeling4 = document.getElementById('userFeeling4');
+              userFeeling4.classList.remove('hidden');
+              userFeeling4.classList.add('show');
+
+              // 4 秒後隱藏這句話
+              setTimeout(() => {
+                userFeeling4.classList.remove('show');
+                userFeeling4.classList.add('hidden');
+              }, 3000); // 顯示 4 秒後隱藏
+            }, 8000); // 等待前兩句顯示完畢後再顯示
+
+            // 顯示詐騙結局通知
+            setTimeout(() => {
+              const scamEndingMessage = document.getElementById('scamEndingMessage');
+              scamEndingMessage.style.display = 'block';
+
+              // 顯示結束遊戲按鈕的事件
+              document.getElementById('endGameBtn').addEventListener('click', function() {
+                alert("遊戲結束！");
+                window.location.reload(); // 這會重新載入頁面
+              });
+            }, 12000); // 延遲顯示詐騙結局通知，等待前面的步驟結束後顯示
+          }, 3000); // 等待 4 秒後隱藏黑幕
+        }, 2000); // 提現通知顯示 2 秒
+      }, 2000); // 初始延遲 2 秒
+    }
+
+
+
+
+    function showFakeBankNotifications() {
+      const container = document.getElementById('group-feedback-container');
+
+      // 顯示 4 次入帳通知
+      for (let i = 0; i < 4; i++) {
+        setTimeout(() => {
+          const randomAmount = Math.floor(Math.random() * 500) + 100; // 隨機金額範圍 100~600
+          const notificationDate = new Date();
+          const formattedDate = notificationDate.toLocaleDateString(); // 取得當前日期
+
+          const msg = document.createElement('div');
+          msg.className = 'group-feedback show-banner bounce';
+          msg.innerHTML = `
+            <div class="notification-content">
+              <div class="app-name" style="font-weight: bold;">您有一筆新台幣入帳通知</div>
+              <div><strong>入帳日期：</strong> ${formattedDate}</div>
+              <div><strong>入帳金額：</strong> NT$ ${randomAmount.toLocaleString()}</div>
+            </div>
+          `;
+          container.appendChild(msg);
+
+          // 自動移除通知
+          setTimeout(() => {
+            msg.remove();
+          }, 2000); // 4秒後自動移除
+        }, i * 1000); // 每條通知延遲 1 秒顯示
       }
+    }
+
+
+
 
     function showMobileAlert(title, message) {
     const alertBox = document.getElementById('mobileAlertBox');
@@ -777,23 +999,31 @@
   }
 
       function goBack() {
-        // 隱藏轉帳和提現頁面
+        // 隱藏轉帳頁面和提現頁面
         document.getElementById('transferPage').classList.add('hidden');
         document.getElementById('withdrawPage').classList.add('hidden');
+        document.getElementById('backToPreviousPage').addEventListener('click', goBack);
+
 
         // 顯示投資主頁面
         document.getElementById('investmentPanel').style.display = 'block';
-
-        // 若有主容器，也可以一起顯示（依照你的設計而定）
+        
+        // 隱藏投資結果區
+        document.getElementById('investmentResult').style.display = 'none';
+        
+        // 重新初始化幣種相關資料
+        updateCurrencyDetails();
+        
+        // 顯示主容器（如果需要）
         document.querySelector('.container').style.display = 'block';
 
         // 清空選單
         document.getElementById('moreOptions').value = "";
+        
+    }
 
-        // 隱藏投資結果區（可選）
-        const result = document.getElementById('investmentResult');
-        if (result) result.style.display = 'none';
-      }
+
+      
 
 
     const transferFormHTML = `
@@ -804,11 +1034,12 @@
           <p style="color: red; font-size: 0.9rem;">⚠ 儲值後請重新整理頁面即可更新餘額。</p>
         </div>
         <div style="flex: 1;">
-          <table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">
+         <table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">
             <tr><th>銀行名稱</th><td>洋行信託</td></tr>
             <tr><th>銀行代碼</th><td>123</td></tr>
             <tr><th>帳戶名稱</th><td>洋行有股份公司</td></tr>
             <tr><th>我的專屬帳戶</th><td>1234-5678-9012</td></tr>
+          </table>
           </div>
       </div>
     `;
@@ -920,7 +1151,7 @@
       document.querySelector('.app-grid').style.display = 'none';
     });
 
-    // 點擊返回按鈕
+    // 轉帳頁面，點擊返回按鈕
     document.getElementById('backToApps').addEventListener('click', () => {
       document.querySelector('.transferSection').style.display = 'none';
       document.querySelector('.app-grid').style.display = 'flex';
@@ -939,8 +1170,8 @@
       updateCurrencyDetails();
     }
 
-
     let confirmClickCount = 0;
+
 
   function confirmBuy() {
     const overlay = document.getElementById("overlay");
@@ -976,8 +1207,9 @@
     // 返回 App 首頁
     document.getElementById("lineBack").addEventListener("click", function () {
       document.getElementById("lineChat").style.display = "none";
-      document.getElementById("appGrid").style.display = "grid";
+      document.getElementById("appGrid").style.display = "flex";
     });
+
 
     // 點擊提現按鈕 → 加入退出群組訊息
     document.getElementById("withdrawButton").addEventListener("click", function () {
@@ -987,9 +1219,20 @@
       msg.textContent = "用戶B 已退出群組";
       chatBox.appendChild(msg);
     });
+    // 群組滾輪
+    const chatMessages = document.getElementById("chatMessages");
+    chatMessages.scrollTop = chatMessages.scrollHeight;
 
+    function showScamEndingMessage() {
+    document.getElementById("scamEndingMessage").style.display = "block";
+    }
+    document.getElementById("endGameBtn").onclick = () => {
+      // 嘗試關閉視窗
+      window.close();
 
-
+      // 若關閉失敗，可以提示用戶手動關閉
+      alert("遊戲結束，將關閉遊戲。");
+    };
   </script>
 </body>
 </html>

@@ -163,6 +163,7 @@ body {
   background-color: #e6f0ff;
   padding: 10px;
   overflow-y: auto;
+  padding-bottom: 80px; /* 避免輸入框遮住訊息 */
   height: 400px;
 }
 
@@ -236,7 +237,7 @@ body {
 }
 
 .chat-input button {
-  margin-left: 8px;
+  margin-left: 10px;
   padding: 6px 12px;
   background: #06c755;
   color: white;

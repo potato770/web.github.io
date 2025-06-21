@@ -559,48 +559,69 @@ body {
 
 /* 對話泡泡浮在人物上方 */
 .speech-bubble {
-  position: absolute;
-  bottom: 100%; /* 對齊人物上緣 */
-  left: 70%;
-  transform: translateX(-50%);
-  margin-bottom: 8px;
-  background: #fff;
-  border: 2px solid #333;
-  border-radius: 15px;
+  background: white;
+  border: 2px solid #000;
+  border-radius: 10px;
   padding: 8px 12px;
+  margin-bottom: 0.3rem;
+  max-width: 120px;
   font-size: 14px;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  max-width: 200px;
+  text-align: center;
+  box-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+  position: relative;
 }
 
-/* 三角形尾端 */
+/* 加一個小三角形泡泡尾巴 */
 .speech-bubble::after {
   content: "";
   position: absolute;
   bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
-  border-width: 10px 10px 0 10px;
+  border-width: 10px 8px 0 8px;
   border-style: solid;
-  border-color: #fff transparent transparent transparent;
+  border-color: white transparent transparent transparent;
 }
 
 .black-overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   background-color: rgb(255, 255, 255);
-  z-index: 9999;
-  opacity: 1;
+  z-index: 999;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  transform: translateY(-40px); /* ⭐ 將整個內容往上移 */
+  color: rgb(0, 0, 0);
   transition: opacity 1s ease;
 }
+.bank-card-ui h2 {
+  color: #0056b3;
+  font-weight: bold;
+  margin-bottom: 0.8rem;
+}
+
+.bank-card-ui .balance span {
+  color: #007bff;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.bank-card-ui {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 70%;
+  text-align: left;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border: 1px solid #eee;
+}
+
+
 
 .black-overlay .character-container {
   display: flex;
@@ -611,50 +632,19 @@ body {
 
 .character-container {
   position: absolute;
-  bottom: 40px;
-  width: 150px;
-  z-index: 1000;
-  text-align: center;
+  bottom: 50px;
+  left: calc(50% + 180px); /* 靠近手機右側外圍 */
+  display: none; /* 一開始隱藏 */
+  flex-direction: column;
+  align-items: center;
+  z-index: 10;
 }
 
-.character-container.happy {
-  right: -200px;
-}
-
-.character-container.eye {
-  right: 400px;
-  bottom: 90px; /* 從 40px 調整為 100px，會往上移 */
-}
-
-/* 圖片共用 */
 .character-img {
-  width: 100%;
+  width: 150px;
 }
 
-.happy-character {
-  border-radius: 12px;
-  border: 3px solid #ffcc00;
-}
 
-/* 如果 eye 圖片特別小，可選擇加上 */
-.eye-character {
-  width: 90px;
-}
-
-.speech-bubble {
-  display: inline-block;
-  max-width:200%;
-  padding: 10px 10px;
-  background-color: #fff;
-  border-radius: 15px;
-  border: 2px solid #000;
-  font-size: 16px;
-  line-height: 1.4;
-  position: relative;
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  color: black;
-}
 .phone-screen {
   background: white;
   border-radius: 28px;
@@ -735,5 +725,25 @@ body {
 }
 
 
+/* 當視窗寬度小於 1000px，自動調整 */
+@media screen and (max-width: 1000px) {
+  .character-container {
+    right: 200px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .character-container {
+    right: 50px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .character-container {
+    right: 10px;
+    bottom: 20px;
+    transform: scale(0.8); /* 小螢幕時縮小角色 */
+  }
+}
 
 

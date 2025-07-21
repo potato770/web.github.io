@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防詐騙資訊網 - 首頁</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .nav-logo i {
+            margin-right: 10px;
+            font-size: 24px;
+        }
+
+        /* 主要內容區域 */
+        main {
+            margin-top: 80px;
+        }
+
+        /* 輪播區樣式 */
+        .hero-slider {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+        }
+
+        .slider-container {
+            position: relative;
+            height: 100%;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide-content {
+            position: absolute;
+            top: 50%;
+            left: 50px;
+            transform: translateY(-50%);
+            color: white;
+            z-index: 2;
+            max-width: 500px;
+        }
+
+        .slide-content h2 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .slide-content p {
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            animation: slideInLeft 1s ease-out 0.3s both;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: #333;
+            transition: all 0.3s ease;
+            z-index: 3;
+        }
+
+        .slider-btn:hover {
+            background-color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .prev {
+            left: 20px;
+        }
+
+        .next {
+            right: 20px;
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 3;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot.active,
+        .dot:hover {
+            background-color: white;
+            transform: scale(1.2);
+        }
+
+        /* 快速連結區 */
+        .quick-links {
+            padding: 4rem 0;
+            background-color: white;
+        }
+
+        .quick-links h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .link-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .link-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .link-card i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .link-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        /* 最新消息預覽 */
+        .news-preview {
+            padding: 4rem 0;
+            background-color: #f8f9fa;
+        }
+
+        .news-preview h2 {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: #333;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .news-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .news-date {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .news-card h3 {
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .news-card p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .read-more {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: #764ba2;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-shield-alt"><a href="index.html" class="nav-link">防詐騙資訊網</a></i>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link active">首頁</a>
+                <a href="news.html" class="nav-link">最新消息</a>
+                <a href="games.html" class="nav-link">遊戲區</a>
+                <a href="forum.html" class="nav-link">討論區</a>
+                <a href="scam-types.html" class="nav-link">詐騙類型</a>
+                <a href="resources.html" class="nav-link">資源幫助</a>
+                <a href="login.html" class="nav-link login-btn">會員登入</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要內容 -->
+    <main>
+        <!-- 公告輪播區 -->
+        <section class="hero-slider">
+            <div class="slider-container">
+                <div class="slide active">
+                    <img src="pic/carefulpic1.jpg" alt="防詐騙宣導">
+                </div>
+                <div class="slide">
+                    <img src="pic/carefulpic2.jpg" alt="最新詐騙警報">
+                </div>
+                <div class="slide">
+                    <img src="pic/carefulpic3.jpg" alt="防詐騙遊戲">
+                </div>
+            </div>
+            <!-- 控制按鈕 -->
+            <button class="slider-btn prev" onclick="changeSlide(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="slider-btn next" onclick="changeSlide(1)">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <!-- 點點 -->
+            <div class="slider-dots">
+                <span class="dot active" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+            </div>
+        </section>
+
+        <!-- 快速連結區 -->
+        <section class="quick-links">
+            <div class="container">
+                <h2>快速連結</h2>
+                <div class="links-grid">
+                    <div class="link-card" onclick="location.href='scam-types.html'">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>詐騙類型</h3>
+                        <p>了解各種詐騙手法</p>
+                    </div>
+                    <div class="link-card" onclick="location.href='games.html'">
+                        <i class="fas fa-gamepad"></i>
+                        <h3>防詐遊戲</h3>
+                        <p>透過遊戲學習防詐</p>
+                    </div>
+                    <div class="link-card" onclick="location.href='forum.html'">
+                        <i class="fas fa-comments"></i>
+                        <h3>討論區</h3>
+                        <p>分享經驗與討論</p>
+                    </div>
+                    <div class="link-card" onclick="location.href='resources.html'">
+                        <i class="fas fa-life-ring"></i>
+                        <h3>求助資源</h3>
+                        <p>獲得專業協助</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 統計數據區
+        <section class="stats-section">
+            <div class="container">
+                <h2>防詐成果</h2>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="15000">0</div>
+                        <div class="stat-label">已幫助人數</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="500">0</div>
+                        <div class="stat-label">防詐案例</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="98">0</div>
+                        <div class="stat-label">成功率 %</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="24">0</div>
+                        <div class="stat-label">服務時數</div>
+                    </div>
+                </div>
+            </div>
+        </section> -->
+
+        <!-- 最新消息預覽 -->
+        <section class="news-preview">
+            <div class="container">
+                <h2>最新消息</h2>
+                <div class="news-grid">
+                    <article class="news-card">
+                        <div class="news-date">2024-01-15</div>
+                        <h3>新型投資詐騙手法警報</h3>
+                        <p>近期出現新型態的投資詐騙，請民眾提高警覺...</p>
+                        <a href="news.html" class="read-more">閱讀更多</a>
+                    </article>
+                    <article class="news-card">
+                        <div class="news-date">2024-01-12</div>
+                        <h3>防詐騙教育講座開放報名</h3>
+                        <p>本月將舉辦防詐騙教育講座，歡迎民眾踴躍參與...</p>
+                        <a href="news.html" class="read-more">閱讀更多</a>
+                    </article>
+                    <article class="news-card">
+                        <div class="news-date">2024-01-10</div>
+                        <h3>網路購物詐騙防範指南</h3>
+                        <p>年末購物季來臨，教您如何安全網購...</p>
+                        <a href="news.html" class="read-more">閱讀更多</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 頁腳 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>聯絡我們</h3>
+                    <p><i class="fas fa-phone"></i> 165反詐騙專線</p>
+                    <p><i class="fas fa-envelope"></i> info@antiscam.tw</p>
+                    <p><i class="fas fa-map-marker-alt"></i> 台中市三民區</p>
+                    <p><i class="fas fa-clock"></i> 24小時服務</p>
+                </div>
+
+                <div class="footer-section">
+                    <h3>快速連結</h3>
+                    <ul>
+                        <li><a href="scam-types.html">詐騙類型</a></li>
+                        <li><a href="resources.html">求助資源</a></li>
+                        <li><a href="forum.html">討論區</a></li>
+                        <li><a href="games.html">防詐遊戲</a></li>
+                        <li><a href="news.html">最新消息</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h3>關注我們</h3>
+                    <p>獲取最新防詐資訊</p>
+                    <div class="social-links">
+                        <a href="#" class="facebook" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="twitter" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="instagram" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="youtube" title="YouTube"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="line" title="LINE"><i class="fab fa-line"></i></a>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div class="footer-bottom">
+                <p>&copy; 2025 </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到頂部按鈕 -->
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+</body>
+
+</html>

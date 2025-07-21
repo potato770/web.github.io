@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>互動對話模擬</title>
+  <style>
+    body {
+      background: #e5e5e5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    .phone {
+      width: 360px;
+      height: 640px;
+      background: #fff;
+      border: 16px solid #333;
+      border-radius: 36px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .screen {
+      flex: 1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f0f0f0;
+      overflow-y: auto;
+      cursor: pointer;
+    }
+
+    .message {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      line-height: 1.4;
+      position: relative;
+      word-break: break-word;
+    }
+
+    .message.left {
+      align-self: flex-start;
+      background: #ffffff;
+      border: 1px solid #ddd;
+    }
+
+    .message.right {
+      align-self: flex-end;
+      background: #dcf8c6;
+    }
+
+    .top-bar {
+      height: 40px;
+      background: #333;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .options button {
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+
+    a {
+      color: #1a0dab;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    .warning-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .warning-box {
+      background: white;
+      color: red;
+      border: 4px solid red;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 300px;
+      text-align: left;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .warning-box h3 {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .warning-box button {
+      margin-top: 15px;
+      padding: 8px 16px;
+      font-size: 14px;
+      border: none;
+      background: #c62828;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .link-clicked {
+      opacity: 0.7;
+      text-decoration: line-through;
+    }
+
+    .waiting-hint {
+      padding: 10px;
+      margin: 10px 0;
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 10px;
+      color: #856404;
+      text-align: center;
+      font-size: 14px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="top-bar">聊天中...</div>
+    <div class="screen" id="chat">
+      <!-- 對話訊息由 JS 插入 -->
+    </div>
+  </div>
+
+  <script>
+    const chat = document.getElementById('chat');
+
+    const mainMessages = [
+      { side: 'left', text: '你好' },
+      { side: 'right', text: '你好，我對這個商品很感興趣！不曉得可不可以這家物流交易~' },
+      { side: 'left', text: '沒有問題~!' },
+      { side: 'right', text: 'test2.html', isLink: true },
+      { side: 'right', text: '這是我都在用的交易網站' },
+      { side: 'left', text: '這家物流我沒聽過，可以用 7-11 或蝦皮嗎？' },
+      { side: 'left', text: '為什麼要填銀行帳號呢??' }
+    ];
+
+    const followupA = [
+      { side: 'right', text: '這個物流很安全，因為款項會等你確認寄出後才會匯入你的戶頭，所以才要填銀行帳號！' },
+      { side: 'left', text: '聽起來沒問題。那你等我一下我來填。' },
+      { alert: `您有一筆台幣入帳通知\n入帳日期：2025/01/01\n入帳金額：$10,000\n入帳後四碼：0000` },
+      { side: 'left', text: '等等！怎麼會這樣？！' },
+      { warning: true }
+    ];
+
+    const followupB = [
+      { side: 'right', text: '如果你不確定，你可以查查看！' },
+      { side: 'right', text: '客服的LINE為 @165liar，有任何疑慮都可以向客服詢問' },
+      { side: 'left', text: '看起來沒問題，那你等我一下，我來填資料' },
+      { warning: true }
+    ];
+
+    let currentMessages = mainMessages;
+    let currentIndex = 0;
+    let linkClicked = false;
+    let gameState = 'main'; // 'main', 'waitingForLink', 'options', 'followup'
+    let waitingHintElement = null;
+
+    // 檢查是否從 test2.html 返回
+    window.addEventListener('load', function() {
+      if (sessionStorage.getItem('returnFromTest2') === 'true') {
+        const returnType = sessionStorage.getItem('returnType');
+        // 清除標記
+        sessionStorage.removeItem('returnFromTest2');
+        sessionStorage.removeItem('returnType');
+        
+        // 恢復到主對話結束的狀態
+        restoreMainMessages();
+        linkClicked = true;
+        
+        // 直接顯示選項，不管是提交還是取消回來
+        setTimeout(showOptions, 500);
+        gameState = 'options';
+      } else {
+        // 正常開始
+        chat.addEventListener('click', showNextMessage);
+      }
+    });
+
+    function restoreMainMessages() {
+      chat.innerHTML = '';
+      for (let i = 0; i < mainMessages.length; i++) {
+        const item = mainMessages[i];
+        appendMessage(item.side, item.text, item.isLink, true); // true 表示已經點擊過
+      }
+      currentIndex = mainMessages.length;
+    }
+
+    function showNextMessage() {
+      if (currentIndex < currentMessages.length) {
+        const item = currentMessages[currentIndex];
+
+        if (item.alert) {
+          alert(item.alert);
+        } else if (item.warning) {
+          showWarning();
+          return; // 不要繼續處理
+        } else if (item.end) {
+          showEndPopup();
+        } else {
+          appendMessage(item.side, item.text, item.isLink);
+        }
+
+        currentIndex++;
+
+        // 檢查是否跑完主訊息
+        if (currentIndex === currentMessages.length && currentMessages === mainMessages) {
+          gameState = 'waitingForLink';
+          // 顯示等待提示
+          showWaitingHint();
+          // 移除全域點擊監聽器
+          chat.removeEventListener('click', showNextMessage);
+        }
+      }
+    }
+
+    function showWaitingHint() {
+      if (waitingHintElement) return; // 避免重複添加
+      
+      waitingHintElement = document.createElement('div');
+      waitingHintElement.className = 'waiting-hint';
+      waitingHintElement.textContent = '💡 請點擊上面的連結才能繼續對話...';
+      chat.appendChild(waitingHintElement);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function removeWaitingHint() {
+      if (waitingHintElement) {
+        waitingHintElement.remove();
+        waitingHintElement = null;
+      }
+    }
+
+    function appendMessage(side, text, isLink = false, alreadyClicked = false) {
+      const msg = document.createElement('div');
+      msg.className = 'message ' + side;
+
+      if (isLink && (text.startsWith('http') || text.endsWith('.html'))) {
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = text;
+        
+        if (alreadyClicked) {
+          link.classList.add('link-clicked');
+        }
+        
+        link.onclick = function(e) {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          if (!linkClicked) {
+            linkClicked = true;
+            link.classList.add('link-clicked');
+            
+            // 如果正在等待點擊連結，則移除提示並顯示選項
+            if (gameState === 'waitingForLink') {
+              removeWaitingHint();
+              setTimeout(showOptions, 1000); // 給用戶一點時間看到連結被點擊
+              gameState = 'options';
+            }
+          }
+          
+          // 開啟 test2.html
+          window.open('test2.html', '_blank');
+        };
+        
+        msg.appendChild(link);
+      } else {
+        msg.textContent = text;
+      }
+
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function showOptions() {
+      // 移除可能存在的選項
+      const existingOptions = document.getElementById('options');
+      if (existingOptions) {
+        existingOptions.remove();
+      }
+
+      const optionsDiv = document.createElement('div');
+      optionsDiv.className = 'options';
+      optionsDiv.id = 'options';
+
+      const btnA = document.createElement('button');
+      btnA.textContent = 'A. 強調物流的安全性';
+      btnA.onclick = () => chooseOption(followupA);
+
+      const btnB = document.createElement('button');
+      btnB.textContent = 'B. 誘導賣家查證，提供假資訊加強可信度。';
+      btnB.onclick = () => chooseOption(followupB);
+
+      optionsDiv.appendChild(btnA);
+      optionsDiv.appendChild(btnB);
+      chat.appendChild(optionsDiv);
+      chat.scrollTop = chat.scrollHeight;
+      
+      gameState = 'options';
+    }
+
+    function chooseOption(messages) {
+      document.getElementById('options')?.remove();
+      currentMessages = [...messages, { end: true }];
+      currentIndex = 0;
+      gameState = 'followup';
+      
+      // 添加後續對話的監聽器
+      chat.addEventListener('click', showFollowupMessage);
+    }
+
+    function showFollowupMessage() {
+      if (currentIndex < currentMessages.length) {
+        const item = currentMessages[currentIndex];
+
+        if (item.alert) {
+          alert(item.alert);
+        } else if (item.warning) {
+          showWarning();
+          return;
+        } else if (item.end) {
+          // 對話結束，可以重置或其他處理
+          return;
+        } else {
+          appendMessage(item.side, item.text);
+        }
+
+        currentIndex++;
+      }
+    }
+
+    function showWarning() {
+      const overlay = document.createElement('div');
+      overlay.className = 'warning-overlay';
+
+      const box = document.createElement('div');
+      box.className = 'warning-box';
+      box.innerHTML = `
+        <h3>⚠️ 警告！你的行為已觸法！ ⚠️</h3>
+        📌 刑法第339條 – 詐欺罪：最重 7年徒刑，併科50萬元罰金<br><br>
+        📌 洗錢防制法第15條：最重 7年徒刑，併科300萬元罰金<br><br>
+        📌 連續詐欺罪 – 最高10年以上徒刑！<br><br>
+        📌 帳戶被凍結，金融黑名單，無法開戶或貸款！<br><br>
+        ⚠️ 這是詐騙手法！你的行為已觸法，警方正追查資金流向！ 🚨<br><br>
+        📞 請立即撥打165反詐騙專線，停止一切詐騙行為！<br>
+        <button onclick="blockUser()">封鎖賣家</button>
+      `;
+
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+    }
+
+    function blockUser() {
+      alert("你已封鎖賣家！");
+      location.reload();
+    }
+  </script>
+</body>
+</html>

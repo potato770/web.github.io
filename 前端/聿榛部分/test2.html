@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>賣家資訊填寫</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@^3/dist/tailwind.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      background-color: #e5e7eb;
+    }
+    .chat-container {
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 30px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      overflow: hidden;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-header {
+      background-color: #3b82f6;
+      color: white;
+      padding: 16px;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      position: relative;
+    }
+    .back-btn {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+    .back-btn:hover {
+      background-color: rgba(255,255,255,0.2);
+    }
+    .chat-content {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .bubble {
+      background-color: #f1f5f9;
+      padding: 12px;
+      border-radius: 18px;
+      margin-bottom: 12px;
+      max-width: 90%;
+    }
+    .bubble.system {
+      align-self: flex-start;
+    }
+    .bubble input {
+      margin-top: 8px;
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+    }
+    .chat-footer {
+      padding: 16px;
+    }
+    .submit-btn {
+      background-color: #3b82f6;
+      color: #fff;
+      font-weight: 600;
+      padding: 12px;
+      border-radius: 12px;
+      width: 100%;
+    }
+
+    .mobile-popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .mobile-popup {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      max-width: 320px;
+      width: 90%;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+      animation: popupSlideIn 0.3s ease-out;
+    }
+
+    @keyframes popupSlideIn {
+      from {
+        transform: scale(0.8) translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .popup-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #1f2937;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .popup-content {
+      font-size: 14px;
+      color: #4b5563;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .popup-data {
+      background: #f9fafb;
+      padding: 12px;
+      border-radius: 8px;
+      margin: 10px 0;
+      font-family: monospace;
+      font-size: 12px;
+      border-left: 4px solid #3b82f6;
+      white-space: pre-wrap;
+    }
+
+    .popup-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+
+    .popup-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .popup-btn.cancel {
+      background: #f3f4f6;
+      color: #374151;
+    }
+
+    .popup-btn.cancel:hover {
+      background: #e5e7eb;
+    }
+
+    .popup-btn.confirm {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .popup-btn.confirm:hover {
+      background: #2563eb;
+    }
+  </style>
+</head>
+<body class="flex items-center justify-center min-h-screen">
+  <div class="chat-container">
+    <div class="chat-header">
+      <button class="back-btn" onclick="askBeforeGoBack()">←</button>
+      📨 寄件表單
+    </div>
+    <div class="chat-content" id="chat">
+      <div class="bubble system">
+        🧍‍♂️ 買家資料（已填寫）：<br>
+        姓名：張小明<br>
+        地址：台北市中正區仁愛路一段100號<br>
+        信箱：carefulfool@email.com<br>
+        電話：0912345678<br>
+        信用卡卡號：1234-5678-9123-1234
+      </div>
+
+      <form id="sellerForm" class="flex flex-col gap-4">
+        <div class="bubble system">
+          名字：<br>
+          <input type="text" name="name" required>
+        </div>
+
+        <div class="bubble system">
+          生日：<br>
+          <input type="date" name="birthday" required>
+        </div>
+
+        <div class="bubble system">
+          電話：<br>
+          <input type="tel" name="phone" pattern="\d{8,15}" required>
+        </div>
+
+        <div class="bubble system">
+          電子信箱：<br>
+          <input type="email" name="email" required>
+        </div>
+
+        <div class="bubble system">
+          寄件地址：<br>
+          <input type="text" name="address" required>
+        </div>
+
+        <div class="bubble system">
+          信用卡號碼：<br>
+          <input type="text" name="card" required>
+        </div>
+
+        <div class="bubble system">
+          信用卡背面三碼（CVC）：<br>
+          <input type="text" name="cvc" required>
+        </div>
+
+        <div class="bubble system">
+          OTP 驗證碼：<br>
+          <input type="text" name="otp" required>
+        </div>
+    </div>
+    <div class="chat-footer">
+      <button type="submit" class="submit-btn">提交並產生編號</button>
+    </div>
+    </form>
+  </div>
+
+  <!-- 彈跳視窗 -->
+  <div id="mobilePopup" class="mobile-popup-overlay" style="display: none;">
+    <div class="mobile-popup">
+      <div class="popup-title">📱 確認提交資料</div>
+      <div class="popup-content">
+        請確認您要提交以下資料：
+        <div id="popupData" class="popup-data"></div>
+      </div>
+      <div class="popup-buttons">
+        <button class="popup-btn cancel" onclick="closeMobilePopup()">取消</button>
+        <button class="popup-btn confirm" onclick="confirmSubmit()">確認提交</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 返回確認視窗 -->
+  <div id="exitConfirmPopup" class="mobile-popup-overlay" style="display: none;">
+    <div class="mobile-popup">
+      <div class="popup-title">⚠️ 是否要返回首頁？</div>
+      <div class="popup-content">若您尚未完成填寫，返回將會遺失所有資料。</div>
+      <div class="popup-buttons">
+        <button class="popup-btn cancel" onclick="closeExitPopup()">取消</button>
+        <button class="popup-btn confirm" onclick="confirmExit()">確認退出</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function askBeforeGoBack() {
+      document.getElementById('exitConfirmPopup').style.display = 'flex';
+    }
+
+    function confirmExit() {
+      // 設置返回類型為取消（按按鈕回來）
+      sessionStorage.setItem('returnFromTest2', 'true');
+      sessionStorage.setItem('returnType', 'cancel');
+      // 關閉當前分頁並返回主頁面
+      window.close();
+      // 如果無法關閉（某些瀏覽器限制），則跳轉
+      setTimeout(() => {
+        window.location.href = 'liar.html';
+      }, 100);
+    }
+
+    function closeExitPopup() {
+      document.getElementById('exitConfirmPopup').style.display = 'none';
+    }
+
+    function showMobilePopup(formData) {
+      const popupDataDiv = document.getElementById('popupData');
+      const dataText =
+`姓名：${formData.name}
+生日：${formData.birthday}
+電話：${formData.phone}
+信箱：${formData.email}
+地址：${formData.address}
+信用卡：${formData.card}
+CVC：${formData.cvc}
+OTP：${formData.otp}`;
+      popupDataDiv.textContent = dataText;
+      document.getElementById('mobilePopup').style.display = 'flex';
+    }
+
+    function closeMobilePopup() {
+      document.getElementById('mobilePopup').style.display = 'none';
+    }
+
+    function confirmSubmit() {
+      const data = document.getElementById('popupData').textContent;
+      sessionStorage.setItem('lastSubmissionData', data); // 儲存資料
+      closeMobilePopup();
+      document.body.innerHTML = `
+        <div class="text-center p-20">
+          <h1 class="text-4xl font-bold mb-6 text-green-600">🎉 寄件編號已產生！</h1>
+          <p class="text-lg mb-4">請查收您的電子郵件完成後續寄件流程。</p>
+          <p class="text-sm text-gray-500">即將返回對話頁面...</p>
+        </div>
+      `;
+      setTimeout(function () {
+        // 設置返回類型為提交（填完表單回來）
+        sessionStorage.setItem('returnFromTest2', 'true');
+        sessionStorage.setItem('returnType', 'submit');
+        // 關閉當前分頁並返回主頁面
+        window.close();
+        // 如果無法關閉（某些瀏覽器限制），則跳轉
+        setTimeout(() => {
+          window.location.href = 'liar.html';
+        }, 100);
+      }, 2000);
+    }
+
+    document.getElementById('sellerForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const currentFormData = {
+        name: formData.get('name'),
+        birthday: formData.get('birthday'),
+        phone: formData.get('phone'),
+        email: formData.get('email'),
+        address: formData.get('address'),
+        card: formData.get('card'),
+        cvc: formData.get('cvc'),
+        otp: formData.get('otp')
+      };
+      showMobilePopup(currentFormData);
+    });
+
+    // 處理頁面關閉事件
+    window.addEventListener('beforeunload', function(e) {
+      // 如果用戶直接關閉分頁而沒有通過按鈕，我們仍然標記為已訪問
+      if (!sessionStorage.getItem('returnFromTest2')) {
+        sessionStorage.setItem('returnFromTest2', 'true');
+        sessionStorage.setItem('returnType', 'close');
+      }
+    });
+
+    // 檢測如果是在新分頁中打開的
+    if (window.opener) {
+      // 在新分頁中打開，可以通過 window.close() 關閉
+      // 當分頁關閉時，主頁面會繼續
+    }
+  </script>
+</body>
+</html>

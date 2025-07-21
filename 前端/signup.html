@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防詐騙資訊網 - 立即註冊</title>
+    <link rel="stylesheet" href="signup.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <!-- 導航欄 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-shield-alt"><a href="index.html" class="nav-link">騙你錢錢</a></i>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html" class="nav-link">首頁</a>
+                <a href="news.html" class="nav-link">最新消息</a>
+                <a href="games.html" class="nav-link">遊戲區</a>
+                <a href="forum.html" class="nav-link">討論區</a>
+                <a href="scam-types.html" class="nav-link">詐騙類型</a>
+                <a href="resources.html" class="nav-link">資源幫助</a>
+                <a href="login.html" class="nav-link">會員登入</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 註冊內容 -->
+    <main>
+        <div class="login-container">
+            <div class="login-box">
+                <div class="login-header">
+                    <h1>立即註冊</h1>
+                    <p>建立您的帳戶，加入防詐騙行列！</p>
+                </div>
+
+                <form id="registerForm" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="username">使用者名稱</label>
+                        <input type="text" id="username" name="username" required>
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">電子郵件</label>
+                        <input type="email" id="email" name="email" required>
+                        <i class="fas fa-envelope"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">密碼</label>
+                        <input type="password" id="password" name="password" required>
+                        <i class="fas fa-eye password-toggle" onclick="togglePassword()"></i>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmPassword">確認密碼</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        <i class="fas fa-lock"></i>
+                    </div>
+
+                    <button type="submit" class="login-button">
+                        <i class="fas fa-user-plus"></i> 註冊
+                    </button>
+                </form>
+
+                <div class="register-link">
+                    已經有帳戶了？ <a href="login.html">前往登入</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+</body>
+
+</html>

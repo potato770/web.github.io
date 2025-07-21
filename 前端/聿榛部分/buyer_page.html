@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Facebook 社團販售</title>
+  <style>
+    body {
+      background: #e5e5e5;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .phone-container {
+      width: 360px;
+      height: 640px;
+      background: #fff;
+      border: 16px solid #333;
+      border-radius: 36px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .status-bar {
+      height: 40px;
+      background: #333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .fb-header {
+      height: 40px;
+      background: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      border-bottom: 1px solid #555;
+    }
+
+    .content {
+      height: calc(100% - 80px);
+      overflow-y: auto;
+      background: #f0f2f5;
+    }
+
+    .post-container {
+      background: white;
+      margin: 8px;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    .post-header {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .post-info {
+      flex: 1;
+    }
+
+    .post-author {
+      font-weight: 600;
+      font-size: 15px;
+      color: #1c1e21;
+    }
+
+    .post-time {
+      font-size: 13px;
+      color: #65676b;
+    }
+
+    .post-content {
+      padding: 0 16px 12px;
+      font-size: 15px;
+      line-height: 1.33;
+      color: #1c1e21;
+    }
+
+    .post-image {
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 48px;
+      margin: 12px 0;
+    }
+
+    .post-actions {
+      padding: 8px 16px;
+      border-top: 1px solid #e4e6ea;
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .action-btn {
+      padding: 8px 16px;
+      border: none;
+      background: none;
+      color: #65676b;
+      font-size: 15px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #f2f3f5;
+    }
+
+    .comment-section {
+      border-top: 1px solid #e4e6ea;
+      padding: 12px 16px;
+    }
+
+    .comment {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+      padding: 8px 12px;
+      background: #f2f3f5;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .comment:hover {
+      background: #e8f4fd;
+      border-left: 3px solid #1877f2;
+    }
+
+    .comment-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #ff6b6b, #feca57);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    .comment-content {
+      flex: 1;
+    }
+
+    .comment-author {
+      font-weight: 600;
+      font-size: 13px;
+      color: #1c1e21;
+    }
+
+    .comment-text {
+      font-size: 14px;
+      color: #1c1e21;
+      margin-top: 2px;
+    }
+
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1877f2;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      opacity: 0;
+      transform: translateX(300px);
+      transition: all 0.3s ease;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.9);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .loading-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #e4e6ea;
+      border-top: 4px solid #1877f2;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loading-text {
+      margin-top: 16px;
+      font-size: 16px;
+      color: #1877f2;
+      font-weight: 500;
+    }
+
+    .interest-indicator {
+      background: #42b883;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      margin-left: 8px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        opacity: 0.7;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="phone-container">
+    <div class="status-bar">
+      <span>聊天中...</span>
+      <span>9:41</span>
+    </div>
+
+    <div class="fb-header">
+      Day7小卡/周邊交易社
+    </div>
+
+    <div class="content">
+      <div class="post-container">
+        <div class="post-header">
+          <div class="avatar">我</div>
+          <div class="post-info">
+            <div class="post-author">我</div>
+            <div class="post-time">2分鐘前 · 台中市</div>
+          </div>
+        </div>
+
+        <div class="post-content">
+          售 Day7 小卡<br><br>
+          專輯小卡 80/張 通路特典200/張<br>
+          熱門成員請多帶<br>
+          默認場損<br>
+          <br>
+          匯款後掛號/面交或賣貨便都可以<br>
+        </div>
+
+        <div class="post-image">
+          <img src="day7.png" alt="" style="height: 200px; width: 100%;">
+        </div>
+
+        <div class="post-actions">
+          <button class="action-btn">👍 讚</button>
+          <button class="action-btn">💬 留言</button>
+          <button class="action-btn">↗️ 分享</button>
+        </div>
+
+        <div class="comment-section">
+          <div class="comment" onclick="startChat()">
+            <div class="comment-avatar">A</div>
+            <div class="comment-content">
+              <div class="comment-author">陳小明 <span class="interest-indicator">有興趣</span></div>
+              <div class="comment-text">你好，我想全收！不曉得可不可以私訊討論交易方式？</div>
+            </div>
+          </div>
+
+          <div class="comment" onclick="startChat2()">
+            <div class="comment-avatar">B</div>
+            <div class="comment-content">
+              <div class="comment-author">王小華</div>
+              <div class="comment-text">請問左上還有嗎，有的話收</div>
+            </div>
+          </div>
+
+          <div class="comment">
+            <div class="comment-avatar">C</div>
+            <div class="comment-content">
+              <div class="comment-author">李小美</div>
+              <div class="comment-text">請問台中哪裡面交？</div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="loading-overlay" id="loading">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">正在開啟私訊...</div>
+        </div>
+      </div>
+
+      <div class="notification" id="notification">
+        收到一則新訊息
+      </div>
+
+      <script>
+        let hasClicked = false;
+
+        function startChat() {
+          if (hasClicked) return;
+          hasClicked = true;
+
+          // 顯示通知
+          const notification = document.getElementById('notification');
+          notification.classList.add('show');
+
+          setTimeout(() => {
+            notification.classList.remove('show');
+          }, 2000);
+
+          // 顯示載入畫面
+          setTimeout(() => {
+            const loading = document.getElementById('loading');
+            loading.classList.add('show');
+
+            // 3秒後跳轉到聊天頁面
+            setTimeout(() => {
+              window.location.href = 'buyer.html';
+            }, 3000);
+          }, 2500);
+        }
+
+        function startChat2() {
+          if (hasClicked) return;
+          hasClicked = true;
+
+          // 顯示通知
+          const notification = document.getElementById('notification');
+          notification.classList.add('show');
+
+          setTimeout(() => {
+            notification.classList.remove('show');
+          }, 2000);
+
+          // 顯示載入畫面
+          setTimeout(() => {
+            const loading = document.getElementById('loading');
+            loading.classList.add('show');
+
+            // 3秒後跳轉到聊天頁面
+            setTimeout(() => {
+              window.location.href = 'success.html';
+            }, 3000);
+          }, 2500);
+        }
+
+        // 添加一些互動效果
+        document.addEventListener('DOMContentLoaded', function () {
+          const comments = document.querySelectorAll('.comment');
+          comments.forEach((comment, index) => {
+            if (index === 0) { // 第一個留言（詐騙者）
+              comment.style.animation = 'pulse 2s infinite';
+            }
+          });
+        });
+      </script>
+</body>
+
+</html>

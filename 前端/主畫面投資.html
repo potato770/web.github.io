@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>防詐問答挑戰</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <style>
+        .progress-bar {
+            background: linear-gradient(to right, #10b981 var(--progress), #e5e7eb var(--progress));
+            border-radius: 4px;
+            height: 8px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+        
+        .card-header {
+            padding: 24px 24px 0 24px;
+        }
+        
+        .card-content {
+            padding: 24px;
+        }
+        
+        .card-footer {
+            padding: 0 24px 24px 24px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background: #059669;
+        }
+        
+        .btn-primary:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+        
+        .btn-outline {
+            background: white;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        
+        .btn-outline:hover {
+            background: #f9fafb;
+        }
+        
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .radio-option:hover {
+            border-color: #10b981;
+            background: #ecfdf5;
+        }
+        
+        .radio-option.correct {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+        
+        .radio-option.incorrect {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+        
+        .radio-option.disabled {
+            cursor: not-allowed;
+        }
+        
+        .radio-input {
+            margin-right: 12px;
+        }
+        
+        .icon {
+            width: 20px;
+            height: 20px;
+            margin-left: 8px;
+        }
+        
+        .explanation {
+            margin-top: 24px;
+            padding: 16px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 8px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-3xl mx-auto">
+            <div class="text-center mb-12">
+                <h1 class="text-4xl font-bold mb-4">防詐問答挑戰</h1>
+                <p class="text-xl text-gray-600">測試您的防詐知識，提升警覺性和應對能力</p>
+            </div>
+
+            <!-- Quiz Card -->
+            <div id="quiz-card" class="card border-2 border-green-100">
+                <div class="card-header">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium text-gray-500" id="question-counter">
+                            問題 1 / 5
+                        </span>
+                        <span class="text-sm font-medium text-gray-500" id="score-display">
+                            得分: 0 / 5
+                        </span>
+                    </div>
+                    <div class="progress-bar" id="progress-bar" style="--progress: 20%"></div>
+                    <h2 class="text-2xl mt-4" id="question-text"></h2>
+                </div>
+                <div class="card-content">
+                    <div class="space-y-4" id="options-container"></div>
+                    
+                    <div id="explanation" class="explanation hidden">
+                        <div class="flex items-start gap-2">
+                            <svg class="icon text-blue-500 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                            </svg>
+                            <div>
+                                <h4 class="font-medium text-blue-800">解析</h4>
+                                <p class="text-blue-700" id="explanation-text"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button id="check-btn" class="btn btn-primary w-full" onclick="checkAnswer()" disabled>
+                        檢查答案
+                    </button>
+                    <button id="next-btn" class="btn btn-primary w-full hidden" onclick="nextQuestion()">
+                        下一題
+                    </button>
+                </div>
+            </div>
+
+            <!-- Result Card -->
+            <div id="result-card" class="card border-2 border-green-100 text-center hidden">
+                <div class="card-header">
+                    <h2 class="text-2xl">測驗完成！</h2>
+                    <p class="text-lg text-gray-600" id="final-score">您的得分: 0 / 5</p>
+                </div>
+                <div class="card-content">
+                    <div class="py-6" id="result-content"></div>
+                </div>
+                <div class="card-footer flex justify-center gap-4">
+                    <button class="btn btn-primary" onclick="resetQuiz()">重新測驗</button>
+                    <button class="btn btn-outline">
+                        <a href="/types">了解更多詐騙類型</a>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Additional Challenges -->
+            <div class="mt-12">
+                <h2 class="text-2xl font-bold mb-6">更多問答挑戰</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="card hover:shadow-lg transition-shadow duration-300">
+                        <div class="card-header">
+                            <h3 class="text-xl font-semibold">投資詐騙問答</h3>
+                        </div>
+                        <div class="card-content">
+                            <p class="text-gray-600">測試您對投資詐騙的認識，學習如何辨別高風險投資陷阱</p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="photo.html" class="w-full">
+                                <button class="btn btn-outline w-full">開始挑戰</button>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="card hover:shadow-lg transition-shadow duration-300">
+                        <div class="card-header">
+                            <h3 class="text-xl font-semibold">網路購物安全</h3>
+                        </div>
+                        <div class="card-content">
+                            <p class="text-gray-600">測試您的網購安全知識，避免成為購物詐騙的受害者</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-outline w-full">開始挑戰</button>
+                        </div>
+                    </div>
+
+                    <div class="card hover:shadow-lg transition-shadow duration-300">
+                        <div class="card-header">
+                            <h3 class="text-xl font-semibold">社交媒體詐騙</h3>
+                        </div>
+                        <div class="card-content">
+                            <p class="text-gray-600">測試您對社交媒體詐騙的認識，保護您的網路安全</p>
+                        </div>
+                        <div class="card-footer">
+                            <button class="btn btn-outline w-full">開始挑戰</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz data and state
+        let currentQuestion = 0;
+        let selectedAnswer = null;
+        let showResult = false;
+        let score = 0;
+
+        const questions = [
+            {
+                question: "如果您收到一封電子郵件，聲稱您中了大獎，但需要先支付手續費才能領取，您應該怎麼做？",
+                options: [
+                    "立即支付手續費，以便盡快領取獎金",
+                    "回覆郵件，要求提供更多關於獎項的資訊",
+                    "忽略該郵件，這很可能是詐騙",
+                    "將郵件轉發給朋友，詢問他們的意見",
+                ],
+                correctAnswer: 2,
+                explanation: "這是典型的「中獎詐騙」手法。合法的獎項不會要求您先支付任何費用才能領取。如果您沒有參加任何抽獎活動，卻收到中獎通知，這幾乎肯定是詐騙。",
+            },
+            {
+                question: "下列哪一項是辨識詐騙電話的特徵？",
+                options: [
+                    "對方自稱是政府機關，但要求您提供個人敏感資訊",
+                    "對方告知您有緊急情況需要立即處理",
+                    "對方要求您不要告訴任何人這通電話的內容",
+                    "以上皆是",
+                ],
+                correctAnswer: 3,
+                explanation: "詐騙電話通常會結合多種手法：假冒權威人士（如政府機關）、製造緊急感，以及要求保密。這些都是詐騙的警訊，應提高警覺。",
+            },
+            {
+                question: "如果有陌生人透過社群媒體與您聯繫，並很快表達浪漫興趣或提出投資建議，您應該：",
+                options: [
+                    "相信對方，因為網路交友是認識新朋友的好方法",
+                    "保持警覺，不要輕易相信對方的身份和意圖",
+                    "立即分享您的個人資訊，以建立信任關係",
+                    "將對方介紹給您的朋友和家人",
+                ],
+                correctAnswer: 1,
+                explanation: "這可能是「交友詐騙」或「投資詐騙」。詐騙者常利用社群媒體建立虛假關係，然後誘導受害者轉帳或投資。應保持警覺，不要輕易相信網路上認識的陌生人。",
+            },
+            {
+                question: "您收到一則簡訊，聲稱您的銀行帳戶有異常交易，需要點擊連結確認身份。正確的做法是：",
+                options: [
+                    "立即點擊連結，確認您的帳戶安全",
+                    "回覆簡訊，詢問更多細節",
+                    "忽略該簡訊，直接聯繫銀行官方客服確認",
+                    "將簡訊轉發給朋友，詢問他們是否也收到類似訊息",
+                ],
+                correctAnswer: 2,
+                explanation: "銀行不會透過簡訊要求您點擊連結確認身份。這類簡訊通常是「釣魚詐騙」，目的是竊取您的帳號密碼。正確做法是直接聯繫銀行官方客服確認。",
+            },
+            {
+                question: "下列哪一項不是保護自己免受網路詐騙的有效方法？",
+                options: [
+                    "定期更新密碼並使用不同的密碼組合",
+                    "在社群媒體上公開分享您的行程和個人資訊",
+                    "安裝防毒軟體並保持更新",
+                    "對不明來源的電子郵件附件保持警覺",
+                ],
+                correctAnswer: 1,
+                explanation: "在社群媒體上公開分享行程和個人資訊會增加您成為詐騙目標的風險。詐騙者可能利用這些資訊進行社交工程攻擊或身份盜用。",
+            },
+        ];
+
+        // Initialize quiz
+        function initQuiz() {
+            updateQuestionDisplay();
+        }
+
+        // Update question display
+        function updateQuestionDisplay() {
+            document.getElementById('question-counter').textContent = `問題 ${currentQuestion + 1} / ${questions.length}`;
+            document.getElementById('score-display').textContent = `得分: ${score} / ${questions.length}`;
+            document.getElementById('progress-bar').style.setProperty('--progress', `${((currentQuestion + 1) / questions.length) * 100}%`);
+            document.getElementById('question-text').textContent = questions[currentQuestion].question;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            questions[currentQuestion].options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'radio-option';
+                optionDiv.id = `option-${index}`;
+                optionDiv.onclick = () => selectAnswer(index);
+                
+                optionDiv.innerHTML = `
+                    <input type="radio" name="answer" value="${index}" class="radio-input">
+                    <label class="flex-1 cursor-pointer">${option}</label>
+                    <span class="icon-placeholder"></span>
+                `;
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // Reset states
+            selectedAnswer = null;
+            showResult = false;
+            document.getElementById('explanation').classList.add('hidden');
+            document.getElementById('check-btn').classList.remove('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+            document.getElementById('check-btn').disabled = true;
+        }
+
+        // Select answer
+        function selectAnswer(index) {
+            if (showResult) return;
+            
+            selectedAnswer = index;
+            
+            // Update radio buttons
+            document.querySelectorAll('.radio-option input[type="radio"]').forEach((radio, i) => {
+                radio.checked = i === index;
+            });
+            
+            document.getElementById('check-btn').disabled = false;
+        }
+
+        // Check answer
+        function checkAnswer() {
+            showResult = true;
+            const correctAnswer = questions[currentQuestion].correctAnswer;
+            
+            // Update option styles
+            document.querySelectorAll('.radio-option').forEach((option, index) => {
+                option.classList.add('disabled');
+                option.onclick = null;
+                
+                if (index === correctAnswer) {
+                    option.classList.add('correct');
+                    option.querySelector('.icon-placeholder').innerHTML = `
+                        <svg class="icon text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    `;
+                } else if (index === selectedAnswer) {
+                    option.classList.add('incorrect');
+                    option.querySelector('.icon-placeholder').innerHTML = `
+                        <svg class="icon text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        </svg>
+                    `;
+                }
+            });
+            
+            // Show explanation
+            document.getElementById('explanation-text').textContent = questions[currentQuestion].explanation;
+            document.getElementById('explanation').classList.remove('hidden');
+            
+            // Update buttons
+            document.getElementById('check-btn').classList.add('hidden');
+            document.getElementById('next-btn').classList.remove('hidden');
+            document.getElementById('next-btn').textContent = currentQuestion < questions.length - 1 ? '下一題' : '查看結果';
+        }
+
+        // Next question
+        function nextQuestion() {
+            if (selectedAnswer === questions[currentQuestion].correctAnswer) {
+                score++;
+            }
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                updateQuestionDisplay();
+            } else {
+                showFinalResult();
+            }
+        }
+
+        // Show final result
+        function showFinalResult() {
+            document.getElementById('quiz-card').classList.add('hidden');
+            document.getElementById('result-card').classList.remove('hidden');
+            document.getElementById('final-score').textContent = `您的得分: ${score} / ${questions.length}`;
+            
+            const resultContent = document.getElementById('result-content');
+            
+            if (score === questions.length) {
+                resultContent.innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <svg class="w-16 h-16 text-green-500 mb-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <p class="text-xl font-medium text-green-700 mb-2">太棒了！</p>
+                        <p class="text-gray-600">您已經是防詐達人了！繼續保持警覺，保護自己和身邊的人。</p>
+                    </div>
+                `;
+            } else if (score >= questions.length * 0.7) {
+                resultContent.innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <svg class="w-16 h-16 text-green-500 mb-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+                        </svg>
+                        <p class="text-xl font-medium text-green-600 mb-2">做得很好！</p>
+                        <p class="text-gray-600">您的防詐知識相當不錯，繼續學習更多防詐技巧。</p>
+                    </div>
+                `;
+            } else {
+                resultContent.innerHTML = `
+                    <div class="flex flex-col items-center">
+                        <svg class="w-16 h-16 text-amber-500 mb-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+                        </svg>
+                        <p class="text-xl font-medium text-amber-700 mb-2">還有進步空間！</p>
+                        <p class="text-gray-600">建議您多了解各種詐騙手法，提高警覺性。</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Reset quiz
+        function resetQuiz() {
+            currentQuestion = 0;
+            selectedAnswer = null;
+            showResult = false;
+            score = 0;
+            
+            document.getElementById('quiz-card').classList.remove('hidden');
+            document.getElementById('result-card').classList.add('hidden');
+            
+            updateQuestionDisplay();
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initQuiz);
+    </script>
+</body>
+</html>

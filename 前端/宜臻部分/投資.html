@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>虛擬貨幣投資平台</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <div class="header">
+      <h1>虛擬貨幣投資平台</h1>
+      <select class="dropdown" id="moreOptions" onchange="handleDropdownChange()">
+        <option value="">選擇操作</option>
+        <option value="transfer">轉帳</option>
+        <option value="withdraw">提現</option>
+      </select>
+    </div>
+
+    <!-- 即時回報區域 -->
+    <div id="realtimeReport" class="realtime-report">
+      <h3>即時回報</h3>
+      <p>帳戶總額: <span id="accountTotal">$2000</span></p>
+      <p>目前回報: <span id="currentReturn">$0</span></p>
+      <p>選擇的幣種價格: <span id="currentCurrencyPrice">$30,000</span></p>
+    </div>
+
+    <div id="investmentPanel" class="card">
+      <h2>投資虛擬貨幣</h2>
+      <div class="info">
+        <label for="currencySelect"><strong>選擇幣種</strong></label>
+        <select id="currencySelect" onchange="updateCurrencyDetails()">
+          <option value="BTC" data-price="30000">比特幣 (BTC)</option>
+          <option value="ETH" data-price="2000">以太坊 (ETH)</option>
+          <option value="LTC" data-price="150">萊特幣 (LTC)</option>
+        </select>
+        <p>即時幣價: <span id="currencyPriceDisplay">$30,000</span></p>
+      </div>
+    
+      <div class="account-info">
+        <label for="investmentAmount"><strong>輸入投資金額</strong></label>
+        <input type="number" id="investmentAmount" min="1" oninput="updateEstimates()" />
+        <p>可購買數量: <span id="estimatedUnits">0</span> <span id="currencySymbol">BTC</span></p>
+        <p>預估收益範圍: <span id="estimatedProfit">$0.00 ~ $0.00</span></p>
+      </div>
+    
+      <button class="button" onclick="confirmInvestment()">確認買入</button>
+    </div>
+
+    <div id="purchaseSuccess" class="hidden">購買成功！</div>
+
+    <div id="subtitleOverlay" class="hidden">
+      <div id="subtitleBox">過了幾天......</div>
+    </div>
+
+
+
+    <!-- 投資結果區域 -->
+    <div id="investmentResult" class="investment-result result">
+      <p>投資成功！您已成功購買 <span id="currencyPurchased">0.00</span> <span id="currencySymbol">BTC</span>。</p>
+      <p>帳戶餘額: <span id="newAccountBalance">$0</span></p>
+    </div>
+  </div>
+
+  <!-- 加碼選項彈窗 -->
+  <div id="followUpOptions" class="card followup-options">
+    <button onclick="handleFollowUpOption('A')" class="button">加碼投資 $1000</button>
+    <button onclick="handleFollowUpOption('B')" class="button">還是先投 $500 好了</button>
+  </div>
+
+  <!-- 自訂提示 -->
+  <div id="customAlert" class="custom-alert hidden">
+    <div class="alert-box">
+      <strong>⚠ 投資金額不足</strong>
+      <p>請先儲值後再進行投資。</p>
+    </div>
+  </div>
+
+  <!-- 轉帳頁面 -->
+  <div id="transferPage" class="card hidden">
+    <h2>轉帳資訊</h2>
+    <div style="display: flex; gap: 2rem;">
+      <div style="flex: 1;">
+        <p><strong>洋行信託專屬匯款資訊</strong></p>
+        <p style="color: red; font-size: 1rem;">⚠ 請點擊左下手機符號進行轉帳動作。</p>
+      </div>
+      <div style="flex: 1;">
+        <table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">
+          <tr><th>銀行名稱</th><td>洋行信託</td></tr>
+          <tr><th>銀行代碼</th><td>123</td></tr>
+          <tr><th>帳戶名稱</th><td>洋行有股份公司</td></tr>
+          <tr><th>我的專屬帳戶</th><td>1234-5678-9012</td></tr>
+        </table>
+      </div>
+    </div>
+    <button class="button" id="backToPreviousPage">返回</button>
+  </div>
+  
+ <!-- 📱 手機模擬按鈕 + 通知容器 -->
+ <div id="mobile-container" style="position: fixed; bottom: 1rem; left: 1rem; z-index: 1000; display: flex; align-items: center; gap: 0.5rem;">
+  <button onclick="toggleMobilePreview()" style="font-size: 3rem; background: none; border: none; cursor: pointer;">📱</button>
+  <div id="group-feedback-container" style="position: relative;">
+    <!-- 彈出提示區域 -->
+    <div id="groupFeedback" class="group-feedback hidden">
+      <img src="https://via.placeholder.com/42x42.png?text=Avata" alt="Avatar" class="avatar" />
+      <div class="text-content">
+        <div class="app-name">投資群組</div>
+        <div class="message" id="notificationMessage">阿明：已經增長了 $500！</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- JS 動態塞入的通知訊息 -->
+  </div>
+</div>
+
+  <div id="group-feedback-container" class="absolute top-0 left-full ml-2 flex flex-col space-y-2"></div>
+  <!-- 手機模擬視窗 -->
+  <div id="mobilePreview" class="mobile-preview">
+  <!-- 上方聽筒 -->
+  <div class="top-bar"><div class="speaker"></div></div>
+
+  <!-- 主畫面 -->
+    <div class="screen">
+      <!-- 群組提示浮出訊息 -->
+      <div id="groupFeedback" class="group-feedback hidden">
+        <div class="notification">
+          <img src="line-icon.png" alt="Avatar" class="avatar" />
+          <div>
+            <div class="app-name">投資群組</div>
+            <div class="message" id="notificationMessage">阿明：已經增長了 $500！</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 首頁圖示格 -->
+      <div class="app-grid" id="appGrid">
+          <div class="app" id="lineApp">
+            <img src="https://i.imgur.com/SbCsymw.png" alt="LINE">
+            <div class="app-label">LINE</div>
+          </div>
+          <div class="app" id="transferApp">
+            <img src="https://i.imgur.com/j2kjeTK.png" alt="銀行">
+            <div class="app-label">銀行</div>
+          </div>
+          <div class="app" id="facebookApp">
+            <img src="https://imgur.com/POxoxxw.png" alt="Facebook">
+            <div class="app-label">Facebook</div>
+          </div>
+        </div>
+
+      <!-- LINE 群組聊天室內容 -->
+      <div id="lineChat" class="line-chat" style="display: none;">
+        <div class="chat-header">
+          <span class="chat-title">發大財(20)</span>
+          <button id="lineBack" class="chat-back">🚪退出</button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+          <div class="chat-system-msg">你已成功加入發大財投資群組</div>
+
+          <div class="chat-msg">
+            <img src="財.png" class="avatar">
+            <div>
+              <div class="chat-name">阿財哥</div>
+              <div class="chat-bubble">歡迎加入!!</div>
+            </div>
+          </div>
+
+          <div class="chat-msg">
+            <img src="head-3.png" class="avatar">
+            <div>
+              <div class="chat-name">阿明</div>
+              <div class="chat-bubble">一起來賺錢了</div>
+            </div>
+          </div>
+
+          <div class="chat-msg">
+            <img src="head-2.png" class="avatar">
+            <div>
+              <div class="chat-name">小美</div>
+              <div class="chat-bubble">我最近賺了好多</div>
+            </div>
+          </div>
+
+          <div class="chat-msg">
+            <img src="財.png" class="avatar">
+            <div>
+              <div class="chat-name">阿財哥</div>
+              <div class="chat-bubble">有看到新加入的成員!我們有合作的投資平台，現在註冊會送投資本金2000塊，可以試試看喔</div>
+            </div>
+          </div>
+
+          <div class="chat-msg self">
+            <div class="chat-bubble self">
+              我也想試試！
+            </div>
+          </div>
+
+          <div class="chat-msg">
+            <img src="財.png" class="avatar">
+            <div>
+              <div class="chat-name">阿財哥</div>
+              <div class="chat-bubble">
+                這是投資連結<br>
+                <a href="javascript:void(0);" style="color: #3800d2; text-decoration: underline;">投資網頁</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="chat-msg">
+            <img src="head-3.png" class="avatar">
+            <div>
+              <div class="chat-name">阿明</div>
+              <div class="chat-bubble">我才剛投而已就增長了500！</div>
+            </div>
+          </div>
+
+          <div class="chat-msg">
+            <img src="head-2.png" class="avatar">
+            <div>
+              <div class="chat-name">小美</div>
+              <div class="chat-bubble">我賺了好多!</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input">
+          <input type="text" placeholder="輸入訊息...">
+          <button class="send-button">送出</button>
+        </div>
+        
+      </div>
+
+
+      <!-- 轉帳內容 -->
+      <div class="transferSection" style="display:none;">
+        <h3>轉帳資訊</h3>
+        <p>請將款項匯至以下帳號進行儲值：</p>
+        <p><strong>洋行信託(123)1234-5678-9012</strong></p>
+
+        <label for="mobileTransferAmount"><strong>轉帳金額</strong></label>
+        <input id="mobileTransferAmount" type="number" class="form-input" placeholder="輸入金額" style="width: 90%;">
+
+        <div class="button-group">
+          <button class="btn-confirm-transfer" id="mobileConfirmTransfer">✅ 確認轉帳</button>
+          <button class="btn-back" id="backToApps">🔙 返回</button>
+        </div>
+
+      </div>
+
+      <!-- 手機內的通知 -->
+      <div id="mobileNotification" class="mobile-notification hidden">
+        <div class="notification-content">
+          <p id="notificationMessage">轉帳處理中...</p>
+        </div>
+      </div>
+    </div>
+ 
+
+    <!-- 下方 Home 鍵 -->
+    <div class="bottom-bar"><div class="home-button"></div></div>
+  </div>
+
+
+  <!-- 提現頁面 -->
+  <div id="withdrawPage" class="withdraw-section card hidden">
+
+    <h2>提現虛擬貨幣</h2>
+
+    <!-- 提現金額欄位 -->
+    <label for="withdrawAmount"><strong>提現金額</strong></label>
+    <input type="number" id="withdrawAmount" placeholder="輸入提現金額" class="form-input" />
+
+    <!-- 銀行代碼欄位 -->
+    <label for="bankCode"><strong>銀行代碼</strong></label>
+    <input type="text" id="bankCode" placeholder="例如：中國信託為 822" class="form-input" />
+
+    <!-- 銀行帳號欄位 -->
+    <label for="bankAccount"><strong>銀行帳號</strong></label>
+    <input type="text" id="bankAccount" placeholder="輸入銀行帳號" class="form-input" />
+
+    <!-- 驗證碼區域：輸入欄位 + 發送按鈕並排 -->
+    <div class="otp-container">
+      <input type="text" id="otpCode" placeholder="6 位驗證碼" class="form-input otp-input" />
+      <button id="sendOtpButton" class="otp-button" onclick="sendOtpCode()">發送驗證碼</button>
+    </div>
+    <span id="otpCountdown" class="otp-countdown"></span>
+
+
+    <!-- 警告提示 -->
+    <p style="color: red; font-size: 0.9rem; margin-top: 8px;">
+      ⚠ 銀行帳號與銀行代碼請確認無誤，並確保驗證碼有效再送出申請。
+    </p>
+
+
+    <!-- 按鈕區 -->
+    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
+      <button class="button" onclick="confirmWithdraw()">✅ 送出提現申請</button>
+      <button class="button" onclick="goBack()">返回</button>
+    </div>
+
+    <!-- 提現通知框 -->
+    <div id="withdrawNotice" class="withdraw-notice ">
+      <span class="notice-title">✅ 提現申請已提交</span>
+      <span class="notice-message">您的提現申請已收到，預計處理時間為 2–3 個工作天。</span>
+    </div>
+</div>
+
+    <div id="subtitleOverlay" class="hidden">
+    <div id="subtitleBox">過了幾天......</div>
+    </div>
+    <div id="userFeeling" class="hidden">沒想到小賺了不少!!試試看領出來一些</div>
+
+    <div id="customAlert" style="display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background-color: #fefefe; border: 1px solid #ccc; padding: 10px 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    font-size: 14px; z-index: 1000; max-width: 90%; text-align: center;">
+    </div>
+
+   <div id="notificationOverlay" class="hidden">
+      <div id="notificationBox">過了一星期</div>
+    </div>
+    <div id="userFeeling2" class="hidden">怎麼會這樣!?我為什麼會有這麼多入帳通知!</div>
+    <div id="userFeeling3" class="hidden">還是趕快去群組問問看阿財哥好了</div>
+    <div id="userFeeling4" class="hidden">群組怎麼解散了!?</div>
+
+    <div id="welcomeMessage" class="welcome-message">
+      <p>恭喜註冊成功!</p>
+      <p>已獲得投資金$2000元</p>
+      <p><span class="game-tip">遊戲提示：一開始請使用2000元投資金進行遊戲</span></p>
+    </div>
+
+    <div id="scamEndingMessage">
+      <p><b>📢 結局提示：</b></p>
+      <p>🚨「這是一場詐騙！你的帳戶已被當成人頭帳戶<br>資金已無法取回！」</p>
+      <p>🚨 <b>防詐提醒！</b></p>
+      <p>詐騙行為可能導致無法取回的金錢損失。<br>保持警覺，謹慎操作。</p>
+      <p>合法投資平台會提供清晰的營運背景<br>透明的手續費與可追溯的交易紀錄。</p>
+      <p>❗切勿輕信未經證實的投資資訊。</p>
+
+      <button id="endGameBtn">結束遊戲</button>
+    </div>
+
+
+  <script>
+    const originalInvestmentHTML = document.getElementById('investmentPanel').innerHTML;
+
+    let accountBalance = 2000;
+    let currentCurrency = "BTC";
+    let currentCurrencyPrice = 2000;
+    let investedAmount = 0;
+    let currentReturn = 0;
+    let currencyPurchased = 0;
+    let hasShownFeedback = false;
+
+    const groupContainer = document.getElementById('group-feedback-container');
+    const feedbackMessages = [
+      "阿明：我才剛投而已就增長了500！",
+      "小美：我賺了好多!",
+    ];
+
+
+    document.querySelectorAll('.chat-bubble').forEach(bubble => {
+      const text = bubble.textContent.trim();
+      if (text.length >= 15) { // ✅ 超過15字就換行
+        bubble.classList.add('long');
+      }
+    });
+
+    function showGroupFeedback(message) {
+      const feedback = document.getElementById('groupFeedback');
+      const messageBox = feedback.querySelector('.message');
+
+      // 更新訊息內容
+      messageBox.textContent = message;
+
+      // 顯示通知
+      feedback.classList.add('show-banner');
+      feedback.classList.remove('hidden');
+
+      // 延遲 4 秒後隱藏通知
+      setTimeout(() => {
+        feedback.classList.remove('show-banner');
+        feedback.classList.add('hidden');
+      }, 4000); // 4秒後消失
+    }
+
+
+    function formatWithPercent(value, percent) {
+      return `$${value.toFixed(2)} (+${percent}%)`;
+    }
+
+    function updateRealtimeReport() {
+      let totalValue = accountBalance + currentReturn;
+      let percent = investedAmount ? ((currentReturn / investedAmount) * 100).toFixed(2) : "0.00";
+
+      // 修改這一行：帳戶總額只顯示純金額，不加 percent
+      document.getElementById('accountTotal').textContent = `$${totalValue.toFixed(2)}`;
+
+      // 以下保留顯示百分比給回報數值即可
+      document.getElementById('currentReturn').textContent = formatWithPercent(currentReturn, percent);
+      document.getElementById('currentCurrencyPrice').textContent = `$${currentCurrencyPrice.toLocaleString()} (+5%)`;
+    
+    }
+
+
+    function updateCurrencyDetails() {
+      let selected = document.getElementById('currencySelect');
+      if (!selected) return; // ⛑ 防止錯誤執行
+
+      let selectedCurrency = selected.value;
+      let price = selected.options[selected.selectedIndex].dataset.price;
+      currentCurrencyPrice = parseFloat(price);
+      currentCurrency = selectedCurrency;
+      document.getElementById('currencyPriceDisplay').textContent = `$${currentCurrencyPrice.toLocaleString()}`;
+      document.getElementById('currencySymbol').textContent = selectedCurrency;
+      updateEstimates();
+    }
+    //開啟手機模擬介面
+    function confirmTransfer() {
+      document.getElementById('accountRow').style.display = 'table-row';
+    }
+
+    function toggleMobilePreview() {
+      const preview = document.getElementById('mobilePreview');
+      preview.style.display = preview.style.display === 'none' ? 'block' : 'none';
+    }
+
+
+    function updateEstimates() {
+      const amount = parseFloat(document.getElementById('investmentAmount').value);
+      if (isNaN(amount) || amount <= 0) {
+        document.getElementById('estimatedUnits').textContent = "0";
+        document.getElementById('estimatedProfit').textContent = "$0.00 ~ $0.00";
+        return;
+      }
+      const units = amount / currentCurrencyPrice;
+      const lowProfit = amount * 0.02;
+      const highProfit = amount * 0.04;
+      document.getElementById('estimatedUnits').textContent = units.toFixed(4);
+      document.getElementById('estimatedProfit').textContent = `$${lowProfit.toFixed(2)} ~ $${highProfit.toFixed(2)}`;
+      document.getElementById('currencySymbol').textContent = currentCurrency;
+    }
+
+    let hasShownInvestmentFeedback = false;
+    let hasShownFollowUpOptions = false;
+
+
+    
+  function confirmInvestment() {
+  let amount = parseFloat(document.getElementById('investmentAmount').value);
+  if (isNaN(amount) || amount <= 0 || amount > accountBalance) {
+    showCustomAlert("投資金額不足", "請先儲值後再進行投資(遊戲提示：請選擇右上轉帳)");
+    return;
+  }
+
+  confirmClickCount++; // 只要金額OK，再增加點擊次數
+
+  if (confirmClickCount === 1) {
+    // 第一次點擊：正常投資流程
+    executeInvestment(amount);
+
+    // 顯示購買成功訊息
+    showPurchaseSuccess("購買成功！");
+
+    // 顯示群組反饋
+    if (!hasShownInvestmentFeedback) {
+      let randomIndexes = [];
+      while (randomIndexes.length < 2) {
+        let randomIndex = Math.floor(Math.random() * feedbackMessages.length);
+        if (!randomIndexes.includes(randomIndex)) {
+          randomIndexes.push(randomIndex);
+        }
+      }
+      showGroupFeedback(feedbackMessages[randomIndexes[0]]);
+      setTimeout(() => {
+        showGroupFeedback(feedbackMessages[randomIndexes[1]]);
+      }, 5000);
+
+      hasShownInvestmentFeedback = true;
+    }
+
+    // 顯示加碼選單
+    if (!hasShownFollowUpOptions) {
+      setTimeout(() => {
+        document.getElementById('followUpOptions').classList.remove('hidden');
+      }, 10000); // 加碼選單延遲出現
+      hasShownFollowUpOptions = true;
+    }
+
+    } else if (confirmClickCount === 2) {
+    // 第二次點擊：再扣一次錢
+    executeInvestment(amount);
+
+    // 顯示購買成功訊息
+    showPurchaseSuccess("購買成功！");
+
+    // 🌟 螢幕暗掉 + 加大量回報金額
+    setTimeout(() => {
+      const overlay = document.getElementById('subtitleOverlay');
+      overlay.classList.remove('hidden');
+      overlay.classList.add('show');
+
+      // 加大量回報金額（50%~100%）
+      let fakeProfit = investedAmount * (Math.random() * 0.5 + 0.5);
+      fakeProfit = Math.round(fakeProfit);
+
+      accountBalance += fakeProfit;
+      currentReturn += fakeProfit;
+
+      updateRealtimeReport();
+      document.getElementById('newAccountBalance').textContent = `$${accountBalance.toFixed(2)}`;
+
+        // 關掉字幕 & 顯示心情語句
+        setTimeout(() => {
+        overlay.classList.remove('show');
+        overlay.classList.add('hidden');
+
+        // 顯示使用者心情語句
+        const feeling = document.getElementById('userFeeling');
+        feeling.classList.remove('hidden');
+        feeling.classList.add('show');
+
+        // 幾秒後自動淡出
+        setTimeout(() => {
+          feeling.classList.remove('show');
+          feeling.classList.add('hidden');
+        }, 4000);
+
+      }, 4000);
+
+    }, 7000);
+  }
+}
+
+
+  // ✅ 把扣錢邏輯統一成 function
+  function executeInvestment(amount) {
+    accountBalance -= amount;
+    investedAmount += amount;
+    currencyPurchased = amount / currentCurrencyPrice;
+    let initialReturn = amount * 0.02;
+    let finalReturn = amount * 0.04;
+    currentReturn += initialReturn;
+
+    document.getElementById('currencyPurchased').textContent = currencyPurchased.toFixed(4);
+    document.getElementById('newAccountBalance').textContent = `$${accountBalance.toFixed(2)}`;
+
+    updateRealtimeReport();
+    startReturnGrowth(currentReturn, currentReturn + (finalReturn - initialReturn), 10000);
+
+    document.getElementById('investmentResult').style.display = 'block';
+  }
+
+  // ✅ 顯示購買成功訊息
+  function showPurchaseSuccess(message) {
+    const purchaseSuccess = document.getElementById('purchaseSuccess');
+    purchaseSuccess.textContent = message;
+    purchaseSuccess.classList.remove('hidden');
+    purchaseSuccess.classList.add('show');
+
+    setTimeout(() => {
+      purchaseSuccess.classList.remove('show');
+      purchaseSuccess.classList.add('hidden');
+    }, 2000); // 2秒後自動關掉
+  }
+
+    //通知框+遊戲提示
+    window.onload = function() {
+      const welcomeMessage = document.getElementById('welcomeMessage');
+      welcomeMessage.style.display = 'block'; // 顯示通知
+
+      // 4秒後隱藏通知
+      setTimeout(() => {
+        welcomeMessage.style.display = 'none';
+      }, 4000); // 4000 毫秒 = 4 秒
+    };
+
+
+    // 統一扣錢的 function
+    function executeInvestment(amount) {
+      accountBalance -= amount;
+      investedAmount += amount;
+      currencyPurchased = amount / currentCurrencyPrice;
+      let initialReturn = amount * 0.02;
+      let finalReturn = amount * 0.04;
+      currentReturn += initialReturn;
+
+      document.getElementById('currencyPurchased').textContent = currencyPurchased.toFixed(4);
+      document.getElementById('newAccountBalance').textContent = `$${accountBalance.toFixed(2)}`;
+
+      updateRealtimeReport();
+      startReturnGrowth(currentReturn, currentReturn + (finalReturn - initialReturn), 10000);
+
+      document.getElementById('investmentResult').style.display = 'block';
+    }
+
+    // 顯示購買成功的小通知
+    function showPurchaseSuccess(message) {
+      const purchaseSuccess = document.getElementById('purchaseSuccess');
+      purchaseSuccess.textContent = message;
+      purchaseSuccess.classList.remove('hidden');
+      purchaseSuccess.classList.add('show');
+
+      setTimeout(() => {
+        purchaseSuccess.classList.remove('show');
+        purchaseSuccess.classList.add('hidden');
+      }, 2000); // 顯示2秒後自動消失
+    }
+
+    function startReturnGrowth(startValue, endValue, duration) {
+      const steps = 100;
+      const increment = (endValue - startValue) / steps;
+      let current = startValue;
+      let count = 0;
+      const interval = setInterval(() => {
+        current += increment;
+        currentReturn = current;
+        count++;
+        updateRealtimeReport();
+        if (count >= steps) {
+          clearInterval(interval);
+        }
+      }, duration / steps);
+    }
+
+    function handleFollowUpOption(option) {
+      let amount = option === 'A' ? 2000 : 1000;
+      document.getElementById('investmentAmount').value = amount;
+      updateEstimates();
+      confirmInvestment();
+      document.getElementById('followUpOptions').classList.add('hidden');
+    }
+
+    function startGroupBannerNotifications() {
+      const feedback = document.getElementById('groupFeedback');
+      const messageText = document.getElementById('notificationMessage');
+      const messages = feedbackMessages;
+      let index = 0;
+
+      function showMessage() {
+        if (index >= messages.length) return;
+        messageText.textContent = messages[index];
+        feedback.classList.remove('hidden', 'slide-up');
+        feedback.classList.add('show-banner');
+
+        setTimeout(() => {
+          feedback.classList.add('slide-up');
+        }, 4000);
+
+        setTimeout(() => {
+          feedback.classList.remove('show-banner');
+          feedback.classList.add('hidden');
+          index++;
+          setTimeout(showMessage, 1000);  // 延遲顯示下一條消息
+        }, 5000);
+      }
+
+      showMessage();
+    }
+
+    function showCustomAlert(title, message) {
+      const alertBox = document.getElementById('customAlert');
+      if (!alertBox) return;
+
+      const strongEl = alertBox.querySelector('strong');
+      const messageEl = alertBox.querySelector('p');
+
+      strongEl.textContent = title;
+      messageEl.textContent = message;
+
+      alertBox.classList.remove('hidden');
+      alertBox.style.display = 'block';
+
+      setTimeout(() => {
+        alertBox.style.display = 'none';
+        alertBox.classList.add('hidden');
+      }, 4000);
+    }
+
+    function handleDropdownChange() {
+      const selected = document.getElementById('moreOptions').value;
+      const investmentPanel = document.getElementById('investmentPanel');
+      const investmentResult = document.getElementById('investmentResult');
+      const realtimeReport = document.getElementById('realtimeReport');
+      const transferPage = document.getElementById('transferPage');
+      const withdrawPage = document.getElementById('withdrawPage');
+
+      // 顯示即時回報區塊
+      realtimeReport.style.display = 'block';
+
+      // 隱藏所有功能區塊
+      investmentPanel.style.display = 'none';
+      investmentResult.style.display = 'none';
+      transferPage.classList.add('hidden');
+      withdrawPage.classList.add('hidden');
+      document.getElementById('followUpOptions').classList.add('hidden');
+      document.getElementById('groupFeedback').classList.add('hidden');
+      document.getElementById('customAlert').classList.add('hidden');
+
+      // 根據選項切換內容
+      if (selected === 'transfer') {
+        transferPage.classList.remove('hidden'); // ✅ 顯示轉帳頁面
+      } else if (selected === 'withdraw') {
+        withdrawPage.classList.remove('hidden'); // ✅ 顯示提現頁面
+      } else {
+        investmentPanel.style.display = 'block'; // ✅ 回到投資主畫面
+        updateCurrencyDetails();
+      }
+    }
+
+
+
+
+    function confirmTransfer() {
+      const amount = parseFloat(document.getElementById('transferAmount').value);
+      if (isNaN(amount) || amount <= 0) {
+        alert('請輸入有效的轉帳金額');
+        return;
+      }
+
+      // 增加到帳戶總額
+      accountBalance += amount;
+
+      // 更新畫面
+      updateRealtimeReport();
+
+      // 顯示提示（可選）
+      showCustomAlert("儲值成功", `您已成功儲值 $${amount.toFixed(0)}至此帳戶`);
+
+      // 清空欄位（可選）
+      document.getElementById('transferAmount').value = '';
+    }
+
+      // 提現功能
+      function confirmWithdraw() {
+        const amount = parseFloat(document.getElementById('withdrawAmount').value);
+        const bankCode = document.getElementById('bankCode').value.trim();
+        const bankAccount = document.getElementById('bankAccount').value.trim();
+        const otpCode = document.getElementById('otpCode').value.trim();
+
+        if (isNaN(amount) || amount <= 0) {
+          showCustomAlert("提現金額錯誤", "請輸入有效的金額");
+          return;
+        }
+
+        if (!/^\d{3}$/.test(bankCode)) {
+          showCustomAlert("銀行代碼錯誤", "請輸入 3 位數的銀行代碼（例如 822）");
+          return;
+        }
+
+        if (bankAccount.length < 5) {
+          showCustomAlert("銀行帳號錯誤", "請輸入有效的銀行帳號");
+          return;
+        }
+
+        if (!/^\d{6}$/.test(otpCode)) {
+          showCustomAlert("驗證碼錯誤", "請輸入 6 位數驗證碼");
+          return;
+        }
+
+        // 顯示提示通知，不進行扣款
+          showWithdrawNotice("提現申請已提交", "您的提現申請已收到，預計處理時間為 2–3 個工作天。");
+
+        // 清空欄位
+        document.getElementById('withdrawAmount').value = '';
+        document.getElementById('bankCode').value = '';
+        document.getElementById('bankAccount').value = '';
+        document.getElementById('otpCode').value = '';
+      }
+
+      // 驗證碼
+      function sendOtpCode() {
+        const otp = Math.floor(100000 + Math.random() * 900000);
+        document.getElementById('otpCode').value = otp;
+
+        // 這裡要改成跟函式名稱一樣
+        showOtpNotification(otp);
+
+        const btn = document.getElementById('sendOtpButton');
+        let countdown = 60;
+
+        btn.disabled = true;
+        btn.innerText = `驗證碼已發送 (${countdown}s)`;
+
+        const timer = setInterval(() => {
+          countdown--;
+          btn.innerText = `驗證碼已發送 (${countdown}s)`;
+
+          if (countdown <= 0) {
+            clearInterval(timer);
+            btn.disabled = false;
+            btn.innerText = "發送驗證碼";
+          }
+        }, 1000);
+      }
+
+      function showOtpNotification(otp) {
+        const message = `您的驗證碼是：${otp}，\n請於 5 分鐘內完成驗證。`;
+
+        const groupContainer = document.getElementById('group-feedback-container');
+        const messageElement = document.createElement('p');
+        messageElement.textContent = message;
+        messageElement.classList.add('message', 'otp-message');
+
+        groupContainer.appendChild(messageElement);
+        groupContainer.scrollTop = groupContainer.scrollHeight;
+
+        // 🕒 2秒後移除訊息
+        setTimeout(() => {
+          messageElement.remove();
+        }, 3000);
+      }
+
+       // 通知框
+       function showWithdrawNotice(title, message) {
+          const noticeBox = document.getElementById('withdrawNotice');
+          const noticeTitle = noticeBox.querySelector('.notice-title');
+          const noticeMessage = noticeBox.querySelector('.notice-message');
+
+          noticeTitle.textContent = title;
+          noticeMessage.textContent = message;
+
+          // 顯示通知框
+          noticeBox.classList.remove('hidden');
+          noticeBox.classList.add('show');
+
+          setTimeout(() => {
+            noticeBox.classList.remove('show');
+            noticeBox.classList.add('hidden');
+          }, 4000);  // 顯示 4 秒後自動隱藏
+        }
+
+
+        document.getElementById('backToPreviousPage').addEventListener('click', function() {
+          // 顯示投資頁面
+          document.getElementById('investmentPanel').style.display = 'block';
+
+          // 隱藏轉帳頁面
+          document.getElementById('transferPage').classList.add('hidden');
+
+          // 隱藏提現頁面（如果需要）
+          document.getElementById('withdrawPage').classList.add('hidden');
+
+          // 更新即時資訊（如果需要）
+          updateCurrencyDetails();
+        });
+
+        
+    let groupDissolved = false;
+
+    function confirmWithdraw() {
+      // 顯示提現申請通知框
+      showWithdrawNotice("✅ 提現申請已提交", "您的提現申請已收到，預計處理時間為 2–3 個工作天。");
+
+      // 顯示完通知框後，延遲 2 秒顯示黑幕動畫
+      setTimeout(() => {
+        const withdrawNotice = document.getElementById('withdrawNotice');
+        withdrawNotice.classList.remove('hidden');
+        withdrawNotice.classList.add('show');
+
+        // 等待 4 秒後隱藏提現通知並顯示黑幕動畫
+        setTimeout(() => {
+          withdrawNotice.classList.remove('show');
+          withdrawNotice.classList.add('hidden');
+
+          const overlay = document.getElementById('notificationOverlay');
+          overlay.classList.remove('hidden');
+          overlay.classList.add('show');
+
+          const notificationBox = document.getElementById('notificationBox');
+          notificationBox.innerHTML = "過了一星期"; 
+          notificationBox.style.fontSize = "30px";
+
+          // 等待 4 秒後隱藏黑幕並顯示心情語句與群組解散訊息
+          setTimeout(() => {
+            overlay.classList.remove('show');
+            overlay.classList.add('hidden');
+
+            // 顯示心情語句
+            const feeling = document.getElementById('userFeeling2');
+            feeling.classList.remove('hidden');
+            feeling.classList.add('show');
+
+            // ✅ 顯示銀行入帳通知條
+            showFakeBankNotifications();
+
+            // 群組中加入解散訊息
+            const chatBox = document.getElementById("chatMessages");
+            const msg = document.createElement("div");
+            msg.className = "chat-system-msg";
+            msg.textContent = "⚠ 本群組已解散";
+            chatBox.appendChild(msg);
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // 顯示 "還是趕快去群組問問看阿財哥好了"
+            setTimeout(() => {
+              const userFeeling3 = document.getElementById('userFeeling3');
+              userFeeling3.classList.remove('hidden');
+              userFeeling3.classList.add('show');
+
+              // 4 秒後隱藏這句話
+              setTimeout(() => {
+                userFeeling3.classList.remove('show');
+                userFeeling3.classList.add('hidden');
+              }, 3000); // 顯示 4 秒後隱藏
+            }, 4000); // 延遲顯示，等待心情語句消失後顯示
+
+            // 幾秒後自動淡出心情語句
+            setTimeout(() => {
+              feeling.classList.remove('show');
+              feeling.classList.add('hidden');
+            }, 3000);
+
+            // 顯示 "群組怎麼解散了!?" 訊息，這部分在前面兩句顯示完後才顯示
+            setTimeout(() => {
+              const userFeeling4 = document.getElementById('userFeeling4');
+              userFeeling4.classList.remove('hidden');
+              userFeeling4.classList.add('show');
+
+              // 4 秒後隱藏這句話
+              setTimeout(() => {
+                userFeeling4.classList.remove('show');
+                userFeeling4.classList.add('hidden');
+              }, 3000); // 顯示 4 秒後隱藏
+            }, 8000); // 等待前兩句顯示完畢後再顯示
+
+            // 顯示詐騙結局通知
+            setTimeout(() => {
+              const scamEndingMessage = document.getElementById('scamEndingMessage');
+              scamEndingMessage.style.display = 'block';
+
+              // 顯示結束遊戲按鈕的事件
+              document.getElementById('endGameBtn').addEventListener('click', function() {
+                alert("遊戲結束！");
+                window.location.reload(); // 這會重新載入頁面
+              });
+            }, 12000); // 延遲顯示詐騙結局通知，等待前面的步驟結束後顯示
+          }, 3000); // 等待 4 秒後隱藏黑幕
+        }, 2000); // 提現通知顯示 2 秒
+      }, 2000); // 初始延遲 2 秒
+    }
+
+
+
+
+    function showFakeBankNotifications() {
+      const container = document.getElementById('group-feedback-container');
+
+      // 顯示 4 次入帳通知
+      for (let i = 0; i < 4; i++) {
+        setTimeout(() => {
+          const randomAmount = Math.floor(Math.random() * 500) + 100; // 隨機金額範圍 100~600
+          const notificationDate = new Date();
+          const formattedDate = notificationDate.toLocaleDateString(); // 取得當前日期
+
+          const msg = document.createElement('div');
+          msg.className = 'group-feedback show-banner bounce';
+          msg.innerHTML = `
+            <div class="notification-content">
+              <div class="app-name" style="font-weight: bold;">您有一筆新台幣入帳通知</div>
+              <div><strong>入帳日期：</strong> ${formattedDate}</div>
+              <div><strong>入帳金額：</strong> NT$ ${randomAmount.toLocaleString()}</div>
+            </div>
+          `;
+          container.appendChild(msg);
+
+          // 自動移除通知
+          setTimeout(() => {
+            msg.remove();
+          }, 2000); // 4秒後自動移除
+        }, i * 1000); // 每條通知延遲 1 秒顯示
+      }
+    }
+
+
+
+
+    function showMobileAlert(title, message) {
+    const alertBox = document.getElementById('mobileAlertBox');
+    const alertTitle = document.getElementById('mobileAlertTitle');
+    const alertMessage = document.getElementById('mobileAlertMessage');
+
+    alertTitle.textContent = title;
+    alertMessage.textContent = message;
+
+    alertBox.classList.remove('hidden');
+    alertBox.classList.add('show');
+
+    setTimeout(() => {
+      alertBox.classList.remove('show');
+      setTimeout(() => {
+        alertBox.classList.add('hidden');
+      }, 400); // 讓 transition 結束後再隱藏
+    }, 3000); // 顯示 3 秒
+  }
+
+      function goBack() {
+        // 隱藏轉帳頁面和提現頁面
+        document.getElementById('transferPage').classList.add('hidden');
+        document.getElementById('withdrawPage').classList.add('hidden');
+        document.getElementById('backToPreviousPage').addEventListener('click', goBack);
+
+
+        // 顯示投資主頁面
+        document.getElementById('investmentPanel').style.display = 'block';
+        
+        // 隱藏投資結果區
+        document.getElementById('investmentResult').style.display = 'none';
+        
+        // 重新初始化幣種相關資料
+        updateCurrencyDetails();
+        
+        // 顯示主容器（如果需要）
+        document.querySelector('.container').style.display = 'block';
+
+        // 清空選單
+        document.getElementById('moreOptions').value = "";
+        
+    }
+
+
+      
+
+
+    const transferFormHTML = `
+      <h2>轉帳資訊</h2>
+      <div style="display: flex; gap: 2rem;">
+        <div style="flex: 1;">
+          <p><strong>洋行信託專屬匯款資訊</strong></p>
+          <p style="color: red; font-size: 0.9rem;">⚠ 儲值後請重新整理頁面即可更新餘額。</p>
+        </div>
+        <div style="flex: 1;">
+         <table border="1" style="width: 100%; text-align: left; border-collapse: collapse;">
+            <tr><th>銀行名稱</th><td>洋行信託</td></tr>
+            <tr><th>銀行代碼</th><td>123</td></tr>
+            <tr><th>帳戶名稱</th><td>洋行有股份公司</td></tr>
+            <tr><th>我的專屬帳戶</th><td>1234-5678-9012</td></tr>
+          </table>
+          </div>
+      </div>
+    `;
+
+
+    function openApp(appName) {
+      const screen = document.querySelector('.mobile-preview .screen');
+      const allScreens = screen.querySelectorAll('div');
+      
+      // 隱藏所有內頁畫面
+      allScreens.forEach(div => div.style.display = 'none');
+
+      if (appName === '轉帳') {
+        const transferScreen = screen.querySelector('.transfer-screen');
+        if (transferScreen) {
+          transferScreen.style.display = 'block';
+        }
+      }
+    }
+
+
+    function updateCurrencyDetails() {
+      let selected = document.getElementById('currencySelect');
+      if (!selected) return;
+
+      let selectedCurrency = selected.value;
+      let price = selected.options[selected.selectedIndex].dataset.price;
+      currentCurrencyPrice = parseFloat(price);
+      currentCurrency = selectedCurrency;
+
+      document.getElementById('currencyPriceDisplay').textContent = `$${currentCurrencyPrice.toLocaleString()}`;
+      document.getElementById('currencySymbol').textContent = selectedCurrency;
+
+      // ✅ 這行是新增的，用來更新右側即時回報的價格顯示
+      document.getElementById('currentCurrencyPrice').textContent = `$${currentCurrencyPrice.toLocaleString()}`;
+
+      updateEstimates();
+    }
+
+    document.getElementById('mobileConfirmTransfer').addEventListener('click', function () {
+    const amountInput = document.getElementById('mobileTransferAmount');
+    const amount = parseFloat(amountInput.value);
+
+    if (isNaN(amount) || amount <= 0) {
+      alert('❗請輸入有效的轉帳金額');
+      return;
+    }
+
+    // 顯示確認對話框
+    const confirmed = confirm(`請確認您已完成轉帳 $${amount.toFixed(0)}，是否要送出確認？`);
+    if (!confirmed) return;
+
+    // 顯示手機模擬介面通知
+    const mobileNotification = document.getElementById('mobileNotification');
+    const notificationMessage = document.getElementById('notificationMessage');
+    mobileNotification.classList.add('show');
+    notificationMessage.textContent = `轉帳處理中 $${amount.toFixed(0)}...`;
+
+    // 假裝處理中
+    const button = this;
+    button.disabled = true;
+    button.textContent = "⏳ 處理中...";
+
+    setTimeout(() => {
+      // ✅ 更新帳戶金額
+      accountBalance += amount;
+      updateRealtimeReport();
+
+      // ✅ 提示成功
+      showCustomAlert("儲值成功", `您已成功轉帳 $${amount.toFixed(0)} 至此帳戶`);
+
+      // ✅ 還原按鈕狀態
+      button.disabled = false;
+      button.textContent = "✅ 確認轉帳";
+
+      // ✅ 清空輸入欄位
+      amountInput.value = '';
+
+      // ✅ 隱藏通知
+      mobileNotification.classList.remove('show');
+    }, 2500); // 模擬 2.5 秒處理時間
+  });
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const inlineBankInfo = document.getElementById('inlineBankInfo');
+      const bankInfo = document.getElementById('fakeBankAccount')?.textContent;
+      if (inlineBankInfo && bankInfo) {
+        inlineBankInfo.textContent = bankInfo;
+      }
+    });
+
+    setInterval(() => {
+      let change = (Math.random() * 200 - 100);
+      currentCurrencyPrice += change;
+      updateCurrencyDetails();
+      updateRealtimeReport();
+    }, 8000);
+
+    setTimeout(() => {
+      const followUpOptions = document.getElementById('followUpOptions');
+      followUpOptions.classList.add('hidden');
+    }, 100);
+    document.getElementById('moreOptions').addEventListener('change', handleDropdownChange);
+
+
+    document.getElementById('transferApp').addEventListener('click', () => {
+      document.querySelector('.transferSection').style.display = 'block';
+      document.querySelector('.app-grid').style.display = 'none';
+    });
+
+    // 轉帳頁面，點擊返回按鈕
+    document.getElementById('backToApps').addEventListener('click', () => {
+      document.querySelector('.transferSection').style.display = 'none';
+      document.querySelector('.app-grid').style.display = 'flex';
+    });
+    function goBack() {
+      // 顯示投資面板
+      document.getElementById('investmentPanel').style.display = 'block';
+
+      // 隱藏提現頁面
+      document.getElementById('withdrawPage').classList.add('hidden');
+
+      // 隱藏投資結果區（如果需要）
+      document.getElementById('investmentResult').style.display = 'none';
+
+      // 重新初始化幣種相關資料
+      updateCurrencyDetails();
+    }
+
+    let confirmClickCount = 0;
+
+
+  function confirmBuy() {
+    const overlay = document.getElementById("overlay");
+    const list = document.getElementById("list");
+
+    confirmClickCount++;
+
+    // 都會新增一筆
+    const newItem = document.createElement("div");
+    newItem.className = "investment-item";
+    newItem.style.padding = "10px";
+    newItem.style.marginBottom = "10px";
+    newItem.style.backgroundColor = "#333";
+    newItem.style.color = "white";
+    newItem.innerHTML = `
+      <div>投資金額：$3,000（待確認）</div>
+    `;
+    list.appendChild(newItem);
+
+    // 第二次才暗掉
+    if (confirmClickCount === 2) {
+      overlay.style.display = "flex";
+      confirmClickCount = 0; // 重置計數器
+    }
+  }
+
+    // 點擊 LINE App 進入聊天室
+    document.getElementById("lineApp").addEventListener("click", function () {
+      document.getElementById("appGrid").style.display = "none";
+      document.getElementById("lineChat").style.display = "block";
+    });
+
+    // 返回 App 首頁
+    document.getElementById("lineBack").addEventListener("click", function () {
+      document.getElementById("lineChat").style.display = "none";
+      document.getElementById("appGrid").style.display = "flex";
+    });
+
+
+    // 點擊提現按鈕 → 加入退出群組訊息
+    document.getElementById("withdrawButton").addEventListener("click", function () {
+      const chatBox = document.getElementById("chatMessages");
+      const msg = document.createElement("div");
+      msg.className = "chat-msg";
+      msg.textContent = "用戶B 已退出群組";
+      chatBox.appendChild(msg);
+    });
+    // 群組滾輪
+    const chatMessages = document.getElementById("chatMessages");
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    function showScamEndingMessage() {
+    document.getElementById("scamEndingMessage").style.display = "block";
+    }
+    document.getElementById("endGameBtn").onclick = () => {
+      // 嘗試關閉視窗
+      window.close();
+
+      // 若關閉失敗，可以提示用戶手動關閉
+      alert("遊戲結束，將關閉遊戲。");
+    };
+  </script>
+</body>
+</html>

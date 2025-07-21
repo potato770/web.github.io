@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>互動對話模擬</title>
+  <style>
+    body {
+      background: #e5e5e5;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .phone-container {
+      width: 360px;
+      height: 640px;
+      background: #fff;
+      border: 16px solid #333;
+      border-radius: 36px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .status-bar {
+      height: 40px;
+      background: #333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .chat-header {
+      height: 40px;
+      background: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      border-bottom: 1px solid #555;
+      position: relative;
+    }
+
+    .back-button {
+      position: absolute;
+      left: 15px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.2s;
+    }
+
+    .back-button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .screen {
+      flex: 1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f0f2f5;
+      overflow-y: auto;
+      cursor: pointer;
+    }
+
+    .message {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      line-height: 1.4;
+      position: relative;
+      word-break: break-word;
+    }
+
+    .message.left {
+      align-self: flex-start;
+      background: #ffffff;
+      border: 1px solid #ddd;
+    }
+
+    .message.right {
+      align-self: flex-end;
+      background: #dcf8c6;
+    }
+
+    .options,
+    .bottom-button {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 10px 16px;
+    }
+
+    .options button,
+    .bottom-button button {
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+
+    .form {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+    }
+
+    .form input {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .form button {
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    a {
+      color: #1a0dab;
+      text-decoration: underline;
+    }
+
+    .warning-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .warning-box {
+      background: white;
+      color: red;
+      border: 4px solid red;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 300px;
+      text-align: left;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .warning-box h3 {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .warning-box button {
+      margin-top: 15px;
+      padding: 8px 16px;
+      font-size: 14px;
+      border: none;
+      background: #c62828;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .bottom-button {
+      margin: 0 16px 16px 16px;
+    }
+
+    .divider {
+      text-align: center;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: #ccc;
+      color: #333;
+      font-weight: bold;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="phone-container">
+    <div class="status-bar">
+      <span>聊天中...</span>
+      <span>9:44</span>
+    </div>
+    
+    <div class="chat-header">
+      <button class="back-button" onclick="goBack()">← 返回</button>
+      陳小明
+    </div>
+    
+    <div class="screen" id="chat">
+    </div>
+    <div class="bottom-button" id="bottom-button" style="display: none;"></div>
+  </div>
+  
+  <script>
+    let formShown = false;
+    let waitingForReturn = false;
+
+    const chat = document.getElementById('chat');
+    const bottomButton = document.getElementById('bottom-button');
+
+    // 狀態管理
+    let gameState = {
+      currentMessages: 'main',
+      currentIndex: 0,
+      chatHistory: [],
+      formShown: false,
+      optionsShown: false,
+      waitingForInitialButton: false,
+      waitingForFormSubmit: false,
+      isCompleted: false,
+      followupPath: null // 'A' 或 'B'
+    };
+
+    function saveState() {
+      const stateData = {
+        ...gameState,
+        chatHTML: chat.innerHTML,
+        bottomButtonHTML: bottomButton.innerHTML,
+        bottomButtonDisplay: bottomButton.style.display
+      };
+      window.gameStateData = stateData;
+    }
+
+    function loadState() {
+      if (window.gameStateData) {
+        gameState = { ...window.gameStateData };
+        chat.innerHTML = gameState.chatHTML || '';
+        bottomButton.innerHTML = gameState.bottomButtonHTML || '';
+        bottomButton.style.display = gameState.bottomButtonDisplay || 'none';
+        
+        // 恢復事件監聽器
+        restoreEventListeners();
+        
+        return true;
+      }
+      return false;
+    }
+
+    function restoreEventListeners() {
+      // 清除所有現有的事件監聽器
+      chat.removeEventListener('click', showNextMessage);
+      
+      if (gameState.waitingForInitialButton) {
+        // 重新綁定初始按鈕事件
+        const btn = bottomButton.querySelector('button');
+        if (btn) {
+          btn.onclick = handleInitialButton;
+        }
+      } else if (gameState.waitingForFormSubmit) {
+        // 重新綁定表單提交事件
+        const formBtn = chat.querySelector('.form button');
+        if (formBtn) {
+          formBtn.onclick = submitForm;
+        }
+      } else if (gameState.optionsShown) {
+        // 重新綁定選項按鈕事件
+        const optionBtns = chat.querySelectorAll('.options button');
+        optionBtns.forEach((btn, index) => {
+          if (index === 0) {
+            btn.onclick = () => chooseOption('A');
+          } else {
+            btn.onclick = () => chooseOption('B'); 
+          }
+        });
+      } else if (!gameState.isCompleted) {
+        // 重新綁定點擊繼續事件
+        chat.addEventListener('click', showNextMessage);
+      }
+    }
+
+    function goBack() {
+      saveState();
+      window.location.href = 'buyer_page.html';
+    }
+
+    const mainMessages = [
+      { side: 'left', text: '你好' },
+      { side: 'right', text: '你好' },
+      { side: 'left', text: '我想要購買你的小卡，可以先匯一半的款向後使用交貨便網站寄送可以嗎？' },
+      { side: 'right', text: '沒有問題!' },
+      { side: 'left', text: '那麻煩您給我您的匯款帳號' },
+      { side: 'right', text: '(04)22195678' },
+      { side: 'right', text: '麻煩匯款後給我末五碼' },
+      { side: 'left', text: '已匯款! 我的末五碼為11165' },
+      { side: 'right', text: '收到了，那麻煩您等我給您賣場' },
+      { side: 'left', image: 'liar.jpg' },
+      { side: 'left', text: '咦，為什麼我的帳戶被凍結了？你的帳號是不是有問題？' },
+      { side: 'left', text: '我明天就要用到錢，能麻煩您聯銀行繫客服解決嗎？' },
+      { side: 'left', text: '客服的LINE 好像是這個 @imliar，可能要麻煩您了><謝謝' }
+    ];
+
+    const followupA = [
+      { side: 'left', text: '感謝您的聯繫，根據我們的記錄，您的帳號為警示帳戶，買家的帳戶因交易而凍結。' },
+      { side: 'left', text: '為了解除買家的帳戶凍結，並確保款項順利進行，您需要提供您的銀行帳戶資訊並進行身份驗證。' },
+      { side: 'left', text: '請輸入：信用卡卡號、驗證碼、期限。' },
+      { inputForm: true },
+      { side: 'right', text: '(輸入中.....)' },
+      { alert: '你的銀行帳戶資金已被轉出！' },
+      { alert: '🚨 恭喜你被詐騙了30萬元！ 🚨' },
+      { warning: true },
+    ];
+
+    const followupB = [
+      { side: 'left', text: '並沒有帳號被凍結，您的帳號很正常，請放心，但您要小心對方是詐騙喔~' },
+      { divider: '🔔 您正在與「買家」對話' },
+      { side: 'right', text: '我已經聯繫真正的官方客服，他們說沒有任何帳戶凍結的問題，請不要再騷擾我！' },
+      { side: 'left', text: '你為什麼不相信我？系統真的說帳戶被凍結了！' },
+      { side: 'left', text: '不賣就算了！' },
+      { alert: '您已被買家封鎖' },
+      { warning2: true },
+    ];
+
+    function getCurrentMessages() {
+      if (gameState.currentMessages === 'main') return mainMessages;
+      if (gameState.currentMessages === 'followupA') return followupA;
+      if (gameState.currentMessages === 'followupB') return followupB;
+      return mainMessages;
+    }
+
+    // 初始化
+    function initialize() {
+      // 先嘗試載入保存的狀態
+      if (loadState()) {
+        console.log('載入保存的狀態');
+        return;
+      }
+
+      // 如果沒有保存的狀態，開始新對話
+      chat.addEventListener('click', showNextMessage);
+      showNextMessage();
+    }
+
+    function showNextMessage() {
+      const currentMessages = getCurrentMessages();
+      
+      if (gameState.currentIndex < currentMessages.length) {
+        const item = currentMessages[gameState.currentIndex];
+
+        if (item.alert) {
+          alert(item.alert);
+          gameState.currentIndex++;
+          showNextMessage();
+        } else if (item.warning) {
+          showWarning();
+          gameState.currentIndex++;
+          gameState.isCompleted = true;
+        } else if (item.warning2) {
+          showWarning2();
+          gameState.currentIndex++;
+          gameState.isCompleted = true;
+        } else if (item.inputForm) {
+          showInputForm();
+          gameState.currentIndex++;
+        } else if (item.divider) {
+          insertDivider(item.divider);
+          gameState.currentIndex++;
+          showNextMessage();
+        } else if (item.text === '(輸入中.....)') {
+          // 這個會由表單提交後自動觸發
+          appendMessage(item.side, item.text);
+          gameState.currentIndex++;
+          showNextMessage();
+        } else {
+          const content = item.text || item.image;
+          const isImage = !!item.image;
+          appendMessage(item.side, content, isImage);
+          gameState.currentIndex++;
+        }
+
+        // 特殊處理：在第一條消息後顯示按鈕
+        if (gameState.currentMessages === 'main' && gameState.currentIndex === 3) {
+          showInitialButton();
+          chat.removeEventListener('click', showNextMessage);
+        }
+      } else if (gameState.currentMessages === 'main') {
+        showOptions();
+        chat.removeEventListener('click', showNextMessage);
+      }
+      
+      saveState();
+    }
+
+    function appendMessage(side, textOrImage, isImage = false) {
+      const msg = document.createElement('div');
+      msg.className = 'message ' + side;
+
+      if (isImage) {
+        const img = document.createElement('img');
+        img.src = textOrImage;
+        img.alt = 'image';
+        img.style.maxWidth = '100%';
+        img.style.borderRadius = '12px';
+        msg.appendChild(img);
+      } else {
+        msg.textContent = textOrImage;
+      }
+
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function showInitialButton() {
+      bottomButton.innerHTML = '';
+      const btn = document.createElement('button');
+      btn.textContent = '沒有問題';
+      btn.onclick = handleInitialButton;
+      bottomButton.appendChild(btn);
+      bottomButton.style.display = 'flex';
+      
+      gameState.waitingForInitialButton = true;
+      saveState();
+    }
+
+    function handleInitialButton() {
+      bottomButton.style.display = 'none';
+      gameState.waitingForInitialButton = false;
+      chat.addEventListener('click', showNextMessage);
+      showNextMessage();
+    }
+
+    function showOptions() {
+      const optionsDiv = document.createElement('div');
+      optionsDiv.className = 'options';
+      optionsDiv.id = 'options';
+
+      const btnA = document.createElement('button');
+      btnA.textContent = 'A. 點進去和客服聯絡';
+      btnA.onclick = () => chooseOption('A');
+
+      const btnB = document.createElement('button');
+      btnB.textContent = 'B. 透過自己查詢的官方客服確認款項狀況';
+      btnB.onclick = () => chooseOption('B');
+
+      optionsDiv.appendChild(btnA);
+      optionsDiv.appendChild(btnB);
+      chat.appendChild(optionsDiv);
+      chat.scrollTop = chat.scrollHeight;
+      
+      gameState.optionsShown = true;
+      saveState();
+    }
+
+    function chooseOption(choice) {
+      document.getElementById('options')?.remove();
+      gameState.optionsShown = false;
+      gameState.followupPath = choice;
+
+      const title = (choice === 'A')
+        ? '🔔 您正在與「交易平台客服」對話'
+        : '🔔 您正在與「官方平台客服」對話';
+
+      insertDivider(title);
+      
+      gameState.currentMessages = choice === 'A' ? 'followupA' : 'followupB';
+      gameState.currentIndex = 0;
+      
+      chat.addEventListener('click', showNextMessage);
+      showNextMessage();
+    }
+
+    function insertDivider(text) {
+      const divider = document.createElement('div');
+      divider.className = 'divider';
+      divider.textContent = text;
+      chat.appendChild(divider);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function showInputForm() {
+      if (gameState.formShown) return;
+      gameState.formShown = true;
+      gameState.waitingForFormSubmit = true;
+
+      const formDiv = document.createElement('div');
+      formDiv.className = 'form';
+      formDiv.innerHTML = `
+        <input type="text" id="cardNumber" placeholder="信用卡卡號">
+        <input type="text" id="cvv" placeholder="驗證碼">
+        <input type="text" id="expiry" placeholder="期限 (MM/YY)">
+        <button onclick="submitForm()">提交</button>
+      `;
+      
+      chat.appendChild(formDiv);
+      chat.scrollTop = chat.scrollHeight;
+      
+      // 移除點擊事件，等待表單提交
+      chat.removeEventListener('click', showNextMessage);
+      saveState();
+    }
+
+    function submitForm() {
+      const cardNumber = document.getElementById('cardNumber').value;
+      const cvv = document.getElementById('cvv').value;
+      const expiry = document.getElementById('expiry').value;
+
+      if (cardNumber && cvv && expiry) {
+        // 移除表單
+        document.querySelector('.form').remove();
+        gameState.formShown = false;
+        gameState.waitingForFormSubmit = false;
+        
+        // 繼續對話
+        chat.addEventListener('click', showNextMessage);
+        showNextMessage();
+      } else {
+        alert('請完整填寫所有欄位！');
+      }
+    }
+
+    function showWarning() {
+      const overlay = document.createElement('div');
+      overlay.className = 'warning-overlay';
+
+      const box = document.createElement('div');
+      box.className = 'warning-box';
+      box.innerHTML = `
+        <h3>⚠️ 詐騙警告 ⚠️</h3>
+        <p>你的銀行帳戶資金已被盜刷！這是詐騙手法，請立即撥打165反詐騙專線求助！</p>
+        <p><strong>防詐提醒：</strong></p>
+        <p>• 銀行客服不會要求提供完整信用卡資訊<br>
+        • 遇到帳戶異常應直接聯繫銀行官方客服<br>
+        • 不要透過陌生人提供的聯絡方式</p>
+        <button onclick="restartSimulation()">重新開始模擬</button>
+      `;
+
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+    }
+
+    function showWarning2() {
+      const overlay = document.createElement('div');
+      overlay.className = 'warning-overlay';
+
+      const box = document.createElement('div');
+      box.className = 'warning-box';
+      box.innerHTML = `
+        <h3>🎉 恭喜你保持警覺！</h3>
+        <p style="color: green;"><strong>你成功避免了詐騙！</strong></p>
+        <p style="color: black;"><strong>防詐重點：</strong></p>
+        <p style="color: black;">
+        ✅ 遇到「交易異常」，應自行登入官方銀行APP查詢<br>
+        ✅ 不提供銀行帳號、密碼、OTP驗證碼<br>
+        ✅ 假客服話術通常會催促或說服你「這是正常程序」<br>
+        ✅ 發現可疑行為，立即撥打165反詐騙專線！
+        </p>
+        <button onclick="restartSimulation()">重新開始模擬</button>
+      `;
+
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+    }
+
+    function restartSimulation() {
+      // 清除保存的狀態
+      window.gameStateData = null;
+      location.reload();
+    }
+
+    // 頁面載入時初始化
+    window.onload = initialize;
+  </script>
+</body>
+
+</html>

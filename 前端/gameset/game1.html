@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="UTF-8">
+    <title>遊戲1介紹</title>
+    <link rel="stylesheet" href="gamestyles.css">
+    
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        header {
+            background-color: #6a85b6;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 24px;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .start-box {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 640px;
+            min-height: 600px;
+            text-align: center;
+        }
+
+        .intro-box {
+            background-color: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            min-height: 200px;
+            text-align: center;
+        }
+
+        .start-box button {
+            background: linear-gradient(to right, #667eea, #764ba2);
+            border: none;
+            border-radius: 8px;
+            padding: 15px 30px;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .footer-buttons {
+            display: flex;
+            justify-content: space-around;
+            padding: 30px;
+        }
+
+        .footer-buttons a {
+            text-decoration: none;
+        }
+
+        .footer-buttons button {
+            background-color: #6a85b6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 25px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .footer-buttons button:hover {
+            background-color: #556b8d;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container games-container">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>防詐騙資訊網</span>
+                </div>
+                <div class="nav-menu" id="nav-menu">
+                    <a href="/index.html" class="nav-link active">首頁</a>
+                    <a href="/news.html" class="nav-link">最新消息</a>
+                    <a href="/games.html" class="nav-link">遊戲區</a>
+                    <a href="/forum.html" class="nav-link">討論區</a>
+                    <a href="/scam-types.html" class="nav-link">詐騙類型</a>
+                    <a href="/resources.html" class="nav-link">資源幫助</a>
+                    <a href="/login.html" class="nav-link login-btn">會員登入</a>
+                </div>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container">
+        <div class="start-box">
+            <h2>遊戲1 介紹</h2>
+            <p>你將扮演一位詐騙偵探，透過觀察與推理，從各種情境中識破詐騙手法！</p>
+            <p>你將扮演一位詐騙偵探，透過觀察與推理，從各種情境中識破詐騙手法！</p>
+            <br><br>
+            <div class="gamepic">
+                <img src="/pic/carefulpic1.jpg" alt="防詐騙宣導"
+                    style="max-width:100%; height:auto; display:block; margin:0 auto;">
+            </div>
+            <br><br>
+            <a href="/聿榛部分/call.html" target="_blank">
+                <button class="play-button">開始遊戲</button>
+            </a>
+            <div class="footer-buttons">
+                <a href="/games.html"><button>返回</button></a>
+            </div>
+        </div>
+
+</body>
+
+</html>

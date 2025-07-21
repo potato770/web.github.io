@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>互動對話模擬</title>
+  <style>
+    body {
+      background: #e5e5e5;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .phone-container {
+      width: 360px;
+      height: 640px;
+      background: #fff;
+      border: 16px solid #333;
+      border-radius: 36px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .status-bar {
+      height: 40px;
+      background: #333;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .chat-header {
+      height: 40px;
+      background: #333;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      border-bottom: 1px solid #555;
+      position: relative;
+    }
+
+    .back-button {
+      position: absolute;
+      left: 15px;
+      background: none;
+      border: none;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: background-color 0.2s;
+    }
+
+    .back-button:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .screen {
+      flex: 1;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: #f0f2f5;
+      overflow-y: auto;
+      cursor: pointer;
+    }
+
+    .message {
+      max-width: 75%;
+      padding: 10px 14px;
+      border-radius: 18px;
+      line-height: 1.4;
+      position: relative;
+      word-break: break-word;
+    }
+
+    .message.left {
+      align-self: flex-start;
+      background: #ffffff;
+      border: 1px solid #ddd;
+    }
+
+    .message.right {
+      align-self: flex-end;
+      background: #dcf8c6;
+    }
+
+    .options,
+    .bottom-button {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 10px 16px;
+    }
+
+    .options button,
+    .bottom-button button {
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      background: #4CAF50;
+      color: white;
+      font-weight: bold;
+    }
+
+    .form {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 10px 0;
+      border: 2px solid #ddd;
+    }
+
+    .form input {
+      width: 100%;
+      padding: 8px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .form button {
+      width: 100%;
+      padding: 10px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    a {
+      color: #1a0dab;
+      text-decoration: underline;
+    }
+
+    .warning-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .warning-box {
+      background: white;
+      color: red;
+      border: 4px solid red;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 300px;
+      text-align: left;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .warning-box h3 {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .warning-box button {
+      margin-top: 15px;
+      padding: 8px 16px;
+      font-size: 14px;
+      border: none;
+      background: #c62828;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .bottom-button {
+      margin: 0 16px 16px 16px;
+    }
+
+    .divider {
+      text-align: center;
+      padding: 10px;
+      margin: 10px 0;
+      background-color: #ccc;
+      color: #333;
+      font-weight: bold;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="phone-container">
+    <div class="status-bar">
+      <span>聊天中...</span>
+      <span>9:44</span>
+    </div>
+    
+    <div class="chat-header">
+      <button class="back-button" onclick="goBack()">← 返回</button>
+      王小華
+    </div>
+    
+    <div class="screen" id="chat">
+    </div>
+    <div class="bottom-button" id="bottom-button" style="display: none;"></div>
+  </div>
+  
+  <script>
+    let formShown = false;
+    let waitingForReturn = false;
+
+    const chat = document.getElementById('chat');
+    const bottomButton = document.getElementById('bottom-button');
+
+    // 狀態管理
+    let gameState = {
+      currentMessages: 'main',
+      currentIndex: 0,
+      chatHistory: [],
+      formShown: false,
+      optionsShown: false,
+      waitingForInitialButton: false,
+      waitingForFormSubmit: false,
+      isCompleted: false,
+      followupPath: null // 'A' 或 'B'
+    };
+
+    function saveState() {
+      const stateData = {
+        ...gameState,
+        chatHTML: chat.innerHTML,
+        bottomButtonHTML: bottomButton.innerHTML,
+        bottomButtonDisplay: bottomButton.style.display
+      };
+      window.gameStateData = stateData;
+    }
+
+    function loadState() {
+      if (window.gameStateData) {
+        gameState = { ...window.gameStateData };
+        chat.innerHTML = gameState.chatHTML || '';
+        bottomButton.innerHTML = gameState.bottomButtonHTML || '';
+        bottomButton.style.display = gameState.bottomButtonDisplay || 'none';
+        
+        // 恢復事件監聽器
+        restoreEventListeners();
+        
+        return true;
+      }
+      return false;
+    }
+
+    function restoreEventListeners() {
+      // 清除所有現有的事件監聽器
+      chat.removeEventListener('click', showNextMessage);
+      
+      if (gameState.waitingForInitialButton) {
+        // 重新綁定初始按鈕事件
+        const btn = bottomButton.querySelector('button');
+        if (btn) {
+          btn.onclick = handleInitialButton;
+        }
+      } else if (gameState.waitingForFormSubmit) {
+        // 重新綁定表單提交事件
+        const formBtn = chat.querySelector('.form button');
+        if (formBtn) {
+          formBtn.onclick = submitForm;
+        }
+      } else if (gameState.optionsShown) {
+        // 重新綁定選項按鈕事件
+        const optionBtns = chat.querySelectorAll('.options button');
+        optionBtns.forEach((btn, index) => {
+          if (index === 0) {
+            btn.onclick = () => chooseOption('A');
+          } else {
+            btn.onclick = () => chooseOption('B'); 
+          }
+        });
+      } else if (!gameState.isCompleted) {
+        // 重新綁定點擊繼續事件
+        chat.addEventListener('click', showNextMessage);
+      }
+    }
+
+    function goBack() {
+      saveState();
+      window.location.href = 'buyer_page.html';
+    }
+
+    const mainMessages = [
+   { side: 'left', text: '你好' },
+      { side: 'right', text: '你好，請問是想收左上的專卡嗎' },
+      { side: 'left', text: '是的沒錯!' },
+      { side: 'right', text: '請問交易方式?' },
+      { side: 'left', text: '這邊想走匯款後掛號' },
+      { side: 'right', text: '那這樣的話會再跟您收寄小包的郵寄費用32元' },
+      { side: 'right', text: '總共是80+32=112，您確認一下' },
+      { side: 'left', text: '沒錯!' },
+      { side: 'right', text: '那麻煩您稍等我給您帳號' },
+      { side: 'right', text: '(04)22195678' },
+      { side: 'right', text: '帳號在此，麻煩匯款後給我末五碼' },
+      { side: 'left', text: '已匯款! 我的末五碼為11165' },
+      { side: 'right', text: '收到了，那麻煩您給我地址、姓名與電話號碼' },
+      { side: 'left', text: '王小華' },
+      { side: 'left', text: '404台中市北區三民路三段129號' },
+      { side: 'left', text: '0912345678' },
+      { side: 'left', text: '再麻煩您寄出後給我郵寄編號了' },
+      { side: 'right', text: '寄出後會告知您的' },
+
+    ];
+
+    function getCurrentMessages() {
+      if (gameState.currentMessages === 'main') return mainMessages;
+      return mainMessages;
+    }
+
+    // 初始化
+    function initialize() {
+      // 先嘗試載入保存的狀態
+      if (loadState()) {
+        console.log('載入保存的狀態');
+        return;
+      }
+
+      // 如果沒有保存的狀態，開始新對話
+      chat.addEventListener('click', showNextMessage);
+      showNextMessage();
+    }
+
+    function showNextMessage() {
+      const currentMessages = getCurrentMessages();
+      
+      if (gameState.currentIndex < currentMessages.length) {
+        const item = currentMessages[gameState.currentIndex];
+
+        if (item.alert) {
+          alert(item.alert);
+          gameState.currentIndex++;
+          showNextMessage();
+        } else if (item.warning) {
+          showWarning();
+          gameState.currentIndex++;
+          gameState.isCompleted = true;
+        } else if (item.warning2) {
+          showWarning2();
+          gameState.currentIndex++;
+          gameState.isCompleted = true;
+        } else if (item.inputForm) {
+          showInputForm();
+          gameState.currentIndex++;
+        } else if (item.divider) {
+          insertDivider(item.divider);
+          gameState.currentIndex++;
+          showNextMessage();
+        } else if (item.text === '(輸入中.....)') {
+          // 這個會由表單提交後自動觸發
+          appendMessage(item.side, item.text);
+          gameState.currentIndex++;
+          showNextMessage();
+        } else {
+          const content = item.text || item.image;
+          const isImage = !!item.image;
+          appendMessage(item.side, content, isImage);
+          gameState.currentIndex++;
+        }
+
+        // 特殊處理：在第一條消息後顯示按鈕
+        if (gameState.currentMessages === 'main' && gameState.currentIndex === 3) {
+          showInitialButton();
+          chat.removeEventListener('click', showNextMessage);
+        }
+      } else if (gameState.currentMessages === 'main') {
+        showOptions();
+        chat.removeEventListener('click', showNextMessage);
+      }
+      
+      saveState();
+    }
+
+    function appendMessage(side, textOrImage, isImage = false) {
+      const msg = document.createElement('div');
+      msg.className = 'message ' + side;
+
+      if (isImage) {
+        const img = document.createElement('img');
+        img.src = textOrImage;
+        img.alt = 'image';
+        img.style.maxWidth = '100%';
+        img.style.borderRadius = '12px';
+        msg.appendChild(img);
+      } else {
+        msg.textContent = textOrImage;
+      }
+
+      chat.appendChild(msg);
+      chat.scrollTop = chat.scrollHeight;
+    }
+
+    function handleInitialButton() {
+      bottomButton.style.display = 'none';
+      gameState.waitingForInitialButton = false;
+      chat.addEventListener('click', showNextMessage);
+      showNextMessage();
+    }
+
+
+
+    function insertDivider(text) {
+      const divider = document.createElement('div');
+      divider.className = 'divider';
+      divider.textContent = text;
+      chat.appendChild(divider);
+      chat.scrollTop = chat.scrollHeight;
+    }
+    function restartSimulation() {
+      // 清除保存的狀態
+      window.gameStateData = null;
+      location.reload();
+    }
+
+    // 頁面載入時初始化
+    window.onload = initialize;
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>來電模擬對話</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: white;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    #popup,
+    #resultPopup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+      text-align: center;
+    }
+
+    #popup {
+      background: #333;
+      color: white;
+      min-width: 300px;
+    }
+
+    #popup p:first-child {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #4CAF50;
+    }
+
+    #popup p:nth-child(2) {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 20px 0;
+    }
+
+    #popup button {
+      margin: 10px;
+      padding: 15px 25px;
+      cursor: pointer;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    #popup button:first-of-type {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    #popup button:last-of-type {
+      background-color: #f44336;
+      color: white;
+    }
+
+    #resultPopup p {
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #resultPopup button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: white;
+      z-index: 9998;
+    }
+
+    #phoneInterface {
+      display: none;
+      max-width: 400px;
+      margin: 50px auto;
+      background: #222;
+      border-radius: 25px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+
+    #callStatus {
+      text-align: center;
+      color: #4CAF50;
+      font-size: 18px;
+      margin-bottom: 20px;
+      padding: 10px;
+    }
+
+    #conversation {
+      background: #111;
+      border-radius: 15px;
+      padding: 20px;
+      height: 400px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+
+    .dialogue-line {
+      margin: 15px 0;
+      padding: 12px 15px;
+      border-radius: 10px;
+      font-size: 16px;
+      line-height: 1.4;
+      animation: fadeInSlide 0.5s ease-in;
+    }
+
+    .user-speech {
+      background: #1e3c72;
+      color: white;
+      margin-left: 20px;
+      position: relative;
+    }
+
+    .user-speech::before {
+      content: "你：";
+      font-weight: bold;
+      color: #87CEEB;
+      margin-right: 8px;
+    }
+
+    .scammer-speech {
+      background: #2d1b1b;
+      color: #ffcccc;
+      margin-right: 20px;
+      position: relative;
+    }
+
+    .scammer-speech::before {
+      content: "對方：";
+      font-weight: bold;
+      color: #ff9999;
+      margin-right: 8px;
+    }
+
+    .system-message {
+      background: #444;
+      color: #ccc;
+      font-style: italic;
+      text-align: center;
+      margin: 10px;
+    }
+
+    .system-message::before {
+      content: " ";
+    }
+
+    #controlPanel {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .call-button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .call-button.primary {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .call-button.danger {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .call-button:hover {
+      transform: scale(1.05);
+    }
+
+    .input-section {
+      background: #333;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+    }
+
+    .input-section p {
+      color: #ff9999;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .input-section input {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: 1px solid #555;
+      border-radius: 8px;
+      background: #222;
+      color: white;
+      box-sizing: border-box;
+    }
+
+    .input-section button {
+      margin: 8px 5px 0 0;
+      padding: 10px 15px;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    @keyframes fadeInSlide {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    .pulsing {
+      animation: pulse 2s infinite;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="overlay"></div>
+
+  <!-- 來電彈窗 -->
+  <div id="popup">
+    <p>來電通話</p>
+    <p>+886 912345678</p>
+    <button onclick="handleResponse('接')">接聽</button>
+    <button onclick="handleResponse('不接')">拒接</button>
+  </div>
+
+  <!-- 電話介面 -->
+  <div id="phoneInterface">
+    <div id="callStatus"> 通話中...</div>
+    <div id="conversation"></div>
+    <div id="controlPanel"></div>
+  </div>
+
+  <!-- 結果彈窗 -->
+  <div id="resultPopup">
+    <p id="resultText"></p>
+    <button onclick="closeResult()">關閉</button>
+  </div>
+
+  <script>
+    const messages = [
+      { sender: "user", text: "喂，請問哪裡？" },
+      { sender: "scammer", text: "您好，我是社會福利局的工作人員，我們最近推出了一項新的養老補助計畫，符合條件的長者可額外領取三萬元補助，您有符合資格哦！" },
+      { sender: "user", text: "真的嗎？可是我怎麼沒聽說過？" },
+      { sender: "scammer", text: "這是最新的計畫，政府還在推行中，很多人還不知道。" },
+      { sender: "scammer", text: "我們現在只需要您的提款卡號和金融驗證碼，就能直接把補助款匯入您的帳戶！" }
+    ];
+
+    window.onload = function () {
+      document.getElementById('popup').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
+    };
+
+    function handleResponse(answer) {
+      document.getElementById('popup').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+
+      if (answer === '接') {
+        setTimeout(startCall, 500);
+      } else {
+        alert('你已拒絕通話。成功預防詐騙！切勿隨意接通+886開頭電話');
+      }
+    }
+
+    function startCall() {
+      document.getElementById('phoneInterface').style.display = 'block';
+      const conversation = document.getElementById('conversation');
+      let i = 0;
+
+      const interval = setInterval(() => {
+        if (i < messages.length) {
+          const msgData = messages[i];
+          
+          const dialogueLine = document.createElement('div');
+          dialogueLine.className = 'dialogue-line ' + (msgData.sender === "user" ? 'user-speech' : 'scammer-speech');
+          dialogueLine.textContent = msgData.text;
+          
+          conversation.appendChild(dialogueLine);
+          conversation.scrollTop = conversation.scrollHeight;
+          i++;
+        } else {
+          clearInterval(interval);
+          showOptions();
+        }
+      }, 2000);
+    }
+
+    function showOptions() {
+      const controlPanel = document.getElementById('controlPanel');
+      controlPanel.innerHTML = `
+        <div style="text-align: center; width: 100%; margin-bottom: 15px;">
+          <p style="color: white; font-weight: bold; margin: 0;">💭 你會怎麼回應？</p>
+        </div>
+        <button class="call-button danger" onclick="chooseOption('提供卡號與驗證碼')">提供信用卡資料</button>
+        <button class="call-button primary" onclick="chooseOption('掛掉電話，並通報165反詐騙')">掛電話向165查詢</button>
+      `;
+    }
+
+    function chooseOption(text) {
+      const controlPanel = document.getElementById('controlPanel');
+      controlPanel.innerHTML = '';
+
+      if (text.includes("提供卡號")) {
+        const script = [
+          { sender: "user", text: "好的，那我該怎麼做？" },
+          { sender: "scammer", text: "請提供您的銀行帳號、信用卡資料，以及手機收到的驗證碼，我們會立刻轉帳給您。" },
+          { sender: "input", text: "請輸入資料" }
+        ];
+        playEndingWithInput(script);
+      } else {
+        const script = [
+          { sender: "user", text: "這聽起來不太對，我還是問一下家人好了。" },
+          { sender: "scammer", text: "這個補助計畫今天就截止，如果不申請就會失去資格哦！" },
+          { sender: "user", text: "沒關係，我先打給政府單位問一下。" },
+          { sender: "scammer", text: "等等！不要掛電話..." },
+          { sender: "system", text: "通話已結束 - 你聯繫當地社福機構後發現這是詐騙手法" },
+          { sender: "user", text: "還好我沒上當，現在詐騙真的太猖狂了..." },
+        ];
+        playEnding(script, true);
+      }
+    }
+
+    function playEnding(script, isSafe) {
+      const conversation = document.getElementById('conversation');
+      let i = 0;
+      
+      const interval = setInterval(() => {
+        if (i < script.length) {
+          const msgData = script[i];
+          
+          const dialogueLine = document.createElement('div');
+          
+          if (msgData.sender === "user") {
+            dialogueLine.className = 'dialogue-line user-speech';
+          } else if (msgData.sender === "scammer") {
+            dialogueLine.className = 'dialogue-line scammer-speech';
+          } else {
+            dialogueLine.className = 'dialogue-line system-message';
+          }
+          
+          dialogueLine.textContent = msgData.text;
+          conversation.appendChild(dialogueLine);
+          conversation.scrollTop = conversation.scrollHeight;
+          i++;
+        } else {
+          clearInterval(interval);
+          setTimeout(() => showResultPopup(isSafe), 1000);
+        }
+      }, 1800);
+    }
+
+    function playEndingWithInput(script) {
+      const conversation = document.getElementById('conversation');
+      let i = 0;
+
+      const interval = setInterval(() => {
+        if (i < script.length) {
+          const msgData = script[i];
+          if (msgData.sender === "input") {
+            clearInterval(interval);
+            showInputForm();
+            return;
+          }
+
+          const dialogueLine = document.createElement('div');
+          dialogueLine.className = 'dialogue-line ' + (msgData.sender === "user" ? 'user-speech' : 'scammer-speech');
+          dialogueLine.textContent = msgData.text;
+          
+          conversation.appendChild(dialogueLine);
+          conversation.scrollTop = conversation.scrollHeight;
+          i++;
+        }
+      }, 1800);
+    }
+
+    function showInputForm() {
+      const conversation = document.getElementById('conversation');
+      
+      const inputSection = document.createElement('div');
+      inputSection.className = 'input-section';
+      inputSection.innerHTML = `
+        <p>🔐 詐騙者要求你提供：</p>
+        <input id="bank" placeholder="銀行帳號 (例: 123-45-678901)" type="text" maxlength="20">
+        <input id="card" placeholder="信用卡號碼 (16位數字)" type="text" maxlength="19" oninput="formatCardNumber(this)">
+        <input id="otp" placeholder="手機驗證碼 (6位數字)" type="text" maxlength="6" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+        <div id="validation-msg" style="color: #ff6666; font-size: 14px; margin-top: 5px;"></div>
+        <button onclick="submitFakeData()" style="background-color: #f44336; color: white;">提交資料</button>
+        <button onclick="cancelInput()" style="background-color: #4CAF50; color: white;">發現異常，拒絕提供</button>
+      `;
+      
+      conversation.appendChild(inputSection);
+      conversation.scrollTop = conversation.scrollHeight;
+    }
+
+    function formatCardNumber(input) {
+      // 只允許數字
+      let value = input.value.replace(/[^0-9]/g, '');
+      
+      // 限制最多16位數字
+      if (value.length > 16) {
+        value = value.substring(0, 16);
+      }
+      
+      // 每4位數字加一個空格
+      value = value.replace(/(.{4})/g, '$1 ').trim();
+      
+      input.value = value;
+      
+      // 即時驗證
+      validateInputs();
+    }
+
+    function validateInputs() {
+      const bank = document.getElementById('bank');
+      const card = document.getElementById('card');
+      const otp = document.getElementById('otp');
+      const msgDiv = document.getElementById('validation-msg');
+      
+      if (!bank || !card || !otp || !msgDiv) return;
+      
+      let messages = [];
+      
+      // 驗證銀行帳號
+      if (bank.value.length > 0 && bank.value.length < 10) {
+        messages.push('銀行帳號長度不足');
+      }
+      
+      // 驗證信用卡號
+      const cardValue = card.value.replace(/\s/g, '');
+      if (cardValue.length > 0) {
+        if (cardValue.length < 16) {
+          messages.push('信用卡號必須為16位數字');
+        } else if (!isValidCardNumber(cardValue)) {
+          messages.push('信用卡號格式不正確');
+        }
+      }
+      
+      // 驗證OTP
+      if (otp.value.length > 0 && otp.value.length < 6) {
+        messages.push('驗證碼必須為6位數字');
+      }
+      
+      msgDiv.textContent = messages.join('，');
+      
+      // 控制提交按鈕狀態
+      const submitBtn = document.querySelector('.input-section button[onclick="submitFakeData()"]');
+      if (submitBtn) {
+        const isValid = bank.value.length >= 10 && 
+                       cardValue.length === 16 && 
+                       isValidCardNumber(cardValue) && 
+                       otp.value.length === 6;
+        submitBtn.disabled = !isValid;
+        submitBtn.style.opacity = isValid ? '1' : '0.5';
+      }
+    }
+
+    function isValidCardNumber(cardNumber) {
+      // 簡化的Luhn算法檢查
+      let sum = 0;
+      let alternate = false;
+      
+      for (let i = cardNumber.length - 1; i >= 0; i--) {
+        let n = parseInt(cardNumber.charAt(i), 10);
+        
+        if (alternate) {
+          n *= 2;
+          if (n > 9) {
+            n = (n % 10) + 1;
+          }
+        }
+        
+        sum += n;
+        alternate = !alternate;
+      }
+      
+      return (sum % 10) === 0;
+    }
+
+    function submitFakeData() {
+      const bank = document.getElementById('bank').value;
+      const card = document.getElementById('card').value;
+      const otp = document.getElementById('otp').value;
+      
+      // 最終驗證
+      const cardValue = card.replace(/\s/g, '');
+      if (bank.length < 10) {
+        alert('請輸入完整的銀行帳號');
+        return;
+      }
+      
+      if (cardValue.length !== 16 || !isValidCardNumber(cardValue)) {
+        alert('請輸入正確的信用卡號碼');
+        return;
+      }
+      
+      if (otp.length !== 6) {
+        alert('請輸入6位數字的驗證碼');
+        return;
+      }
+
+      const conversation = document.getElementById('conversation');
+      const inputSection = document.querySelector('.input-section');
+      if (inputSection) inputSection.remove();
+
+      const dialogueLine = document.createElement('div');
+      dialogueLine.className = 'dialogue-line user-speech';
+      dialogueLine.textContent = `好，我的帳戶是 ${bank}, 信用卡是 ${card}, 驗證碼是 ${otp}`;
+      conversation.appendChild(dialogueLine);
+      conversation.scrollTop = conversation.scrollHeight;
+
+      const endScript = [
+        { sender: "scammer", text: "好的，正在為您處理中..." },
+        { sender: "system", text: "幾分鐘後，銀行通知大量資金被轉出" },
+        { sender: "user", text: "怎麼回事？！我的存款被轉走了！" },
+        { sender: "system", text: "詐騙者電話已無法接通..." }
+      ];
+
+      playEnding(endScript, false);
+    }
+
+    function cancelInput() {
+      const conversation = document.getElementById('conversation');
+      const inputSection = document.querySelector('.input-section');
+      if (inputSection) inputSection.remove();
+
+      const dialogueLine = document.createElement('div');
+      dialogueLine.className = 'dialogue-line user-speech';
+      dialogueLine.textContent = "這感覺不太對，我不能提供這些資料。";
+      conversation.appendChild(dialogueLine);
+      conversation.scrollTop = conversation.scrollHeight;
+
+      const endScript = [
+        { sender: "scammer", text: "哎呀，機會難得喔！錯過今天就沒了。" },
+        { sender: "user", text: "沒關係，我會自己查清楚再決定。" },
+        { sender: "scammer", text: "那...那我晚點再聯繫您..." },
+        { sender: "system", text: "通話結束 - 你成功避開了一場詐騙" }
+      ];
+
+      playEnding(endScript, true);
+    }
+
+    function showResultPopup(isSafe) {
+      document.getElementById('callStatus').textContent = '通話已結束';
+      
+      setTimeout(() => {
+        const popup = document.getElementById('resultPopup');
+        const text = document.getElementById('resultText');
+
+        popup.style.display = 'block';
+        text.textContent = isSafe ? 
+          "✅ 防詐成功！你成功識破了詐騙手法。記住：政府機關不會主動要求提供個人金融資料！" : 
+          "⚠️ 詐騙成功！你的帳戶已被盜刷。請立即聯繫銀行與165反詐騙專線！一通電話，可能讓你傾家蕩產！";
+      }, 1000);
+    }
+
+    function closeResult() {
+      document.getElementById('resultPopup').style.display = 'none';
+      location.reload(); // 重新開始
+    }
+  </script>
+
+</body>
+
+</html>
